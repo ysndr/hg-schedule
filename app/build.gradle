@@ -1,0 +1,123 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+    dependencies {
+        // replace with the current version of the Android plugin
+        classpath 'com.android.tools.build:gradle:2.2.0'
+        // the latest version of the android-apt plugin
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.6'
+    }
+}
+
+plugins {
+    id "me.tatarka.retrolambda" version "3.2.5"
+//    id "net.ltgt.apt" version "0.8"
+}
+
+apply plugin: 'com.android.application'
+apply plugin: 'com.neenbedankt.android-apt'
+
+repositories {
+    mavenCentral()
+    jcenter()
+    maven { url "https://clojars.org/repo/" }
+}
+
+android {
+    compileSdkVersion 24
+    buildToolsVersion "24.0.1"
+
+    defaultConfig {
+        applicationId "io.ysndr.android.hg_schedule"
+        minSdkVersion 21
+        targetSdkVersion 24
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        debug {
+            debuggable true
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+
+ext {
+    okhttpVersion = "3.0.1"
+    sdkVersion = 24
+    supportLibVersion = "24.2.1"
+
+    epoxyVersion = "1.3.0"
+
+    lombokVersion = "1.12.6"
+    butterknifeVersion = "8.2.1"
+    daggerVersion = "2.7"
+
+    retrofitVersion = "2.1.0"
+    retrofitRxAdapterVersion = "2.0.2"
+    retrofitGsonConverterVersion = "2.0.0"
+
+    rxjavaVersion = "1.1.6"
+    rxAndroidVersion = "1.2.1"
+    rxBindingsVersion = "0.4.0"
+
+    timberVersion = "4.3.1"
+
+}
+
+
+
+dependencies {
+    testCompile 'junit:junit:4.12'
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+
+    compile "com.android.support:appcompat-v7:${supportLibVersion}"
+    compile "com.android.support:design:${supportLibVersion}"
+    compile "com.android.support:cardview-v7:${supportLibVersion}"
+    compile "com.android.support:recyclerview-v7:${supportLibVersion}"
+
+    compile "com.airbnb.android:epoxy:${epoxyVersion}"
+
+    compile "com.google.auto.value:auto-value:1.2"
+    apt "com.google.auto.value:auto-value:1.2"
+
+    provided "org.projectlombok:lombok:${lombokVersion}"
+    apt "org.projectlombok:lombok:${lombokVersion}"
+
+    apt "org.immutables:value:2.3.2" // for annotation processor
+    provided "org.immutables:value:2.3.2:annotations" // annotation-only artifact
+    provided "org.immutables:builder:2.3.2" // there are only annotations anyway
+    provided "org.immutables:gson:2.3.2:annotations" // annotation-only artifact
+
+    compile "com.jakewharton:butterknife:${butterknifeVersion}"
+    apt "com.jakewharton:butterknife-compiler:${butterknifeVersion}"
+
+    apt "com.google.dagger:dagger-compiler:${daggerVersion}"
+    compile "com.google.dagger:dagger:${daggerVersion}"
+    provided "javax.annotation:jsr250-api:1.0"
+
+
+    compile "io.reactivex:rxjava:${rxjavaVersion}"
+    compile "io.reactivex:rxandroid:${rxAndroidVersion}"
+    compile "com.jakewharton.rxbinding:rxbinding:${rxBindingsVersion}"
+    compile "com.jakewharton.rxbinding:rxbinding-support-v4:${rxBindingsVersion}"
+    compile "com.jakewharton.rxbinding:rxbinding-appcompat-v7:${rxBindingsVersion}"
+    compile "com.jakewharton.rxbinding:rxbinding-design:${rxBindingsVersion}"
+    compile "com.jakewharton.rxbinding:rxbinding-recyclerview-v7:${rxBindingsVersion}"
+
+    compile "com.squareup.retrofit2:retrofit:${retrofitVersion}"
+    compile "com.squareup.retrofit2:adapter-rxjava:${retrofitRxAdapterVersion}"
+    compile "com.squareup.retrofit2:converter-gson:${retrofitGsonConverterVersion}"
+
+    compile "com.jakewharton.timber:timber:${timberVersion}"
+}
