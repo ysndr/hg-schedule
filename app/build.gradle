@@ -5,7 +5,7 @@ buildscript {
     }
     dependencies {
         // replace with the current version of the Android plugin
-        classpath 'com.android.tools.build:gradle:2.2.0'
+        classpath 'com.android.tools.build:gradle:2.2.1'
         // the latest version of the android-apt plugin
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.6'
     }
@@ -87,9 +87,6 @@ dependencies {
     compile "com.android.support:recyclerview-v7:${supportLibVersion}"
 
     compile "com.airbnb.android:epoxy:${epoxyVersion}"
-
-    compile "com.google.auto.value:auto-value:1.2"
-    apt "com.google.auto.value:auto-value:1.2"
 
     provided "org.projectlombok:lombok:${lombokVersion}"
     apt "org.projectlombok:lombok:${lombokVersion}"
