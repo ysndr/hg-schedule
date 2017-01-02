@@ -6,7 +6,7 @@ import android.support.v7.widget.Toolbar;
 
 import butterknife.BindView;
 import io.ysndr.android.hg_schedule.R;
-import io.ysndr.android.hg_schedule.features.schedule.views.fragments.ScheduleListFragment;
+import io.ysndr.android.hg_schedule.features.schedule.view.ScheduleListFragment;
 
 public class MainActivity extends FragmentActivity {
 

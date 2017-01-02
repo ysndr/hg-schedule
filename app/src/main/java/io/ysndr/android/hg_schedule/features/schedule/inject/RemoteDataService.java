@@ -1,4 +1,4 @@
-package io.ysndr.android.hg_schedule.features.schedule.data;
+package io.ysndr.android.hg_schedule.features.schedule.inject;
 
 import io.ysndr.android.hg_schedule.features.schedule.models.Schedule;
 import retrofit2.http.GET;

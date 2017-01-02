@@ -1,6 +1,6 @@
 package io.ysndr.android.hg_schedule.features.schedule.presenters;
 
-import io.ysndr.android.hg_schedule.features.schedule.views.ScheduleListView;
+import io.ysndr.android.hg_schedule.features.schedule.view.ScheduleListView;
 import io.ysndr.android.hg_schedule.presenters.MvpPresenter;
 
 /**
@@ -10,4 +10,6 @@ import io.ysndr.android.hg_schedule.presenters.MvpPresenter;
 public interface ISchedulePresenter extends MvpPresenter<ScheduleListView> {
 
     void invokeUpdate();
+
+    void toggleEntry(String id);
 }

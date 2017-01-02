@@ -1,23 +1,15 @@
 package io.ysndr.android.hg_schedule.features.schedule.models;
 
-import com.google.gson.annotations.Expose;
 
-import lombok.Data;
+import org.immutables.value.Value;
 
 /**
  * Created by yannik on 8/21/16.
  */
 
-@Data
-public class Teacher {
-    @Expose
-    private String id;
-    @Expose
-    private String reamName;
+@Value.Immutable
+public interface Teacher {
+    String id();
 
-    /*
-    public static Teacher create(String shortName) {
-        return new AutoValue_Teacher(shortName);
-    }
-    */
+    String realName();
 }

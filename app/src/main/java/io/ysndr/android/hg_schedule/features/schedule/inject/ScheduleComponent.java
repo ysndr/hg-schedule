@@ -1,10 +1,9 @@
-package io.ysndr.android.hg_schedule.features.schedule.components;
+package io.ysndr.android.hg_schedule.features.schedule.inject;
 
 import javax.inject.Singleton;
 
 import dagger.Component;
-import io.ysndr.android.hg_schedule.features.schedule.modules.DataServiceModule;
-import io.ysndr.android.hg_schedule.features.schedule.views.fragments.ScheduleListFragment;
+import io.ysndr.android.hg_schedule.features.schedule.view.ScheduleListFragment;
 import io.ysndr.android.hg_schedule.modules.AppModule;
 import io.ysndr.android.hg_schedule.modules.RetrofitModule;
 import io.ysndr.android.hg_schedule.ui.MainActivity;

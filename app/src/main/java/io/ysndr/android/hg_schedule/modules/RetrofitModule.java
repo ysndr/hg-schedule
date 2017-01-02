@@ -7,6 +7,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import io.ysndr.android.hg_schedule.features.schedule.models.GsonAdaptersModels;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -25,8 +26,9 @@ public class RetrofitModule {
     @Provides
     @Singleton
     Retrofit provideRetrofit() {
-        Gson gson = new GsonBuilder()
-                .excludeFieldsWithoutExposeAnnotation()
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        Gson gson = gsonBuilder
+                .registerTypeAdapterFactory(new GsonAdaptersModels())
                 .create();
 
         Retrofit retrofit = new Retrofit.Builder()

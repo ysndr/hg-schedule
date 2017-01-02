@@ -1,10 +1,9 @@
-package io.ysndr.android.hg_schedule.features.schedule.modules;
+package io.ysndr.android.hg_schedule.features.schedule.inject;
 
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import io.ysndr.android.hg_schedule.features.schedule.data.RemoteDataService;
 import retrofit2.Retrofit;
 
 /**
@@ -17,4 +16,11 @@ public class DataServiceModule {
     RemoteDataService provideRemoteDataService(Retrofit retrofit) {
         return retrofit.create(RemoteDataService.class);
     }
+
+//    @Provides
+//    @Singleton
+//    CombinedDataService provideCombinedDataService(RemoteDataService remote) {
+//        return new CombinedDataService(remote);
+//    }
+
 }

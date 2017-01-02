@@ -1,17 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_schedule_item"
+    android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:layout_marginBottom="@dimen/activity_content_margin_bottom"
+    android:layout_marginLeft="@dimen/activity_content_margin_left"
+    android:layout_marginRight="@dimen/activity_content_margin_right"
+    android:layout_marginTop="@dimen/activity_content_margin_top"
+    card_view:cardCornerRadius="@dimen/cardview_default_radius"
+    card_view:cardElevation="@dimen/cardview_default_elevation"
+    card_view:contentPadding="8dp">
 
-    <TextView
-        android:id="@+id/label_list_label"
-        style="@style/Base.TextAppearance.AppCompat.Large"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="8dp"
+        android:orientation="horizontal">
 
-        android:text="Hello"
-        android:textStyle="normal|bold" />
+        <TextView
+            android:id="@+id/label_list_label"
+            style="@style/Base.TextAppearance.AppCompat.Large"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:textStyle="normal" />
 
-</LinearLayout>
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <com.joanzapata.iconify.widget.IconTextView
+            android:id="@+id/button_information"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:elevation="2dp"
+            android:gravity="right|center_vertical"
+            android:text="{ion-information-circled}" />
+
+    </LinearLayout>
+</android.support.v7.widget.CardView>

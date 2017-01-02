@@ -1,165 +1,159 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="@dimen/cardview_compat_inset_shadow">
+<?xml version="1.0" encoding="utf-8"?><!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"--><!--xmlns:card_view="http://schemas.android.com/apk/res-auto"--><!--android:layout_width="match_parent"--><!--android:layout_height="wrap_content"--><!--android:orientation="vertical"--><!--android:padding="@dimen/cardview_compat_inset_shadow">-->
 
-    <android.support.v7.widget.CardView
-        android:id="@+id/card_schedule_item"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_schedule_item"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/activity_content_margin_bottom"
+    android:layout_marginLeft="@dimen/activity_content_margin_left"
+    android:layout_marginRight="@dimen/activity_content_margin_right"
+    android:layout_marginTop="@dimen/activity_content_margin_top"
+    card_view:cardCornerRadius="@dimen/cardview_default_radius"
+    card_view:cardElevation="@dimen/cardview_default_elevation"
+    card_view:contentPadding="16dp">
+
+    <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/activity_content_margin_bottom"
-        android:layout_marginLeft="@dimen/activity_content_margin_left"
-        android:layout_marginRight="@dimen/activity_content_margin_right"
-        android:layout_marginTop="@dimen/activity_content_margin_top"
-        card_view:cardCornerRadius="@dimen/cardview_default_radius"
-        card_view:cardElevation="@dimen/cardview_default_elevation"
-        card_view:contentPadding="16dp">
+        android:orientation="vertical">
 
         <LinearLayout
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="horizontal">
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/text_title_card_schedule_item"
+                style="@style/Base.TextAppearance.AppCompat.Title"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:text="Bru"
+                android:textColor="?android:attr/textColorPrimary" />
 
-                <TextView
-                    android:id="@+id/text_title_card_schedule_item"
-                    style="@style/Base.TextAppearance.AppCompat.Title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Bru"
-                    android:textColor="?android:attr/textColorPrimary" />
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
 
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
-
-                <TextView
-                    android:id="@+id/text_info_card_schedule_item"
-                    style="@style/Base.TextAppearance.AppCompat.Body1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Raumänderung"
-                    android:textColor="?android:attr/textColorHint" />
-
-            </LinearLayout>
-
-
-            <GridLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/text_info_card_schedule_item"
+                style="@style/Base.TextAppearance.AppCompat.Body1"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:useDefaultMargins="true">
-
-                <TextView
-                    style="@style/Base.TextAppearance.AppCompat.Body1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_column="0"
-                    android:layout_row="0"
-                    android:text="Absent:" />
-
-                <TextView
-                    android:id="@+id/text_teacher_absent_card_schedule_item"
-                    style="@style/Base.TextAppearance.AppCompat.Body1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_column="1"
-                    android:layout_row="0"
-                    android:text="Bru"
-                    android:textColor="?android:attr/textColorHint" />
-
-                <TextView
-                    style="@style/Base.TextAppearance.AppCompat.Body1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_column="0"
-                    android:layout_row="1"
-                    android:text="Subst.:" />
-
-                <TextView
-                    android:id="@+id/text_teacher_new_card_schedule_item"
-                    style="@style/Base.TextAppearance.AppCompat.Body1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_column="1"
-                    android:layout_row="1"
-                    android:text="---"
-                    android:textColor="?android:attr/textColorHint" />
-
-
-                <!--second column-->
-                <TextView
-                    style="@style/Base.TextAppearance.AppCompat.Body1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_column="2"
-                    android:layout_row="0"
-                    android:text="lesson(s)" />
-
-                <TextView
-                    android:id="@+id/text_lessons_card_schedule_item"
-                    style="@style/Base.TextAppearance.AppCompat.Body1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_column="3"
-                    android:layout_row="0"
-                    android:text="4"
-                    android:textColor="?android:attr/textColorHint" />
-
-                <TextView
-                    style="@style/Base.TextAppearance.AppCompat.Body1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_column="2"
-                    android:layout_row="1"
-                    android:text="room:" />
-
-                <TextView
-                    android:id="@+id/text_room_card_schedule_item"
-                    style="@style/Base.TextAppearance.AppCompat.Body1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_column="3"
-                    android:layout_row="1"
-                    android:text="206"
-                    android:textColor="?android:attr/textColorHint" />
-
-                <!--third column-->
-                <TextView
-                    style="@style/Base.TextAppearance.AppCompat.Body1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_column="4"
-                    android:layout_row="0"
-                    android:text="class(es):" />
-
-
-                <TextView
-                    android:id="@+id/text_classes_card_schedule_item"
-                    style="@style/Base.TextAppearance.AppCompat.Body1"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_column="5"
-
-                    android:layout_gravity="fill_horizontal"
-                    android:layout_row="0"
-
-                    android:layout_rowSpan="2"
-                    android:text="Q2"
-                    android:textColor="?android:attr/textColorHint" />
-
-
-            </GridLayout>
-
+                android:text="Raumänderung"
+                android:textColor="?android:attr/textColorHint" />
 
         </LinearLayout>
 
-    </android.support.v7.widget.CardView>
-</LinearLayout>
+
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:useDefaultMargins="true">
+
+            <TextView
+                style="@style/Base.TextAppearance.AppCompat.Body1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_row="0"
+                android:text="Absent:" />
+
+            <TextView
+                android:id="@+id/text_teacher_absent_card_schedule_item"
+                style="@style/Base.TextAppearance.AppCompat.Body1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="1"
+                android:layout_row="0"
+                android:text="Bru"
+                android:textColor="?android:attr/textColorHint" />
+
+            <TextView
+                style="@style/Base.TextAppearance.AppCompat.Body1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_row="1"
+                android:text="Subst.:" />
+
+            <TextView
+                android:id="@+id/text_teacher_new_card_schedule_item"
+                style="@style/Base.TextAppearance.AppCompat.Body1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="1"
+                android:layout_row="1"
+                android:text="---"
+                android:textColor="?android:attr/textColorHint" />
+
+
+            <!--second column-->
+            <TextView
+                style="@style/Base.TextAppearance.AppCompat.Body1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="2"
+                android:layout_row="0"
+                android:text="lesson(s)" />
+
+            <TextView
+                android:id="@+id/text_lessons_card_schedule_item"
+                style="@style/Base.TextAppearance.AppCompat.Body1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="3"
+                android:layout_row="0"
+                android:text="4"
+                android:textColor="?android:attr/textColorHint" />
+
+            <TextView
+                style="@style/Base.TextAppearance.AppCompat.Body1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="2"
+                android:layout_row="1"
+                android:text="room:" />
+
+            <TextView
+                android:id="@+id/text_room_card_schedule_item"
+                style="@style/Base.TextAppearance.AppCompat.Body1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="3"
+                android:layout_row="1"
+                android:text="206"
+                android:textColor="?android:attr/textColorHint" />
+
+            <!--third column-->
+            <TextView
+                style="@style/Base.TextAppearance.AppCompat.Body1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="4"
+                android:layout_row="0"
+                android:text="class(es):" />
+
+
+            <TextView
+                android:id="@+id/text_classes_card_schedule_item"
+                style="@style/Base.TextAppearance.AppCompat.Body1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_column="5"
+
+                android:layout_gravity="fill_horizontal"
+                android:layout_row="0"
+
+                android:layout_rowSpan="2"
+                android:text="Q2"
+                android:textColor="?android:attr/textColorHint" />
+
+
+        </GridLayout>
+
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView><!--</LinearLayout>-->
