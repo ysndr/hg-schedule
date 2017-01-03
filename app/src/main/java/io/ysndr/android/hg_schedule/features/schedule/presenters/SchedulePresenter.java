@@ -24,7 +24,6 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.subjects.BehaviorSubject;
 import rx.subjects.Subject;
-import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
 /**
@@ -39,16 +38,15 @@ public class SchedulePresenter implements ISchedulePresenter, ScheduleDataSource
 
     Subject<Presentable<List<Entry>>, Presentable<List<Entry>>> values$;
 
-    CompositeSubscription subscriptions;
-
     Set<Filter<FilterDataTuple, Boolean>> filters;
 
 
     public final FilterIntentSink FilterSink = new FilterIntentSink() {
+        Subscription subscription;
+
         @Override
         public void bindIntent(FilterIntentSource source) {
-
-            Subscription subscription = source.filterIntent$()
+            subscription = source.filterIntent$()
                     .doOnNext(filterDataTuple ->
                             Timber.d("Toggle filter for entry_id: " + filterDataTuple.entry().some().id()))
                     .map(original -> {
@@ -67,23 +65,33 @@ public class SchedulePresenter implements ISchedulePresenter, ScheduleDataSource
                     .map(filterData -> Unit.unit())
                     .flatMap(unit -> update())
                     .subscribe(values$::onNext, values$::onError);
+        }
 
-            subscriptions.add(subscription);
+        @Override
+        public void unbind() {
+            if (subscription != null && !subscription.isUnsubscribed())
+                subscription.unsubscribe();
         }
     };
 
     public final ReloadIntentSink ReloadSink = new ReloadIntentSink() {
+        Subscription subscription;
+
         @Override
         public void bindIntent(ReloadIntentSource source) {
-            Subscription subscription = source.reloadIntent$()
+            subscription = source.reloadIntent$()
                     .map(unit -> Presentable.<List<Entry>>of(true, Option.none()))
                     .flatMap(listPresentable -> update().startWith(listPresentable))
                     .doOnNext(listPresentable -> Timber.d("Data received: " + listPresentable.result().isSome()))
                     .doOnNext(listPresentable -> Timber.d("Data received: " + listPresentable.result().orSome(List.nil())))
                     .doOnError(e -> Timber.e(e))
                     .subscribe(values$::onNext, values$::onError);
+        }
 
-            subscriptions.add(subscription);
+        @Override
+        public void unbind() {
+            if (subscription != null && !subscription.isUnsubscribed())
+                subscription.unsubscribe();
         }
     };
 
@@ -92,7 +100,6 @@ public class SchedulePresenter implements ISchedulePresenter, ScheduleDataSource
     public SchedulePresenter(CombinedDataService dataService) {
         mDataService = dataService;
         this.values$ = BehaviorSubject.create();
-        this.subscriptions = new CompositeSubscription();
         this.filters = Set.empty(Ord.hashOrd());
     }
 
@@ -142,6 +149,7 @@ public class SchedulePresenter implements ISchedulePresenter, ScheduleDataSource
 
     @Override
     public void detachView(boolean retainInstance) {
-        subscriptions.clear();
+        FilterSink.unbind();
+        ReloadSink.unbind();
     }
 }

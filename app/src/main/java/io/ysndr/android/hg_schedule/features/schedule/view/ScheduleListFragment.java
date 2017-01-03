@@ -57,13 +57,11 @@ public class ScheduleListFragment extends Fragment implements ScheduleListView, 
     SchedulePresenter mSchedulePresenter;
 
     ListAdapter adapter;
-
-    private Unbinder unbinder;
-    private Subscription dataSubscription;
     public final ScheduleDataSink ScheduleDataSink = new ScheduleDataSink() {
+        private Subscription dataSubscription;
+
         @Override
         public void bindIntent(ScheduleDataSource source) {
-
             dataSubscription = source.data$().subscribe(presentable -> {
                 setLoading(presentable.loading());
                 presentable.result().toEither(Unit.unit()).either(
@@ -80,7 +78,15 @@ public class ScheduleListFragment extends Fragment implements ScheduleListView, 
                 );
             });
         }
+
+        @Override
+        public void unbind() {
+            if (dataSubscription != null && !dataSubscription.isUnsubscribed()) {
+                dataSubscription.unsubscribe();
+            }
+        }
     };
+    private Unbinder unbinder;
     private Subject<FilterDataTuple, FilterDataTuple> filter$;
 
 
@@ -178,9 +184,7 @@ public class ScheduleListFragment extends Fragment implements ScheduleListView, 
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
-        if (dataSubscription != null && !dataSubscription.isUnsubscribed()) {
-            dataSubscription.unsubscribe();
-        }
+        ScheduleDataSink.unbind();
         mSchedulePresenter.detachView(true);
     }
 
