@@ -24,6 +24,8 @@ public interface Substitute {
 
     String info();
 
+    String description();
+
     String cancelled();
 
     String renew();

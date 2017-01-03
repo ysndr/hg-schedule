@@ -31,7 +31,7 @@ public abstract class SubstituteViewWrapper extends ViewWrapper {
         holder.substitute.setText(substitute().substitute());
         holder.classes.setText(TextUtils.join(", ", substitute().affectedClasses()));
         holder.lessons.setText(substitute().time());
-        holder.info.setText(substitute().info());
+        holder.description.setText(substitute().description());
         holder.room.setText(substitute().room());
         holder.title.setText(substitute().absent());
     }
@@ -45,8 +45,8 @@ public abstract class SubstituteViewWrapper extends ViewWrapper {
 
         @BindView(R.id.text_title_card_schedule_item)
         TextView title;
-        @BindView(R.id.text_info_card_schedule_item)
-        TextView info;
+        @BindView(R.id.text_description_card_schedule_item)
+        TextView description;
         @BindView(R.id.text_teacher_absent_card_schedule_item)
         TextView absent;
         @BindView(R.id.text_teacher_new_card_schedule_item)

@@ -9,151 +9,158 @@
     android:layout_marginLeft="@dimen/activity_content_margin_left"
     android:layout_marginRight="@dimen/activity_content_margin_right"
     android:layout_marginTop="@dimen/activity_content_margin_top"
-    card_view:cardCornerRadius="@dimen/cardview_default_radius"
-    card_view:cardElevation="@dimen/cardview_default_elevation"
-    card_view:contentPadding="16dp">
+    card_view:cardCornerRadius="@dimen/cardview_default_radius">
 
-    <LinearLayout
-        android:layout_width="fill_parent"
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+
+        <TextView
+            android:id="@+id/text_title_card_schedule_item"
+            style="@style/Base.TextAppearance.AppCompat.Title"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:text="Bru"
+            android:textAppearance="@android:style/TextAppearance.Material.Small"
+            card_view:layout_constraintLeft_toLeftOf="parent"
+            card_view:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/text_title_card_schedule_item"
-                style="@style/Base.TextAppearance.AppCompat.Title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Bru"
-                android:textColor="?android:attr/textColorPrimary" />
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
-
-            <TextView
-                android:id="@+id/text_info_card_schedule_item"
-                style="@style/Base.TextAppearance.AppCompat.Body1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Raumänderung"
-                android:textColor="?android:attr/textColorHint" />
-
-        </LinearLayout>
-
-
-        <GridLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/text_description_card_schedule_item"
+            style="@style/Base.TextAppearance.AppCompat.Body1"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:useDefaultMargins="true">
-
-            <TextView
-                style="@style/Base.TextAppearance.AppCompat.Body1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_column="0"
-                android:layout_row="0"
-                android:text="Absent:" />
-
-            <TextView
-                android:id="@+id/text_teacher_absent_card_schedule_item"
-                style="@style/Base.TextAppearance.AppCompat.Body1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_column="1"
-                android:layout_row="0"
-                android:text="Bru"
-                android:textColor="?android:attr/textColorHint" />
-
-            <TextView
-                style="@style/Base.TextAppearance.AppCompat.Body1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_column="0"
-                android:layout_row="1"
-                android:text="Subst.:" />
-
-            <TextView
-                android:id="@+id/text_teacher_new_card_schedule_item"
-                style="@style/Base.TextAppearance.AppCompat.Body1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_column="1"
-                android:layout_row="1"
-                android:text="---"
-                android:textColor="?android:attr/textColorHint" />
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="24dp"
+            android:text="Raumänderung"
+            android:textColor="?android:attr/textColorHint"
+            card_view:layout_constraintBaseline_toBaselineOf="@+id/text_title_card_schedule_item"
+            card_view:layout_constraintHorizontal_bias="1.0"
+            card_view:layout_constraintLeft_toRightOf="@+id/text_title_card_schedule_item"
+            card_view:layout_constraintRight_toRightOf="parent" />
 
 
-            <!--second column-->
-            <TextView
-                style="@style/Base.TextAppearance.AppCompat.Body1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_column="2"
-                android:layout_row="0"
-                android:text="lesson(s)" />
+        <TextView
+            android:id="@+id/textView6"
+            style="@style/Base.TextAppearance.AppCompat.Body1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Absent:"
+            card_view:layout_constraintLeft_toLeftOf="@+id/text_title_card_schedule_item"
+            card_view:layout_constraintTop_toBottomOf="@+id/text_title_card_schedule_item" />
 
-            <TextView
-                android:id="@+id/text_lessons_card_schedule_item"
-                style="@style/Base.TextAppearance.AppCompat.Body1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_column="3"
-                android:layout_row="0"
-                android:text="4"
-                android:textColor="?android:attr/textColorHint" />
+        <TextView
+            android:id="@+id/text_teacher_absent_card_schedule_item"
+            style="@style/Base.TextAppearance.AppCompat.Body1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:text="Bru"
+            android:textColor="?android:attr/textColorHint"
+            card_view:layout_constraintBaseline_toBaselineOf="@+id/textView6"
+            card_view:layout_constraintLeft_toRightOf="@+id/textView6" />
 
-            <TextView
-                style="@style/Base.TextAppearance.AppCompat.Body1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_column="2"
-                android:layout_row="1"
-                android:text="room:" />
+        <TextView
+            android:id="@+id/textView7"
+            style="@style/Base.TextAppearance.AppCompat.Body1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="8dp"
+            android:text="Subst.:"
+            card_view:layout_constraintBottom_toBottomOf="parent"
+            card_view:layout_constraintLeft_toLeftOf="@+id/textView6"
+            card_view:layout_constraintTop_toBottomOf="@+id/textView6"
+            card_view:layout_constraintVertical_bias="0.0" />
 
-            <TextView
-                android:id="@+id/text_room_card_schedule_item"
-                style="@style/Base.TextAppearance.AppCompat.Body1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_column="3"
-                android:layout_row="1"
-                android:text="206"
-                android:textColor="?android:attr/textColorHint" />
-
-            <!--third column-->
-            <TextView
-                style="@style/Base.TextAppearance.AppCompat.Body1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_column="4"
-                android:layout_row="0"
-                android:text="class(es):" />
+        <TextView
+            android:id="@+id/text_teacher_new_card_schedule_item"
+            style="@style/Base.TextAppearance.AppCompat.Body1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="---"
+            android:textColor="?android:attr/textColorHint"
+            card_view:layout_constraintBaseline_toBaselineOf="@+id/textView7"
+            card_view:layout_constraintLeft_toLeftOf="@+id/text_teacher_absent_card_schedule_item" />
 
 
-            <TextView
-                android:id="@+id/text_classes_card_schedule_item"
-                style="@style/Base.TextAppearance.AppCompat.Body1"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_column="5"
+        <!--second column-->
+        <TextView
+            android:id="@+id/textView12"
+            style="@style/Base.TextAppearance.AppCompat.Body1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="lesson(s):"
+            card_view:layout_constraintBaseline_toBaselineOf="@+id/text_teacher_absent_card_schedule_item"
+            card_view:layout_constraintLeft_toRightOf="@+id/text_teacher_absent_card_schedule_item" />
 
-                android:layout_gravity="fill_horizontal"
-                android:layout_row="0"
+        <TextView
+            android:id="@+id/text_lessons_card_schedule_item"
+            style="@style/Base.TextAppearance.AppCompat.Body1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="4"
+            android:textColor="?android:attr/textColorHint"
+            card_view:layout_constraintBaseline_toBaselineOf="@+id/textView12"
+            card_view:layout_constraintLeft_toRightOf="@+id/textView12" />
 
-                android:layout_rowSpan="2"
-                android:text="Q2"
-                android:textColor="?android:attr/textColorHint" />
+        <TextView
+            android:id="@+id/textView10"
+            style="@style/Base.TextAppearance.AppCompat.Body1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="room:"
+            card_view:layout_constraintBaseline_toBaselineOf="@+id/text_teacher_new_card_schedule_item"
+            card_view:layout_constraintLeft_toLeftOf="@+id/textView12" />
+
+        <TextView
+            android:id="@+id/text_room_card_schedule_item"
+            style="@style/Base.TextAppearance.AppCompat.Body1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="206"
+            android:textColor="?android:attr/textColorHint"
+            card_view:layout_constraintBaseline_toBaselineOf="@+id/textView10"
+            card_view:layout_constraintLeft_toLeftOf="@+id/text_lessons_card_schedule_item" />
+
+        <!--third column-->
+        <TextView
+            android:id="@+id/textView11"
+            style="@style/Base.TextAppearance.AppCompat.Body1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="8dp"
+            android:text="class(es):"
+            card_view:layout_constraintBaseline_toBaselineOf="@+id/text_lessons_card_schedule_item"
+            card_view:layout_constraintLeft_toRightOf="@+id/text_lessons_card_schedule_item"
+            card_view:layout_constraintRight_toRightOf="parent" />
 
 
-        </GridLayout>
+        <TextView
+            android:id="@+id/text_classes_card_schedule_item"
+            style="@style/Base.TextAppearance.AppCompat.Body1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+
+            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="Q2"
+            android:textColor="?android:attr/textColorHint"
+            card_view:layout_constraintBottom_toBottomOf="parent"
+            card_view:layout_constraintHorizontal_bias="0.0"
+            card_view:layout_constraintLeft_toLeftOf="@+id/textView11"
+            card_view:layout_constraintRight_toRightOf="parent"
+            card_view:layout_constraintTop_toTopOf="@+id/text_room_card_schedule_item" />
 
 
-    </LinearLayout>
+    </android.support.constraint.ConstraintLayout>
 
 </android.support.v7.widget.CardView><!--</LinearLayout>-->

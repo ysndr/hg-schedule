@@ -14,9 +14,9 @@ import java.util.List;
 public interface DayInfo {
     List<String> absentTeachers();
 
-    List<String> absentClasses();
-
     List<String> affectedClasses();
 
     List<String> affectedRooms();
+
+    List<String> info();
 }
