@@ -1,12 +1,15 @@
 package io.ysndr.android.hg_schedule.features.schedule.util.reactive;
 
 
+import rx.subscriptions.CompositeSubscription;
+
 /**
  * Created by yannik on 1/1/17.
  */
 
 public interface Sink<T extends Source> {
-    void bindIntent(T source);
+    CompositeSubscription subscriptions = new CompositeSubscription();
 
+    void bindIntent(T source);
     void unbind();
 }

@@ -26,12 +26,13 @@ import io.ysndr.android.hg_schedule.R;
 import io.ysndr.android.hg_schedule.features.schedule.models.Entry;
 import io.ysndr.android.hg_schedule.features.schedule.presenters.SchedulePresenter;
 import io.ysndr.android.hg_schedule.features.schedule.util.FilterDataTuple;
+import io.ysndr.android.hg_schedule.features.schedule.util.reactive.DialogRequestIntentSink;
+import io.ysndr.android.hg_schedule.features.schedule.util.reactive.DialogRequestIntentSource;
 import io.ysndr.android.hg_schedule.features.schedule.util.reactive.FilterIntentSource;
 import io.ysndr.android.hg_schedule.features.schedule.util.reactive.ReloadIntentSource;
 import io.ysndr.android.hg_schedule.features.schedule.util.reactive.ScheduleDataSink;
 import io.ysndr.android.hg_schedule.features.schedule.util.reactive.ScheduleDataSource;
 import rx.Observable;
-import rx.Subscription;
 import rx.subjects.BehaviorSubject;
 import rx.subjects.Subject;
 import timber.log.Timber;
@@ -43,26 +44,42 @@ import timber.log.Timber;
 public class ScheduleListFragment extends Fragment implements ScheduleListView, ReloadIntentSource, FilterIntentSource {
 
 
-    @BindView(R.id.content_recycler_view)
-    RecyclerView recyclerView;
-
-    @BindView(R.id.content_swipe_refresh)
-    SwipeRefreshLayout swipeRefresh;
-    Observable refreshes$;
-
-    @BindView(R.id.progress_spinner)
-    ProgressBar progress;
-
-    @Inject
-    SchedulePresenter mSchedulePresenter;
-
-    ListAdapter adapter;
-    public final ScheduleDataSink ScheduleDataSink = new ScheduleDataSink() {
-        private Subscription dataSubscription;
+    public final DialogRequestIntentSink DialogRequestSink = new DialogRequestIntentSink() {
 
         @Override
+        public void bindIntent(DialogRequestIntentSource source) {
+            subscriptions.add(source.dialogRequest$()
+                    .doOnNext(entry -> Toast.makeText(getContext(), "Dialog to show up here", Toast.LENGTH_SHORT).show())
+                    .subscribe(entry -> {
+
+
+                        Timber.d("hello" + entry.info().getClass());
+
+                        ScheduleDialogBuilder
+                                .newScheduleDialog(entry.day(), entry.info())
+                                .show(getFragmentManager(), null);
+
+                    }));
+        }
+
+        @Override
+        public void unbind() {
+            subscriptions.clear();
+        }
+    };
+    @BindView(R.id.content_recycler_view)
+    RecyclerView recyclerView;
+    @BindView(R.id.content_swipe_refresh)
+    SwipeRefreshLayout swipeRefresh;
+    @BindView(R.id.progress_spinner)
+    ProgressBar progress;
+    @Inject
+    SchedulePresenter mSchedulePresenter;
+    ListAdapter adapter;
+    public final ScheduleDataSink ScheduleDataSink = new ScheduleDataSink() {
+        @Override
         public void bindIntent(ScheduleDataSource source) {
-            dataSubscription = source.data$().subscribe(presentable -> {
+            subscriptions.add(source.data$().subscribe(presentable -> {
                 setLoading(presentable.loading());
                 presentable.result().toEither(Unit.unit()).either(
                         loading -> {
@@ -76,19 +93,19 @@ public class ScheduleListFragment extends Fragment implements ScheduleListView, 
                             return Unit.unit();
                         }
                 );
-            });
+            }));
         }
 
         @Override
         public void unbind() {
-            if (dataSubscription != null && !dataSubscription.isUnsubscribed()) {
-                dataSubscription.unsubscribe();
+            if (subscriptions.hasSubscriptions()) {
+                subscriptions.clear();
             }
         }
     };
-    private Unbinder unbinder;
+    private Observable refreshes$;
     private Subject<FilterDataTuple, FilterDataTuple> filter$;
-
+    private Unbinder unbinder;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -96,7 +113,6 @@ public class ScheduleListFragment extends Fragment implements ScheduleListView, 
         MyApp.getScheduleComponent(this.getContext()).inject(this);
 
         filter$ = BehaviorSubject.create();
-
     }
 
     @Override
@@ -107,9 +123,7 @@ public class ScheduleListFragment extends Fragment implements ScheduleListView, 
         View layout = inflater.inflate(R.layout.fragment_main, container, false);
         unbinder = ButterKnife.bind(this, layout);
 
-
         refreshes$ = RxSwipeRefreshLayout.refreshes(swipeRefresh);
-
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
@@ -128,7 +142,7 @@ public class ScheduleListFragment extends Fragment implements ScheduleListView, 
         mSchedulePresenter.FilterSink.bindIntent(this.adapter);
         mSchedulePresenter.ReloadSink.bindIntent(this);
         this.ScheduleDataSink.bindIntent(mSchedulePresenter);
-
+        this.DialogRequestSink.bindIntent(this.adapter);
         //mSchedulePresenter.invokeUpdate();
     }
 
@@ -185,6 +199,7 @@ public class ScheduleListFragment extends Fragment implements ScheduleListView, 
         super.onDestroyView();
         unbinder.unbind();
         ScheduleDataSink.unbind();
+        DialogRequestSink.unbind();
         mSchedulePresenter.detachView(true);
     }
 

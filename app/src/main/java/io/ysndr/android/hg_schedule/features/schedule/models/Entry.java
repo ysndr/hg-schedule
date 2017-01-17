@@ -4,6 +4,8 @@ import com.google.gson.annotations.SerializedName;
 
 import org.immutables.gson.Gson;
 import org.immutables.value.Value;
+import org.parceler.ParcelFactory;
+import org.parceler.ParcelProperty;
 
 import java.util.Date;
 import java.util.List;
@@ -13,8 +15,19 @@ import java.util.List;
  */
 
 @Value.Immutable
-
+//@Parcel
 public abstract class Entry {
+
+    @ParcelFactory
+    public static Entry instance(String id, Date updated, Date day, DayInfo info, List<Substitute> substitutes) {
+        return ImmutableEntry.builder()
+                .id(id)
+                .updated(updated)
+                .day(day)
+                .info(info)
+                .substitutes(substitutes)
+                .build();
+    }
 
     @Value.Default
     @Gson.Ignore
@@ -23,15 +36,19 @@ public abstract class Entry {
     }
 
     @SerializedName("_id")
+    @ParcelProperty("id")
     public abstract String id();
 
-
+    @ParcelProperty("updated")
     public abstract Date updated();
 
+    @ParcelProperty("day")
     public abstract Date day();
 
+    @ParcelProperty("info")
     public abstract DayInfo info();
 
+    @ParcelProperty("substitutes")
     public abstract List<Substitute> substitutes();
 
 }

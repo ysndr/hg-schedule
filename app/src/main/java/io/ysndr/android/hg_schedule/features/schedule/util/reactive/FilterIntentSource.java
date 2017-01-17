@@ -8,9 +8,5 @@ import rx.Observable;
  */
 
 public interface FilterIntentSource extends Source {
-
-
     Observable<FilterDataTuple> filterIntent$();
-
-
 }

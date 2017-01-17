@@ -4,6 +4,7 @@ package io.ysndr.android.hg_schedule.features.schedule.view;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateFormat;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jakewharton.rxbinding.view.RxView;
@@ -29,14 +30,21 @@ public abstract class LabelViewWrapper extends ViewWrapper {
 
     private final CompositeSubscription subscriptions = new CompositeSubscription();
     private final Subject<Entry, Entry> filter$ = PublishSubject.create();
+    private final Subject<Entry, Entry> dialogRequest$ = PublishSubject.create();
 
     public abstract Entry entry();
 
-    @Value.Default
+
     @Value.Auxiliary
     public Observable<Entry> filterObsrv() {
         return filter$.asObservable();
     }
+
+    @Value.Auxiliary
+    public Observable<Entry> dialogRequestObsrv() {
+        return dialogRequest$.asObservable();
+    }
+
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder) {
@@ -47,6 +55,11 @@ public abstract class LabelViewWrapper extends ViewWrapper {
                 .doOnNext(_void_ -> Timber.d("Label clicked"))
                 .map(_void_ -> entry())
                 .subscribe(filter$::onNext, filter$::onError));
+
+        subscriptions.add(RxView.clicks(holder.button)
+                .doOnNext(_void_ -> Timber.d("Dialog request triggered"))
+                .map(_void_ -> entry())
+                .subscribe(dialogRequest$::onNext, dialogRequest$::onError));
     }
 
     @Override
@@ -65,6 +78,9 @@ public abstract class LabelViewWrapper extends ViewWrapper {
 
         @BindView(R.id.label_list_label)
         TextView label;
+
+        @BindView(R.id.button_info_list_label)
+        ImageView button;
 
 
         public ViewHolder(View view) {
