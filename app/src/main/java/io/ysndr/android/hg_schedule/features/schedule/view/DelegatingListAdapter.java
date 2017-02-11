@@ -68,4 +68,6 @@ public class DelegatingListAdapter extends RecyclerView.Adapter {
     public int getItemCount() {
         return wrappers.size();
     }
+
+
 }

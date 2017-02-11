@@ -43,7 +43,6 @@ import timber.log.Timber;
 
 public class ScheduleListFragment extends Fragment implements ScheduleListView, ReloadIntentSource, FilterIntentSource {
 
-
     public final DialogRequestIntentSink DialogRequestSink = new DialogRequestIntentSink() {
 
         @Override
@@ -103,6 +102,7 @@ public class ScheduleListFragment extends Fragment implements ScheduleListView, 
             }
         }
     };
+
     private Observable refreshes$;
     private Subject<FilterDataTuple, FilterDataTuple> filter$;
     private Unbinder unbinder;

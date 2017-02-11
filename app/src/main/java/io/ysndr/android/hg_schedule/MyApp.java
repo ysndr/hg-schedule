@@ -25,7 +25,7 @@ public class MyApp extends Application {
         MyApp app = (MyApp) context.getApplicationContext();
         if (app.mScheduleComponent == null) {
             app.mScheduleComponent = DaggerScheduleComponent.builder()
-                    .retrofitModule(new RetrofitModule("http://192.168.1.106:3000/api/school/hg-bi-sek2/"))
+                    .retrofitModule(new RetrofitModule("http://192.168.178.48:3000/api/"))
                     .dataServiceModule(new DataServiceModule())
                     .build();
 

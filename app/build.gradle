@@ -26,13 +26,13 @@ repositories {
 }
 
 android {
-    compileSdkVersion 24
-    buildToolsVersion "24.0.1"
+    compileSdkVersion 25
+    buildToolsVersion "25.0.1"
 
     defaultConfig {
         applicationId "io.ysndr.android.hg_schedule"
         minSdkVersion 21
-        targetSdkVersion 24
+        targetSdkVersion 25
         versionCode 1
         versionName "1.0"
     }
@@ -54,8 +54,8 @@ android {
 
 ext {
     okhttpVersion = "3.0.1"
-    sdkVersion = 24
-    supportLibVersion = "24.2.1"
+    sdkVersion = 25
+    supportLibVersion = "25.1.1"
 
     epoxyVersion = "1.3.0"
 
@@ -67,7 +67,7 @@ ext {
     retrofitRxAdapterVersion = "2.0.2"
     retrofitGsonConverterVersion = "2.0.0"
 
-    rxjavaVersion = "1.1.6"
+    rxjavaVersion = "1.2.6"
     rxAndroidVersion = "1.2.1"
     rxBindingsVersion = "0.4.0"
 
@@ -85,6 +85,11 @@ dependencies {
     compile "com.android.support:design:${supportLibVersion}"
     compile "com.android.support:cardview-v7:${supportLibVersion}"
     compile "com.android.support:recyclerview-v7:${supportLibVersion}"
+    compile "com.android.support:preference-v7:${supportLibVersion}"
+    compile "com.android.support:preference-v14:${supportLibVersion}"
+
+    compile 'com.afollestad.material-dialogs:core:0.9.2.3'
+    compile 'com.afollestad.material-dialogs:commons:0.9.2.3'
 
     compile "com.airbnb.android:epoxy:${epoxyVersion}"
     apt 'com.airbnb.android:epoxy-processor:1.3.0'
@@ -114,6 +119,8 @@ dependencies {
     compile "com.google.dagger:dagger:${daggerVersion}"
     provided "javax.annotation:jsr250-api:1.0"
 
+    compile 'com.f2prateek.rx.preferences:rx-preferences:1.0.2' // will cahnge to Rxjava 2.0 later
+    //compile 'com.f2prateek.rx.preferences2:rx-preferences:2.0.0-RC1'
 
     compile "io.reactivex:rxjava:${rxjavaVersion}"
     compile "io.reactivex:rxandroid:${rxAndroidVersion}"
@@ -135,5 +142,5 @@ dependencies {
     compile "com.jakewharton.timber:timber:${timberVersion}"
 
     compile 'com.joanzapata.iconify:android-iconify-ionicons:2.2.2'
-    compile 'com.android.support.constraint:constraint-layout:1.0.0-beta4'
+    compile 'com.android.support.constraint:constraint-layout:1.0.0-beta5'
 }

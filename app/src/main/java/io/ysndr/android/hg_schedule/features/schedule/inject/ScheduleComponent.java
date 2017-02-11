@@ -4,6 +4,7 @@ import javax.inject.Singleton;
 
 import dagger.Component;
 import io.ysndr.android.hg_schedule.features.schedule.view.ScheduleListFragment;
+import io.ysndr.android.hg_schedule.features.schedule.view.SchoolSelectionPreference;
 import io.ysndr.android.hg_schedule.modules.AppModule;
 import io.ysndr.android.hg_schedule.modules.RetrofitModule;
 import io.ysndr.android.hg_schedule.ui.MainActivity;
@@ -19,6 +20,7 @@ import io.ysndr.android.hg_schedule.ui.MainActivity;
 })
 public interface ScheduleComponent {
     void inject(MainActivity activity);
-
     void inject(ScheduleListFragment fragment);
+
+    void inject(SchoolSelectionPreference preference);
 }
