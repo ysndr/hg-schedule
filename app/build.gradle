@@ -20,9 +20,11 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
 
 repositories {
+    maven { url "${System.env.HOME}/.m2/repository" }
     mavenCentral()
     jcenter()
     maven { url "https://clojars.org/repo/" }
+    maven { url "https://jitpack.io" }
 }
 
 android {
@@ -134,6 +136,9 @@ dependencies {
     compile "com.squareup.retrofit2:adapter-rxjava:${retrofitRxAdapterVersion}"
     compile "com.squareup.retrofit2:converter-gson:${retrofitGsonConverterVersion}"
 
+    // disk cache
+    compile 'com.github.pakoito:RxObservableDiskCache:2.0.0'
+
     compile "org.functionaljava:functionaljava:4.6"
     //compile "org.functionaljava:functionaljava-java8:4.6"
     compile "org.functionaljava:functionaljava-quickcheck:4.6"
@@ -143,4 +148,8 @@ dependencies {
 
     compile 'com.joanzapata.iconify:android-iconify-ionicons:2.2.2'
     compile 'com.android.support.constraint:constraint-layout:1.0.0-beta5'
+
+    compile 'de.ysndr.rxvaluestore:library:0.0.1-PRE'
+
+
 }

@@ -15,6 +15,7 @@ import io.ysndr.android.hg_schedule.features.schedule.view.SettingsActivity;
 
 public class MainActivity extends AppCompatActivity {
 
+
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 

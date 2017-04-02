@@ -33,6 +33,7 @@ import io.ysndr.android.hg_schedule.features.schedule.util.reactive.ReloadIntent
 import io.ysndr.android.hg_schedule.features.schedule.util.reactive.ScheduleDataSink;
 import io.ysndr.android.hg_schedule.features.schedule.util.reactive.ScheduleDataSource;
 import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.subjects.BehaviorSubject;
 import rx.subjects.Subject;
 import timber.log.Timber;
@@ -43,6 +44,7 @@ import timber.log.Timber;
 
 public class ScheduleListFragment extends Fragment implements ScheduleListView, ReloadIntentSource, FilterIntentSource {
 
+
     public final DialogRequestIntentSink DialogRequestSink = new DialogRequestIntentSink() {
 
         @Override
@@ -50,14 +52,11 @@ public class ScheduleListFragment extends Fragment implements ScheduleListView, 
             subscriptions.add(source.dialogRequest$()
                     .doOnNext(entry -> Toast.makeText(getContext(), "Dialog to show up here", Toast.LENGTH_SHORT).show())
                     .subscribe(entry -> {
-
-
                         Timber.d("hello" + entry.info().getClass());
 
                         ScheduleDialogBuilder
                                 .newScheduleDialog(entry.day(), entry.info())
                                 .show(getFragmentManager(), null);
-
                     }));
         }
 
@@ -78,21 +77,23 @@ public class ScheduleListFragment extends Fragment implements ScheduleListView, 
     public final ScheduleDataSink ScheduleDataSink = new ScheduleDataSink() {
         @Override
         public void bindIntent(ScheduleDataSource source) {
-            subscriptions.add(source.data$().subscribe(presentable -> {
-                setLoading(presentable.loading());
-                presentable.result().toEither(Unit.unit()).either(
-                        loading -> {
-                            Timber.d("Clear Adapter");
-                            adapter.clear();
-                            return Unit.unit();
-                        },
-                        data -> {
-                            Timber.d("Updating Adapter");
-                            adapter.setContent(wrapData(data));
-                            return Unit.unit();
-                        }
-                );
-            }));
+            subscriptions.add(source.data$()
+                    .subscribeOn(AndroidSchedulers.mainThread())
+                    .subscribe(presentable -> {
+                        setLoading(presentable.loading());
+                        presentable.result().toEither(Unit.unit()).either(
+                                loading -> {
+                                    Timber.d("Clear Adapter");
+                                    adapter.clear();
+                                    return Unit.unit();
+                                },
+                                data -> {
+                                    Timber.d("Updating Adapter");
+                                    adapter.setContent(wrapData(data));
+                                    return Unit.unit();
+                                }
+                        );
+                    }, Timber::d));
         }
 
         @Override

@@ -1,5 +1,8 @@
 package io.ysndr.android.hg_schedule.features.schedule.presenters;
 
+import com.f2prateek.rx.preferences.Preference;
+import com.f2prateek.rx.preferences.RxSharedPreferences;
+
 import javax.inject.Inject;
 
 import fj.Ord;
@@ -10,9 +13,11 @@ import fj.data.Set;
 import io.ysndr.android.hg_schedule.features.schedule.inject.CombinedDataService;
 import io.ysndr.android.hg_schedule.features.schedule.models.Entry;
 import io.ysndr.android.hg_schedule.features.schedule.models.ImmutableEntry;
+import io.ysndr.android.hg_schedule.features.schedule.models.School;
 import io.ysndr.android.hg_schedule.features.schedule.util.Filter;
 import io.ysndr.android.hg_schedule.features.schedule.util.FilterDataTuple;
 import io.ysndr.android.hg_schedule.features.schedule.util.Presentable;
+import io.ysndr.android.hg_schedule.features.schedule.util.preferences.GsonPreferenceAdapter;
 import io.ysndr.android.hg_schedule.features.schedule.util.reactive.FilterIntentSink;
 import io.ysndr.android.hg_schedule.features.schedule.util.reactive.FilterIntentSource;
 import io.ysndr.android.hg_schedule.features.schedule.util.reactive.ReloadIntentSink;
@@ -35,6 +40,8 @@ public class SchedulePresenter implements ISchedulePresenter, ScheduleDataSource
 
     @Inject
     CombinedDataService mDataService;
+    @Inject
+    RxSharedPreferences preferences;
 
     Subject<Presentable<List<Entry>>, Presentable<List<Entry>>> values$;
 
@@ -80,11 +87,12 @@ public class SchedulePresenter implements ISchedulePresenter, ScheduleDataSource
         @Override
         public void bindIntent(ReloadIntentSource source) {
             subscription = source.reloadIntent$()
-                    .map(unit -> Presentable.<List<Entry>>of(true, Option.none()))
-                    .flatMap(listPresentable -> update().startWith(listPresentable))
+                    .doOnNext(unit -> filters = filters.filter(f -> false))
+                    .flatMap(unit -> update().startWith(Presentable.of(true, Option.none())))
                     .doOnNext(listPresentable -> Timber.d("Data received: " + listPresentable.result().isSome()))
                     .doOnNext(listPresentable -> Timber.d("Data received: " + listPresentable.result().orSome(List.nil())))
-                    .doOnError(e -> Timber.e(e))
+                    .doOnError(error -> Timber.e("an error occured"))
+                    .doOnError(Timber::e)
                     .subscribe(values$::onNext, values$::onError);
         }
 
@@ -112,7 +120,17 @@ public class SchedulePresenter implements ISchedulePresenter, ScheduleDataSource
 
     public Observable<Presentable<List<Entry>>> update() {
         Timber.d("mDataService: %s", mDataService);
-        return mDataService.getData$()
+
+        Preference<School> school = preferences.getObject("school", School.empty(), new GsonPreferenceAdapter<>(School.class));
+        School schoolToLoad = school.get();
+
+        if (schoolToLoad.equals(School.empty())) {
+            return Observable.error(new Exception("No school selected"));
+        }
+
+        Timber.d("Loading data for school with id: %s", schoolToLoad.id());
+
+        return mDataService.getData$(schoolToLoad.id())
                 .map(schedule -> List.iterableList(schedule.entries()))
                 .map(entries -> entries
                         .map(entry -> ImmutableEntry.copyOf(entry).withSubstitutes(

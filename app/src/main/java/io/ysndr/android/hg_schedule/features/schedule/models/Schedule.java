@@ -5,6 +5,7 @@ import org.immutables.value.Value;
 import org.parceler.ParcelFactory;
 import org.parceler.ParcelProperty;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -12,7 +13,7 @@ import java.util.List;
  */
 @Value.Immutable
 //@Parcel
-public interface Schedule {
+public interface Schedule extends Serializable {
 
     @ParcelFactory
     static Schedule instance(List<Entry> entries, List<Teacher> teachers) {
@@ -20,7 +21,6 @@ public interface Schedule {
                 .entries(entries)
                 .teachers(teachers)
                 .build();
-
     }
 
 //    String school();
