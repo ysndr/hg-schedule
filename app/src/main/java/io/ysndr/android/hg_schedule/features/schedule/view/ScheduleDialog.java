@@ -65,7 +65,7 @@ public class ScheduleDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        View view = View.inflate(getContext(), R.layout.dialog_entry, null);
+        View view = View.inflate(getContext(), R.layout.schedule_dialog_entry, null);
         Dialog dialog = new AlertDialog.Builder(getContext())
                 .setView(view)
                 .create();

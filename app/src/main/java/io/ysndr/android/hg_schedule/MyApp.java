@@ -5,10 +5,12 @@ import android.content.Context;
 
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.IoniconsModule;
+import com.pacoworks.rxpaper.RxPaperBook;
 
 import io.ysndr.android.hg_schedule.features.schedule.inject.DaggerScheduleComponent;
 import io.ysndr.android.hg_schedule.features.schedule.inject.DataServiceModule;
 import io.ysndr.android.hg_schedule.features.schedule.inject.ScheduleComponent;
+import io.ysndr.android.hg_schedule.modules.AppModule;
 import io.ysndr.android.hg_schedule.modules.RetrofitModule;
 import io.ysndr.android.hg_schedule.ui.AppComponent;
 import io.ysndr.android.hg_schedule.ui.DaggerAppComponent;
@@ -25,8 +27,9 @@ public class MyApp extends Application {
         MyApp app = (MyApp) context.getApplicationContext();
         if (app.mScheduleComponent == null) {
             app.mScheduleComponent = DaggerScheduleComponent.builder()
-                    .retrofitModule(new RetrofitModule("http://192.168.1.106:3000/api/school/hg-bi-sek2/"))
+                    .retrofitModule(new RetrofitModule("http://192.168.1.106:3000/api/"))
                     .dataServiceModule(new DataServiceModule())
+                    .appModule(new AppModule((MyApp) context.getApplicationContext()))
                     .build();
 
         }
@@ -47,7 +50,7 @@ public class MyApp extends Application {
 
         Iconify.with(new IoniconsModule());
         Timber.plant(new Timber.DebugTree());
-
+        RxPaperBook.init(this);
     }
 
 }

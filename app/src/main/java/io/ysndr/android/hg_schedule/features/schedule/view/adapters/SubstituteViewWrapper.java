@@ -1,4 +1,4 @@
-package io.ysndr.android.hg_schedule.features.schedule.view;
+package io.ysndr.android.hg_schedule.features.schedule.view.adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -8,7 +8,6 @@ import android.widget.TextView;
 import org.immutables.value.Value;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import io.ysndr.android.hg_schedule.R;
 import io.ysndr.android.hg_schedule.features.schedule.models.Substitute;
 
@@ -41,7 +40,7 @@ public abstract class SubstituteViewWrapper extends ViewWrapper {
         return new TypeMapper();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends ViewWrapper.ViewHolder {
 
         @BindView(R.id.text_title_card_schedule_item)
         TextView title;
@@ -59,9 +58,8 @@ public abstract class SubstituteViewWrapper extends ViewWrapper {
         @BindView(R.id.text_room_card_schedule_item)
         TextView room;
 
-        public ViewHolder(View view) {
+        ViewHolder(View view) {
             super(view);
-            ButterKnife.bind(this, view);
         }
 
     }

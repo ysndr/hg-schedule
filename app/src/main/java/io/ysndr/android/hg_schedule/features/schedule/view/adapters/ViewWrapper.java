@@ -1,9 +1,11 @@
-package io.ysndr.android.hg_schedule.features.schedule.view;
+package io.ysndr.android.hg_schedule.features.schedule.view.adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import butterknife.ButterKnife;
 
 /**
  * Created by yannik on 12/19/16.
@@ -38,6 +40,15 @@ public abstract class ViewWrapper {
         public abstract int TYPE();
 
         public abstract RecyclerView.ViewHolder createViewHolder(View view);
+
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+
+        public ViewHolder(View view) {
+            super(view);
+            ButterKnife.bind(this, view);
+        }
 
     }
 

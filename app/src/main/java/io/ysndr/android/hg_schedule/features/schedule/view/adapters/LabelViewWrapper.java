@@ -1,4 +1,4 @@
-package io.ysndr.android.hg_schedule.features.schedule.view;
+package io.ysndr.android.hg_schedule.features.schedule.view.adapters;
 
 
 import android.support.v7.widget.RecyclerView;
@@ -12,7 +12,6 @@ import com.jakewharton.rxbinding.view.RxView;
 import org.immutables.value.Value;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import io.ysndr.android.hg_schedule.R;
 import io.ysndr.android.hg_schedule.features.schedule.models.Entry;
 import rx.Observable;
@@ -74,7 +73,7 @@ public abstract class LabelViewWrapper extends ViewWrapper {
     }
 
     /* ---------------------------------------------------- */
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends ViewWrapper.ViewHolder {
 
         @BindView(R.id.label_list_label)
         TextView label;
@@ -82,11 +81,10 @@ public abstract class LabelViewWrapper extends ViewWrapper {
         @BindView(R.id.button_info_list_label)
         ImageView button;
 
-
-        public ViewHolder(View view) {
+        ViewHolder(View view) {
             super(view);
-            ButterKnife.bind(this, view);
         }
+
     }
 
     public static class TypeMapper extends ViewWrapper.TypeMapper {
