@@ -32,6 +32,10 @@ import io.ysndr.android.hg_schedule.features.schedule.util.reactive.FilterIntent
 import io.ysndr.android.hg_schedule.features.schedule.util.reactive.ReloadIntentSource;
 import io.ysndr.android.hg_schedule.features.schedule.util.reactive.ScheduleDataSink;
 import io.ysndr.android.hg_schedule.features.schedule.util.reactive.ScheduleDataSource;
+import io.ysndr.android.hg_schedule.features.schedule.view.adapters.LabelViewWrapper;
+import io.ysndr.android.hg_schedule.features.schedule.view.adapters.ListAdapter;
+import io.ysndr.android.hg_schedule.features.schedule.view.adapters.SubstituteViewWrapper;
+import io.ysndr.android.hg_schedule.features.schedule.view.adapters.ViewWrapper;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.subjects.BehaviorSubject;

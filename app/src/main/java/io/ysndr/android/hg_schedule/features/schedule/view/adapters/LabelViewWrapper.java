@@ -1,4 +1,4 @@
-package io.ysndr.android.hg_schedule.features.schedule.view;
+package io.ysndr.android.hg_schedule.features.schedule.view.adapters;
 
 
 import android.support.v7.widget.RecyclerView;
