@@ -1,12 +1,9 @@
 package io.ysndr.android.hg_schedule.features.schedule.middleware;
 
 
-import com.pacoworks.rxtuples.RxTuples;
-
 import org.immutables.value.Value;
 import org.javatuples.Pair;
 import org.javatuples.Triplet;
-import org.javatuples.Tuple;
 
 import fj.Equal;
 import fj.Ord;
@@ -22,7 +19,7 @@ import rx.functions.Func1;
  * Created by yannik on 4/3/17.
  */
 
-public class FilterMiddleware {
+public class TransformationMiddleware {
     public Observable.Transformer<Pair<Set<Transformation<Schedule>>, Schedule>, Schedule> applyTransformations() {
         return source -> source
                 .map(pair -> pair.getValue0().toList()
