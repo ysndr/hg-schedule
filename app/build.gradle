@@ -19,6 +19,8 @@ plugins {
 apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
 
+
+
 repositories {
     maven { url "${System.env.HOME}/.m2/repository" }
     mavenCentral()
@@ -150,6 +152,7 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.0-beta5'
 
     compile 'de.ysndr.rxvaluestore:library:0.0.1-PRE'
+    compile 'de.ysndr.rxvaluestore:android:0.0.1-PRE'
 
 
 }
