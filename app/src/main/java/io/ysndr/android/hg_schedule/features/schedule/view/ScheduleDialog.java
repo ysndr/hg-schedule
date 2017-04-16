@@ -14,6 +14,7 @@ import com.hannesdorfmann.fragmentargs.annotation.Arg;
 import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs;
 import com.jakewharton.rxbinding.view.RxView;
 
+import java.text.DateFormat;
 import java.util.Date;
 
 import butterknife.BindView;
@@ -51,6 +52,9 @@ public class ScheduleDialog extends DialogFragment {
     @BindView(R.id.text_info_dialog_entry)
     TextView info;
 
+    @BindView(R.id.label_updated_dialog_entry)
+    TextView updated;
+
     @BindView(R.id.button_close_dialog_entry)
     Button close;
 
@@ -78,6 +82,7 @@ public class ScheduleDialog extends DialogFragment {
         absentTeachers.setText(dayInfo.absentTeachers().toString());
         affectedRooms.setText(dayInfo.affectedRooms().toString());
         info.setText(dayInfo.info().toString());
+        updated.setText(DateFormat.getInstance().format(date));
 
         RxView.clicks(close).map(_void_ -> Unit.unit())
                 .subscribe(unit -> dialog.dismiss());
