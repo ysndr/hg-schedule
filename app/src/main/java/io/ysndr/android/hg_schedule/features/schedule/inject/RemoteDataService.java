@@ -4,6 +4,7 @@ import java.util.List;
 
 import io.ysndr.android.hg_schedule.features.schedule.models.Schedule;
 import io.ysndr.android.hg_schedule.features.schedule.models.School;
+import retrofit2.Response;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Path;
@@ -17,5 +18,5 @@ public interface RemoteDataService {
     Observable<Schedule> getScheduleEntries(@Path("schoolId") String schoolId, @Header("Authorization") String auth);
 
     @GET("schools")
-    Observable<List<School>> getSchools();
+    Observable<Response<List<School>>> getSchools();
 }

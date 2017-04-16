@@ -36,6 +36,7 @@ import io.ysndr.android.hg_schedule.features.schedule.presenters.SchoolPresenter
 import io.ysndr.android.hg_schedule.features.schedule.util.preferences.GsonPreferenceAdapter;
 import io.ysndr.android.hg_schedule.features.schedule.util.reactive.ReloadIntentSource;
 import io.ysndr.android.hg_schedule.features.schedule.view.adapters.ClickListAdapter;
+import io.ysndr.android.hg_schedule.features.schedule.view.adapters.ImmutableSchoolLabelViewWrapper;
 import io.ysndr.android.hg_schedule.features.schedule.view.adapters.SchoolLabelViewWrapper;
 import io.ysndr.android.hg_schedule.features.schedule.view.adapters.ViewWrapper;
 import rx.Observable;
@@ -125,25 +126,27 @@ public class SchoolSelectionPreference extends MaterialDialogPreference {
 
         mPresenter.data$()
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread()).subscribe(
-                data -> {
-                    refreshLayout.setRefreshing(data.loading());
-                    data.result().toEither(Unit.unit()).either(
-                            loading -> {
-                                Timber.d("Clear Adapter");
-                                adapter.clear();
-                                return Unit.unit();
-                            },
-                            content -> {
-                                Timber.d("Updating Adapter");
-                                adapter.setContent(wrap(content));
-                                adapter.notifyDataSetChanged();
-                                return Unit.unit();
-                            });
-                });
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        data -> {
+                            refreshLayout.setRefreshing(data.loading());
+                            data.result().toEither(Unit.unit()).either(
+                                    loading -> {
+                                        Timber.d("Clear Adapter");
+                                        adapter.clear();
+                                        return Unit.unit();
+                                    },
+                                    content -> {
+                                        Timber.d("Updating Adapter");
+                                        adapter.setContent(wrap(content));
+                                        adapter.notifyDataSetChanged();
+                                        return Unit.unit();
+                                    });
+                        }
+                );
 
         close$ = RxView.clicks(close).map(_void_ -> Option.none());
-        value$ = adapter.getClick().map(Option::some).observeOn(AndroidSchedulers.mainThread());
+        value$ = adapter.getClick().map(Option::some).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io());
 
         close$.mergeWith(value$.filter(option -> option.isSome()))
                 .take(1)

@@ -33,7 +33,15 @@ public class SchoolPresenter implements SchoolDataSource {
 
         Observable<Presentable<List<School>>> update() {
             return mDataService.getSchools$()
-                    .map(schools -> Presentable.of(false, Option.some(schools)));
+                    .map(res -> {
+                        if (!res.isSuccessful()) {
+                            Timber.e("Response Error: `%s`", res.message());
+                        }
+
+                        return res.isSuccessful()
+                                ? Presentable.of(false, Option.some(res.body()))
+                                : Presentable.of(false, Option.none());
+                    });
         }
 
         @Override
