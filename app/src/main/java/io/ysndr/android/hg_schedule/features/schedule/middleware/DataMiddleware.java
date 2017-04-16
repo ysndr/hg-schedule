@@ -1,6 +1,7 @@
 package io.ysndr.android.hg_schedule.features.schedule.middleware;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import io.reactivecache.ReactiveCache;
 import io.rx_cache.RxCacheException;
@@ -44,7 +45,7 @@ public class DataMiddleware {
 
     private static Observable<Schedule> remote$(AuthMiddleware.Login login, RemoteDataService remote, ReactiveCache cache) {
         return remote.getScheduleEntries(login.school().id(), login.auth())
-                .compose(cache.<Schedule>provider().withKey(login.school().id()).replace())
+                .compose(cache.<Schedule>provider().lifeCache(5, TimeUnit.MINUTES).withKey(login.school().id()).replace())
                 .doOnNext(__ -> Timber.d("from net"))
                 .doOnNext(__ -> cache$(login, cache).count().subscribe(i -> Timber.d("stored: " + ((i == 0) ? "false" : "true"))));
     }
