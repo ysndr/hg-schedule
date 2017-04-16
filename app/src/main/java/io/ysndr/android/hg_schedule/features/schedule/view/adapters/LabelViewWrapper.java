@@ -15,7 +15,7 @@ import butterknife.BindView;
 import io.ysndr.android.hg_schedule.R;
 import io.ysndr.android.hg_schedule.features.schedule.models.Entry;
 import rx.Observable;
-import rx.subjects.PublishSubject;
+import rx.subjects.BehaviorSubject;
 import rx.subjects.Subject;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
@@ -28,8 +28,8 @@ import timber.log.Timber;
 public abstract class LabelViewWrapper extends ViewWrapper {
 
     private final CompositeSubscription subscriptions = new CompositeSubscription();
-    private final Subject<Entry, Entry> filter$ = PublishSubject.create();
-    private final Subject<Entry, Entry> dialogRequest$ = PublishSubject.create();
+    private final Subject<Entry, Entry> filter$ = BehaviorSubject.create();
+    private final Subject<Entry, Entry> dialogRequest$ = BehaviorSubject.create();
 
     public abstract Entry entry();
 

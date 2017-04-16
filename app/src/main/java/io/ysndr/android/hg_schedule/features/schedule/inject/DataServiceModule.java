@@ -4,22 +4,17 @@ import android.app.Application;
 import android.support.v7.preference.PreferenceManager;
 
 import com.f2prateek.rx.preferences.RxSharedPreferences;
-import com.google.common.base.Optional;
-import com.pacoworks.rxobservablediskcache.RxObservableDiskCache;
-import com.pacoworks.rxobservablediskcache.policy.TimeAndVersionPolicy;
-import com.pacoworks.rxpaper.RxPaperBook;
-
-import java.io.Serializable;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import de.ysndr.rxvaluestore.RxCacheStore;
-import io.ysndr.android.hg_schedule.BuildConfig;
-import io.ysndr.android.hg_schedule.features.schedule.models.Schedule;
+import io.reactivecache.ReactiveCache;
+import io.victoralbertos.jolyglot.GsonSpeaker;
+import io.ysndr.android.hg_schedule.features.schedule.models.GsonAdaptersModels;
 import retrofit2.Retrofit;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by yannik on 8/22/16.
@@ -38,20 +33,18 @@ public class DataServiceModule {
         return RxSharedPreferences.create(PreferenceManager.getDefaultSharedPreferences(app));
     }
 
-
     @Provides
     @Singleton
-    <T extends Serializable> RxObservableDiskCache<T, ?> provideDiskCache() {
-        return RxObservableDiskCache.create(RxPaperBook.with(".cache", Schedulers.io()),
-                TimeAndVersionPolicy.create(BuildConfig.VERSION_CODE),
-                TimeAndVersionPolicy.validate(1000 * 60 * 5, BuildConfig.VERSION_CODE)
-        );
-    }
+    ReactiveCache provideReactiveCache(Application app) {
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        Gson gson = gsonBuilder
+                .registerTypeAdapterFactory(new GsonAdaptersModels())
+                .create();
 
-    @Provides
-    @Singleton
-    RxCacheStore<Schedule, ?> provideCacheStore(RxObservableDiskCache<Schedule, ?> cache) {
-        return RxCacheStore.of("overridden", cache, Optional.absent());
+        ReactiveCache reactiveCache = new ReactiveCache.Builder()
+                .using(app.getCacheDir(), new GsonSpeaker(gson));
+
+        return reactiveCache;
     }
 
 

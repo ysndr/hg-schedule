@@ -5,7 +5,7 @@ buildscript {
     }
     dependencies {
         // replace with the current version of the Android plugin
-        classpath 'com.android.tools.build:gradle:2.2.3'
+        classpath 'com.android.tools.build:gradle:2.3.1'
         // the latest version of the android-apt plugin
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.6'
     }
@@ -101,10 +101,12 @@ dependencies {
     provided "org.projectlombok:lombok:${lombokVersion}"
     apt "org.projectlombok:lombok:${lombokVersion}"
 
-    apt "org.immutables:value:2.4.1" // for annotation processor
-    provided "org.immutables:value:2.4.1:annotations" // annotation-only artifact
-    provided "org.immutables:builder:2.4.1" // there are only annotations anyway
-    provided "org.immutables:gson:2.4.1:annotations" // annotation-only artifact
+    apt "org.immutables:value:2.4.4" // for annotation processor
+    provided "org.immutables:value:2.4.4:annotations" // annotation-only artifact
+    provided "org.immutables:builder:2.4.4" // there are only annotations anyway
+    provided "org.immutables:gson:2.4.4:annotations" // annotation-only artifact
+    provided "org.immutables:serial:2.4.4"
+
 
     compile "com.jakewharton:butterknife:${butterknifeVersion}"
     apt "com.jakewharton:butterknife-compiler:${butterknifeVersion}"
@@ -151,8 +153,10 @@ dependencies {
     compile 'com.joanzapata.iconify:android-iconify-ionicons:2.2.2'
     compile 'com.android.support.constraint:constraint-layout:1.0.0-beta5'
 
-    compile 'de.ysndr.rxvaluestore:library:0.0.1-PRE'
-    compile 'de.ysndr.rxvaluestore:android:0.0.1-PRE'
+    compile 'de.ysndr.rxvaluestore:library:0.0.1-PRE-01'
+    compile 'de.ysndr.rxvaluestore:android:0.0.1-PRE-01'
+    compile 'com.github.VictorAlbertos:ReactiveCache:0.0.7-1.x'
+    compile 'com.github.VictorAlbertos.Jolyglot:gson:0.0.3'
 
 
 }

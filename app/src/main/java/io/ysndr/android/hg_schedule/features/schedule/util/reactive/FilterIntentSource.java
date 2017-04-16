@@ -1,6 +1,6 @@
 package io.ysndr.android.hg_schedule.features.schedule.util.reactive;
 
-import io.ysndr.android.hg_schedule.features.schedule.util.FilterDataTuple;
+import io.ysndr.android.hg_schedule.features.schedule.models.Entry;
 import rx.Observable;
 
 /**
@@ -8,5 +8,5 @@ import rx.Observable;
  */
 
 public interface FilterIntentSource extends Source {
-    Observable<FilterDataTuple> filterIntent$();
+    Observable<Entry> filterIntent$();
 }

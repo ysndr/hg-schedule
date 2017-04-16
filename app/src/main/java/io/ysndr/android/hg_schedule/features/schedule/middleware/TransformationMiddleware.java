@@ -5,15 +5,16 @@ import org.immutables.value.Value;
 import org.javatuples.Pair;
 import org.javatuples.Triplet;
 
-import fj.Equal;
 import fj.Ord;
 import fj.data.List;
 import fj.data.Set;
 import io.ysndr.android.hg_schedule.features.schedule.models.Entry;
+import io.ysndr.android.hg_schedule.features.schedule.models.ImmutableEntry;
 import io.ysndr.android.hg_schedule.features.schedule.models.ImmutableSchedule;
 import io.ysndr.android.hg_schedule.features.schedule.models.Schedule;
 import rx.Observable;
 import rx.functions.Func1;
+import timber.log.Timber;
 
 /**
  * Created by yannik on 4/3/17.
@@ -29,16 +30,20 @@ public class TransformationMiddleware {
     }
 
 
-    public Observable.Transformer<Schedule, Pair<Set<Transformation<Schedule>>, Schedule>> appendEmptyTransformations() {
+    public Observable.Transformer<Schedule, Pair<Set<Transformation<Schedule>>, Schedule>> prependEmptyTransformations() {
         return source -> source.map(schedule ->
                 Pair.with(Set.empty(Ord.hashEqualsOrd()), schedule));
     }
 
 
-    public Observable.Transformer<Triplet<Transformation<?>, Set<Transformation<?>>, ?>, Pair<Set<Transformation<?>>, ?>> toggleTransformation() {
+    public <O> Observable.Transformer<Triplet<Transformation<O>, Set<Transformation<O>>, O>, Pair<Set<Transformation<O>>, O>> toggleTransformation() {
 
         return source -> source.map(triplet -> {
-            Set<Transformation<?>> set = triplet.getValue1().member(triplet.getValue0())
+            Timber.d("toggling `%s` %s",
+                    triplet.getValue0(),
+                    triplet.getValue1().member(triplet.getValue0()) ? "off" : "on");
+
+            Set<Transformation<O>> set = triplet.getValue1().member(triplet.getValue0())
                     ? triplet.getValue1().delete(triplet.getValue0())
                     : triplet.getValue1().insert(triplet.getValue0());
 
@@ -46,17 +51,19 @@ public class TransformationMiddleware {
         });
     }
 
-    Transformation<Schedule> filterEntry(Entry entry) {
+    public Transformation<Schedule> filterEntry(Entry entry) {
         return ImmutableTransformation.of(
                 "entry_filter_" + entry.id(),
                 schedule -> ImmutableSchedule.copyOf(schedule)
                         .withEntries(List.iterableList(schedule.entries())
-                                .delete(entry, Equal.anyEqual())));
+                                .map(lentry -> lentry.equals(entry)
+                                        ? ImmutableEntry.copyOf(lentry).withSubstitutes()
+                                        : lentry)));
     }
 
     @Value.Immutable
     @Value.Style(allParameters = true)
-    interface Transformation<T> {
+    public interface Transformation<T> {
         String _seed();
 
         @Value.Auxiliary

@@ -2,45 +2,51 @@ package io.ysndr.android.hg_schedule.features.schedule.middleware;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
-import de.ysndr.rxvaluestore.RxCacheStore;
+import io.reactivecache.ReactiveCache;
+import io.rx_cache.RxCacheException;
 import io.ysndr.android.hg_schedule.features.schedule.inject.RemoteDataService;
 import io.ysndr.android.hg_schedule.features.schedule.models.Schedule;
 import io.ysndr.android.hg_schedule.features.schedule.models.School;
+import retrofit2.Response;
 import rx.Observable;
+import timber.log.Timber;
 
 /**
  * Created by yannik on 4/8/17.
  */
 
+
 public class DataMiddleware {
 
-    @Inject
-    RemoteDataService remote;
-    @Inject
-    RxCacheStore<Schedule, ?> cache;
+    public static Observable.Transformer<AuthMiddleware.Login, Schedule> schedule(RemoteDataService remote, ReactiveCache cache) {
+        return source -> source
+                .doOnNext(__ -> Timber.d("about to load"))
+                .flatMap(login -> Observable.concat(cache$(login, cache), remote$(login, remote, cache)).take(1)
 
-    public Observable.Transformer<AuthMiddleware.Login, Schedule> schedule() {
-        return source -> source.flatMap(login -> Observable
-                .concat(cache$(login), remote$(login)).first());
+//                                .compose(cache.withKey(login.school().id()).update())
+                )
+                .doOnNext(__ -> Timber.d("loaded"));
     }
 
-    public Observable.Transformer<?, List<School>> schools() {
+    public static Observable.Transformer<?, Response<List<School>>> schools(RemoteDataService remote) {
         return source -> source.flatMap(__ -> remote.getSchools());
     }
 
 
-    private Observable<Schedule> cache$(AuthMiddleware.Login login) {
-        return cache.withKey(login.school().id())
-                .observable().first()
-                .onErrorResumeNext(Observable.<Schedule>empty());
+    private static Observable<Schedule> cache$(AuthMiddleware.Login login, ReactiveCache cache) {
+        return cache.<Schedule>provider().withKey(login.school().id()).read()
+                .doOnNext(__ -> Timber.d("from cache"))
+                .onErrorResumeNext(error ->
+                        (error instanceof RxCacheException)
+                                ? Observable.empty()
+                                : Observable.error(error));
     }
 
-    private Observable<Schedule> remote$(AuthMiddleware.Login login) {
-        return remote.getScheduleEntries(
-                login.school().id(), login.auth())
-                .compose(cache.withKey(login.school().id()).update());
+    private static Observable<Schedule> remote$(AuthMiddleware.Login login, RemoteDataService remote, ReactiveCache cache) {
+        return remote.getScheduleEntries(login.school().id(), login.auth())
+                .compose(cache.<Schedule>provider().withKey(login.school().id()).replace())
+                .doOnNext(__ -> Timber.d("from net"))
+                .doOnNext(__ -> cache$(login, cache).count().subscribe(i -> Timber.d("stored: " + ((i == 0) ? "false" : "true"))));
     }
 
 }
