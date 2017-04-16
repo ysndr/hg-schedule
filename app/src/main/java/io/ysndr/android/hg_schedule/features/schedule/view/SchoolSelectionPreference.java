@@ -33,6 +33,7 @@ import io.ysndr.android.hg_schedule.R;
 import io.ysndr.android.hg_schedule.features.schedule.models.GsonAdaptersModels;
 import io.ysndr.android.hg_schedule.features.schedule.models.School;
 import io.ysndr.android.hg_schedule.features.schedule.presenters.SchoolPresenter;
+import io.ysndr.android.hg_schedule.features.schedule.util.Presentable;
 import io.ysndr.android.hg_schedule.features.schedule.util.preferences.GsonPreferenceAdapter;
 import io.ysndr.android.hg_schedule.features.schedule.util.reactive.ReloadIntentSource;
 import io.ysndr.android.hg_schedule.features.schedule.view.adapters.ClickListAdapter;
@@ -127,6 +128,8 @@ public class SchoolSelectionPreference extends MaterialDialogPreference {
         mPresenter.data$()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnError(error -> Toast.makeText(getContext(), "An error occured", Toast.LENGTH_SHORT).show())
+                .onErrorResumeNext(error -> Observable.just(Presentable.of(false, Option.none())))
                 .subscribe(
                         data -> {
                             refreshLayout.setRefreshing(data.loading());
