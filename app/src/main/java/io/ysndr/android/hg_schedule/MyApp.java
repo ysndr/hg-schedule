@@ -3,9 +3,6 @@ package io.ysndr.android.hg_schedule;
 import android.app.Application;
 import android.content.Context;
 
-import com.joanzapata.iconify.Iconify;
-import com.joanzapata.iconify.fonts.IoniconsModule;
-
 import io.ysndr.android.hg_schedule.features.schedule.inject.DaggerScheduleComponent;
 import io.ysndr.android.hg_schedule.features.schedule.inject.DataServiceModule;
 import io.ysndr.android.hg_schedule.features.schedule.inject.ScheduleComponent;
@@ -14,6 +11,9 @@ import io.ysndr.android.hg_schedule.modules.RetrofitModule;
 import io.ysndr.android.hg_schedule.ui.AppComponent;
 import io.ysndr.android.hg_schedule.ui.DaggerAppComponent;
 import timber.log.Timber;
+
+/*import com.joanzapata.iconify.Iconify;
+import com.joanzapata.iconify.fonts.IoniconsModule;*/
 
 /**
  * Created by yannik on 10/8/16.
@@ -47,7 +47,7 @@ public class MyApp extends Application {
     public void onCreate() {
         super.onCreate();
 
-        Iconify.with(new IoniconsModule());
+//        Iconify.with(new IoniconsModule());
         Timber.plant(new Timber.DebugTree());
 //        RxPaperBook.init(this);
     }
