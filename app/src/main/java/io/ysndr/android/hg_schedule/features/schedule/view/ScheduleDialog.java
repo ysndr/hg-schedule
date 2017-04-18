@@ -52,7 +52,7 @@ public class ScheduleDialog extends DialogFragment {
     @BindView(R.id.text_info_dialog_entry)
     TextView info;
 
-    @BindView(R.id.label_updated_dialog_entry)
+    @BindView(R.id.text_updated_dialog_entry)
     TextView updated;
 
     @BindView(R.id.button_close_dialog_entry)
