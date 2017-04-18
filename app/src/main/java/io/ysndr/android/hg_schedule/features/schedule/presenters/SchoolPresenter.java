@@ -51,7 +51,7 @@ public class SchoolPresenter implements SchoolDataSource {
                     .flatMap(listPresentable -> update().startWith(listPresentable))
                     .doOnNext(listPresentable -> Timber.d("Data received: " + listPresentable.result().isSome()))
                     .doOnNext(listPresentable -> Timber.d("Data received: " + listPresentable.result().orSome(new ArrayList<>())))
-                    .doOnError(e -> Timber.e(e))
+                    .doOnError(e -> Timber.e("an error occured: %s", e))
                     .subscribe(values$::onNext, values$::onError));
         }
 

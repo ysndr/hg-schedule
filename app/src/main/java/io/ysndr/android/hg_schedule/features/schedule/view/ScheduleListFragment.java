@@ -1,6 +1,7 @@
 package io.ysndr.android.hg_schedule.features.schedule.view;
 
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -181,7 +182,10 @@ public class ScheduleListFragment extends Fragment {
                 .compose(new TransformationMiddleware().applyTransformations())
                 .map(schedule -> wrapData(List.iterableList(schedule.entries())))
                 .doOnNext(adapter::setContent)
-                .doOnError(this::showError)
+                .doOnError(error -> {
+                    this.showError(error);
+                    this.setLoading(false);
+                })
                 .map(__ -> true)
                 .onErrorReturn(e -> false);
     }
@@ -199,6 +203,7 @@ public class ScheduleListFragment extends Fragment {
     }
 
 
+    @SuppressLint("ThrowableNotAtBeginning")
     public void showError(Throwable t) {
         String message = t.getMessage();
         Toast.makeText(
@@ -207,7 +212,7 @@ public class ScheduleListFragment extends Fragment {
                 Toast.LENGTH_SHORT
         ).show();
 
-        Timber.e(t);
+        Timber.e("an error occured: %s", t);
 
     }
 
