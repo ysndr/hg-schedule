@@ -5,7 +5,6 @@ import android.content.Context;
 
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.IoniconsModule;
-import com.pacoworks.rxpaper.RxPaperBook;
 
 import io.ysndr.android.hg_schedule.features.schedule.inject.DaggerScheduleComponent;
 import io.ysndr.android.hg_schedule.features.schedule.inject.DataServiceModule;
@@ -50,7 +49,7 @@ public class MyApp extends Application {
 
         Iconify.with(new IoniconsModule());
         Timber.plant(new Timber.DebugTree());
-        RxPaperBook.init(this);
+//        RxPaperBook.init(this);
     }
 
 }
