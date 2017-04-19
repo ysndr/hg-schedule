@@ -20,6 +20,8 @@ import com.pacoworks.rxtuples.RxTuples;
 
 import org.javatuples.Pair;
 
+import java.util.concurrent.TimeUnit;
+
 import javax.inject.Inject;
 
 import butterknife.BindView;
@@ -157,11 +159,16 @@ public class ScheduleListFragment extends Fragment {
                         .subscribe(),
 
                 adapter.dialogRequest$()
+                        .subscribeOn(Schedulers.computation())
+                        .throttleFirst(500, TimeUnit.MILLISECONDS)
                         .doOnNext(entry -> Timber.d("Showing information about entry `%s`", entry.id()))
-                        .subscribe(entry -> {
-                            ScheduleDialogBuilder
-                                    .newScheduleDialog(entry.day(), entry.info())
-                                    .show(getFragmentManager(), null);
+                        .map(entry -> ScheduleDialogBuilder
+                                .newScheduleDialog(entry.day(), entry.info())
+                        )
+
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(dialog -> {
+                            dialog.show(getFragmentManager(), null);
                         })
         );
 

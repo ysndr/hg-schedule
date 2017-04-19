@@ -4,11 +4,11 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
-import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.hannesdorfmann.fragmentargs.FragmentArgs;
 import com.hannesdorfmann.fragmentargs.annotation.Arg;
 import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs;
@@ -25,6 +25,7 @@ import io.ysndr.android.hg_schedule.R;
 import io.ysndr.android.hg_schedule.features.schedule.models.DayInfo;
 import io.ysndr.android.hg_schedule.features.schedule.util.DateArgsBundler;
 import io.ysndr.android.hg_schedule.features.schedule.util.ParcelerBundlers;
+import timber.log.Timber;
 
 /**
  * Created by yannik on 1/3/17.
@@ -32,7 +33,6 @@ import io.ysndr.android.hg_schedule.features.schedule.util.ParcelerBundlers;
 
 @FragmentWithArgs
 public class ScheduleDialog extends DialogFragment {
-
 
     @Arg(bundler = ParcelerBundlers.DayInfoBundler.class)
     DayInfo dayInfo;
@@ -69,10 +69,14 @@ public class ScheduleDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+
+        Timber.d("thread: %s", Thread.currentThread().getName());
+
         View view = View.inflate(getContext(), R.layout.schedule_dialog_entry, null);
-        Dialog dialog = new AlertDialog.Builder(getContext())
-                .setView(view)
-                .create();
+        Dialog dialog = new MaterialDialog.Builder(getContext())
+                .customView(view, false)
+                .build();
+                
 
         FragmentArgs.inject(this);
 
