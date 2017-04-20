@@ -21,12 +21,14 @@ public abstract class DayInfo {
     public static ImmutableDayInfo newInstance(List<String> absentTeachers,
                                                List<String> affectedClasses,
                                                List<String> affectedRooms,
+                                               List<String> blockedRooms,
                                                List<String> info) {
 
         return ImmutableDayInfo.builder()
                 .absentTeachers(absentTeachers)
                 .affectedClasses(affectedClasses)
                 .affectedRooms(affectedRooms)
+                .blockedRooms(blockedRooms)
                 .info(info)
                 .build();
 
@@ -40,6 +42,9 @@ public abstract class DayInfo {
 
     @ParcelProperty("affectedRooms")
     public abstract List<String> affectedRooms();
+
+    @ParcelProperty("blockedRooms")
+    public abstract List<String> blockedRooms();
 
     @ParcelProperty("info")
     public abstract List<String> info();

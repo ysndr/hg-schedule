@@ -1,7 +1,6 @@
 package io.ysndr.android.hg_schedule.features.schedule.view.adapters;
 
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
@@ -28,8 +27,8 @@ public abstract class SubstituteViewWrapper extends ViewWrapper {
         ViewHolder holder = (ViewHolder) viewHolder;
         holder.absent.setText(substitute().absent());
         holder.substitute.setText(substitute().substitute());
-        holder.classes.setText(TextUtils.join(", ", substitute().affectedClasses()));
-        holder.lessons.setText(substitute().time());
+        holder.classes.setText(substitute().classes());
+        holder.lessons.setText(substitute().hour());
         holder.description.setText(substitute().description());
         holder.room.setText(substitute().room());
         holder.title.setText(substitute().absent());

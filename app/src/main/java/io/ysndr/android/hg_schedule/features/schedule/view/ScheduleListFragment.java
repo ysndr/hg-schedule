@@ -14,7 +14,6 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.f2prateek.rx.preferences.RxSharedPreferences;
-import com.google.common.base.Optional;
 import com.jakewharton.rxbinding.support.v4.widget.RxSwipeRefreshLayout;
 import com.pacoworks.rxtuples.RxTuples;
 
@@ -91,7 +90,7 @@ public class ScheduleListFragment extends Fragment {
         MyApp.getScheduleComponent(this.getContext()).inject(this);
 
         subscriptions = new CompositeSubscription();
-        state = MemoryStore.of(Optional.of(Presentable.of(true, Option.none())));
+        state = MemoryStore.of(Presentable.of(true, Option.none()));
     }
 
     @Override
@@ -163,7 +162,7 @@ public class ScheduleListFragment extends Fragment {
                         .throttleFirst(500, TimeUnit.MILLISECONDS)
                         .doOnNext(entry -> Timber.d("Showing information about entry `%s`", entry.id()))
                         .map(entry -> ScheduleDialogBuilder
-                                .newScheduleDialog(entry.day(), entry.info())
+                                .newScheduleDialog(entry.date().day(), entry.info())
                         )
 
                         .observeOn(AndroidSchedulers.mainThread())

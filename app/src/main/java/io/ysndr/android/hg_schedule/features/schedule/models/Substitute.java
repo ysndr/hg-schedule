@@ -3,8 +3,6 @@ package io.ysndr.android.hg_schedule.features.schedule.models;
 
 import org.immutables.value.Value;
 
-import java.util.List;
-
 
 /**
  * Created by yannik on 8/15/16.
@@ -12,9 +10,9 @@ import java.util.List;
 @Value.Immutable
 public interface Substitute {
 
-    List<String> affectedClasses();
+    String classes();
 
-    String time();
+    String hour();
 
     String absent(); // absent teacher
 
@@ -22,11 +20,11 @@ public interface Substitute {
 
     String room();
 
-    String info();
+    String text();
 
     String description();
 
-    String cancelled();
+    String canceled();
 
     String renew();
 }

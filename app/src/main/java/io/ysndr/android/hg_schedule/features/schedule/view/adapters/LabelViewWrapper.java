@@ -2,7 +2,6 @@ package io.ysndr.android.hg_schedule.features.schedule.view.adapters;
 
 
 import android.support.v7.widget.RecyclerView;
-import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -10,6 +9,8 @@ import android.widget.TextView;
 import com.jakewharton.rxbinding.view.RxView;
 
 import org.immutables.value.Value;
+
+import java.text.DateFormat;
 
 import butterknife.BindView;
 import io.ysndr.android.hg_schedule.R;
@@ -48,7 +49,7 @@ public abstract class LabelViewWrapper extends ViewWrapper {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder) {
         ViewHolder holder = (ViewHolder) viewHolder;
-        holder.label.setText(DateFormat.format("yyyy MM dd", entry().day()));
+        holder.label.setText(DateFormat.getInstance().format(entry().date().day()));
 
         subscriptions.add(RxView.clicks(holder.label)
                 .doOnNext(_void_ -> Timber.d("Label clicked"))

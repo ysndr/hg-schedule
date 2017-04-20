@@ -7,7 +7,6 @@ import org.immutables.value.Value;
 import org.parceler.ParcelFactory;
 import org.parceler.ParcelProperty;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -19,11 +18,11 @@ import java.util.List;
 public abstract class Entry {
 
     @ParcelFactory
-    public static Entry instance(String id, Date updated, Date day, DayInfo info, List<Substitute> substitutes) {
+    public static Entry instance(String id, java.util.Date updated, Entry.Date day, DayInfo info, List<Substitute> substitutes) {
         return ImmutableEntry.builder()
                 .id(id)
                 .updated(updated)
-                .day(day)
+                .date(day)
                 .info(info)
                 .substitutes(substitutes)
                 .build();
@@ -40,15 +39,24 @@ public abstract class Entry {
     public abstract String id();
 
     @ParcelProperty("updated")
-    public abstract Date updated();
+    public abstract java.util.Date updated();
 
-    @ParcelProperty("day")
-    public abstract Date day();
+    @ParcelProperty("date")
+    public abstract Entry.Date date();
 
-    @ParcelProperty("info")
+    @ParcelProperty("text")
+    @Gson.Named("day")
     public abstract DayInfo info();
 
     @ParcelProperty("substitutes")
+    @Gson.Named("substitutions")
     public abstract List<Substitute> substitutes();
+
+    @Value.Immutable
+    public interface Date {
+        java.util.Date day();
+
+        String week();
+    }
 
 }

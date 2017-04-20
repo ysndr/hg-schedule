@@ -163,7 +163,7 @@ public class SchoolSelectionPreference extends MaterialDialogPreference {
                             }
                             getDialog().dismiss();
                         },
-                        err -> Toast.makeText(getContext(), err.getMessage(), Toast.LENGTH_SHORT).show());
+                        err -> Toast.makeText(getContext(), "an error occured: " + err.getMessage(), Toast.LENGTH_SHORT).show());
 
     }
 

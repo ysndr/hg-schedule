@@ -16,10 +16,10 @@ import java.util.List;
 public interface Schedule extends Serializable {
 
     @ParcelFactory
-    static Schedule instance(List<Entry> entries, List<Teacher> teachers) {
+    static Schedule instance(List<Entry> entries, School school) {
         return ImmutableSchedule.builder()
                 .entries(entries)
-                .teachers(teachers)
+                .school(school)
                 .build();
     }
 
@@ -29,6 +29,6 @@ public interface Schedule extends Serializable {
 @ParcelProperty("entries")
     List<Entry> entries();
 
-    @ParcelProperty("teachers")
-    List<Teacher> teachers();
+    @ParcelProperty("school")
+    School school();
 }

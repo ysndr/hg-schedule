@@ -102,7 +102,7 @@
                 android:id="@+id/label_info_dialog_entry"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
+                android:layout_marginLeft="0dp"
                 android:layout_marginRight="8dp"
                 android:text="Info"
                 android:textStyle="normal|bold"
@@ -123,7 +123,7 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintLeft_toLeftOf="@+id/text_absent_teachers_dialog_entry"
                 app:layout_constraintRight_toRightOf="@+id/text_absent_teachers_dialog_entry"
-                app:layout_constraintTop_toBottomOf="@+id/text_affected_rooms_dialog_entry"
+                app:layout_constraintTop_toBottomOf="@+id/text_blocked_rooms_dialog_entry"
                 app:layout_constraintVertical_chainStyle="spread_inside" />
 
             <TextView
@@ -172,6 +172,32 @@
                 app:layout_constraintGuide_begin="135dp"
                 tools:layout_editor_absoluteX="135dp"
                 tools:layout_editor_absoluteY="81dp" />
+
+            <TextView
+                android:id="@+id/text_blocked_rooms_dialog_entry"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="0dp"
+                android:layout_marginRight="0dp"
+                android:layout_marginTop="24dp"
+                android:text="TextView"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintLeft_toLeftOf="@+id/text_absent_teachers_dialog_entry"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_affected_rooms_dialog_entry" />
+
+            <TextView
+                android:id="@+id/label_blocked_rooms_dialog_entry"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="0dp"
+                android:layout_marginRight="0dp"
+                android:text="Blocked Rooms"
+                android:textStyle="normal|bold"
+                app:layout_constraintBaseline_toBaselineOf="@+id/text_blocked_rooms_dialog_entry"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintLeft_toLeftOf="@+id/label_teacher_absent_dialog_entry"
+                app:layout_constraintRight_toLeftOf="@+id/guideline" />
 
         </android.support.constraint.ConstraintLayout>
     </ScrollView>

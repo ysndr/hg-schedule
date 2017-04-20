@@ -49,6 +49,9 @@ public class ScheduleDialog extends DialogFragment {
     @BindView(R.id.text_affected_rooms_dialog_entry)
     TextView affectedRooms;
 
+    @BindView(R.id.text_blocked_rooms_dialog_entry)
+    TextView blockedRooms;
+
     @BindView(R.id.text_info_dialog_entry)
     TextView info;
 
@@ -76,7 +79,7 @@ public class ScheduleDialog extends DialogFragment {
         Dialog dialog = new MaterialDialog.Builder(getContext())
                 .customView(view, false)
                 .build();
-                
+
 
         FragmentArgs.inject(this);
 
@@ -85,6 +88,7 @@ public class ScheduleDialog extends DialogFragment {
         affectedClasses.setText(dayInfo.affectedClasses().toString());
         absentTeachers.setText(dayInfo.absentTeachers().toString());
         affectedRooms.setText(dayInfo.affectedRooms().toString());
+        blockedRooms.setText(dayInfo.blockedRooms().toString());
         info.setText(dayInfo.info().toString());
         updated.setText(DateFormat.getInstance().format(date));
 
