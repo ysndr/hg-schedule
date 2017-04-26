@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="io.ysndr.android.hg_schedule.features.schedule.view.SettingsActivity">
+    tools:context="de.ysndr.android.hgschedule.features.schedule.view.SettingsActivity">
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"

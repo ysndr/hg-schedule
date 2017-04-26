@@ -1,3 +1,5 @@
+import java.text.SimpleDateFormat
+
 buildscript {
     repositories {
         mavenCentral()
@@ -33,17 +35,20 @@ android {
     buildToolsVersion "25.0.2"
 
     defaultConfig {
-        applicationId "io.ysndr.android.hg_schedule"
+        applicationId "de.ysndr.android.hgschedule"
         minSdkVersion 21
         targetSdkVersion 25
-        versionCode 1
-        versionName "1.0"
+        versionName VERSION_NAME
+        setProperty("archivesBaseName", "$GROUP_NAME-$APPLICATION_NAME-$VERSION_NAME@${versionCodeGit()}")
+
     }
     buildTypes {
         debug {
+            buildConfigField "String", "SERVER_URL", "\"http://192.168.1.106:3000/api/\""
             debuggable true
         }
         release {
+            buildConfigField "String", "SERVER_URL", "\"http://192.168.1.106:3000/api/\""
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -144,4 +149,14 @@ dependencies {
     //compile 'de.ysndr.rxvaluestore:android:0.0.1-PRE-01'
     compile 'com.github.VictorAlbertos:ReactiveCache:0.0.7-1.x'
     compile 'com.github.VictorAlbertos.Jolyglot:gson:0.0.3'
+}
+
+def buildTime() {
+    def df = new SimpleDateFormat("yyMMddhhmm")
+    return "-" + df.format(new Date())
+}
+
+def versionCodeGit() {
+    def process = "git rev-list master --first-parent --abbrev-commit -n1".execute()
+    return process.text.trim()
 }

@@ -13,7 +13,7 @@
         android:title="Username"
         app:title="Username" />
 
-    <io.ysndr.android.hg_schedule.features.schedule.view.SchoolSelectionPreference
+    <de.ysndr.android.hgschedule.features.schedule.view.SchoolSelectionPreference
         android:key="school"
         android:title="Select School" />
 
