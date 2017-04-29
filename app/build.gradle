@@ -44,7 +44,7 @@ android {
     }
     buildTypes {
         debug {
-            buildConfigField "String", "SERVER_URL", "\"http://192.168.1.106:3000/api/\""
+            buildConfigField "String", "SERVER_URL", "\"http://hgschedule.cloudno.de/api/\""
             debuggable true
         }
         release {
