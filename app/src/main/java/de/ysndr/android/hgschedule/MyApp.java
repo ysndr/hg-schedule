@@ -3,13 +3,13 @@ package de.ysndr.android.hgschedule;
 import android.app.Application;
 import android.content.Context;
 
-import de.ysndr.android.hgschedule.features.schedule.inject.DaggerScheduleComponent;
-import de.ysndr.android.hgschedule.features.schedule.inject.DataServiceModule;
-import de.ysndr.android.hgschedule.features.schedule.inject.ScheduleComponent;
-import de.ysndr.android.hgschedule.modules.AppModule;
-import de.ysndr.android.hgschedule.modules.RetrofitModule;
-import de.ysndr.android.hgschedule.ui.AppComponent;
-import de.ysndr.android.hgschedule.ui.DaggerAppComponent;
+import de.ysndr.android.hgschedule.inject.AppComponent;
+import de.ysndr.android.hgschedule.inject.DaggerAppComponent;
+import de.ysndr.android.hgschedule.inject.DaggerScheduleComponent;
+import de.ysndr.android.hgschedule.inject.ScheduleComponent;
+import de.ysndr.android.hgschedule.inject.modules.AppModule;
+import de.ysndr.android.hgschedule.inject.modules.DataServiceModule;
+import de.ysndr.android.hgschedule.inject.modules.RetrofitModule;
 import timber.log.Timber;
 
 /*import com.joanzapata.iconify.Iconify;
