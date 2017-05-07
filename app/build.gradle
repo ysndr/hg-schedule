@@ -149,6 +149,9 @@ dependencies {
     //compile 'de.ysndr.rxvaluestore:android:0.0.1-PRE-01'
     compile 'com.github.VictorAlbertos:ReactiveCache:0.0.7-1.x'
     compile 'com.github.VictorAlbertos.Jolyglot:gson:0.0.3'
+
+    compile 'com.github.pakoito:RxSealedUnions:1.1.0'
+    compile 'com.github.pakoito:RxTuples:1.0.0'
 }
 
 def buildTime() {
