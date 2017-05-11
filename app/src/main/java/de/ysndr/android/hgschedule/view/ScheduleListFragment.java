@@ -1,7 +1,6 @@
 package de.ysndr.android.hgschedule.view;
 
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -15,9 +14,7 @@ import android.widget.Toast;
 
 import com.f2prateek.rx.preferences.RxSharedPreferences;
 import com.jakewharton.rxbinding.support.v4.widget.RxSwipeRefreshLayout;
-import com.pacoworks.rxtuples.RxTuples;
-
-import org.javatuples.Pair;
+import com.jakewharton.rxrelay.BehaviorRelay;
 
 import java.util.concurrent.TimeUnit;
 
@@ -28,26 +25,28 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import de.ysndr.android.hgschedule.MyApp;
 import de.ysndr.android.hgschedule.R;
+import de.ysndr.android.hgschedule.functions.DataFunc;
+import de.ysndr.android.hgschedule.functions.TransfFunc;
+import de.ysndr.android.hgschedule.functions.models.Transformation;
 import de.ysndr.android.hgschedule.inject.RemoteDataService;
-import de.ysndr.android.hgschedule.middleware.AuthMiddleware;
-import de.ysndr.android.hgschedule.middleware.DataMiddleware;
-import de.ysndr.android.hgschedule.middleware.TransformationMiddleware;
+import de.ysndr.android.hgschedule.state.Empty;
+import de.ysndr.android.hgschedule.state.Error;
+import de.ysndr.android.hgschedule.state.State;
+import de.ysndr.android.hgschedule.state.StateError;
 import de.ysndr.android.hgschedule.state.models.Entry;
 import de.ysndr.android.hgschedule.state.models.Schedule;
-import de.ysndr.android.hgschedule.util.Presentable;
 import de.ysndr.android.hgschedule.view.adapters.ImmutableLabelViewWrapper;
 import de.ysndr.android.hgschedule.view.adapters.ImmutableSubstituteViewWrapper;
 import de.ysndr.android.hgschedule.view.adapters.LabelViewWrapper;
 import de.ysndr.android.hgschedule.view.adapters.ListAdapter;
 import de.ysndr.android.hgschedule.view.adapters.SubstituteViewWrapper;
 import de.ysndr.android.hgschedule.view.adapters.ViewWrapper;
-import de.ysndr.rxvaluestore.MemoryStore;
-import fj.Unit;
+import fj.Ord;
 import fj.data.List;
-import fj.data.Option;
 import fj.data.Set;
 import io.reactivecache.ReactiveCache;
 import rx.Observable;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
@@ -59,7 +58,18 @@ import timber.log.Timber;
 
 public class ScheduleListFragment extends Fragment {
 
-    MemoryStore<Presentable<Pair<Set<TransformationMiddleware.Transformation<Schedule>>, Schedule>>> state;
+    // Inputs
+    BehaviorRelay<Void> refresh$;
+    BehaviorRelay<Entry> dialogRequest$;
+    BehaviorRelay<Entry> filterRequest$;
+
+    // state
+    BehaviorRelay<Set<Transformation<Schedule>>> transformers$;
+    BehaviorRelay<State> state$;
+
+    // effects
+    Subscription stateSubscription;
+    Subscription dialogShowSubscription;
 
     CompositeSubscription subscriptions;
 
@@ -90,7 +100,12 @@ public class ScheduleListFragment extends Fragment {
         MyApp.getScheduleComponent(this.getContext()).inject(this);
 
         subscriptions = new CompositeSubscription();
-        state = MemoryStore.of(Presentable.of(true, Option.none()));
+
+        state$ = BehaviorRelay.create(State.empty(Empty.of()));
+        transformers$ = BehaviorRelay.create();
+        refresh$ = BehaviorRelay.create();
+        dialogRequest$ = BehaviorRelay.create();
+        filterRequest$ = BehaviorRelay.create();
     }
 
     @Override
@@ -101,7 +116,6 @@ public class ScheduleListFragment extends Fragment {
         View layout = inflater.inflate(R.layout.fragment_main, container, false);
         unbinder = ButterKnife.bind(this, layout);
 
-        refreshes$ = RxSwipeRefreshLayout.refreshes(swipeRefresh);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
@@ -117,82 +131,70 @@ public class ScheduleListFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        subscriptions.addAll(
-                refreshes$
-                        .subscribeOn(AndroidSchedulers.mainThread())
-                        .observeOn(Schedulers.io())
-                        .compose(new AuthMiddleware().getLogin(prefs))
-                        .compose(DataMiddleware.schedule(remote, cache))
-                        .compose(new TransformationMiddleware().prependEmptyTransformations())
-                        .compose(this.toPresentable())
-                        .compose(state.update())
-                        .compose(this.display())
-                        .retry()
-                        .repeat()
-                        .subscribe(),
+        Observable<Void> _refresh$ = RxSwipeRefreshLayout.refreshes(swipeRefresh);
+        Observable<Entry> _dialogRequest$ = adapter.dialogRequest$()
+                .subscribeOn(Schedulers.computation())
+                .throttleFirst(500, TimeUnit.MILLISECONDS);
+        Observable<Entry> _filterRequest$ = adapter.filterIntent$();
 
-                adapter.filterIntent$()
-                        .observeOn(Schedulers.computation())
+        // proxies
+        _refresh$.subscribe(refresh$);
+        _dialogRequest$.subscribe(dialogRequest$);
+        _filterRequest$.subscribe(filterRequest$);
 
-                        .map(new TransformationMiddleware()::filterEntry)
-                        .doOnNext(trans -> Timber.d("new transformation with seed `%s`", trans._seed()))
 
-                        .flatMap(trans -> Observable.combineLatest(
-                                Observable.just(trans),
-                                state.observable()
-                                        .filter(p -> p.result().isSome())
-                                        .map(p -> p.result().some())
-                                        .take(1),
-                                RxTuples.toTripletFromSingle()))
-                        .doOnNext(triplet -> Timber.d("applied transformer"))
+        Observable<State> freshState$ = refresh$
+                .doOnNext(__ -> Timber.d("initiating refresh..."))
+                .observeOn(Schedulers.io())
+                .flatMap((__) -> DataFunc.refresh(prefs, remote, cache))
+                .doOnNext(data -> Timber.d("new state: %s", data));
 
-                        .compose(new TransformationMiddleware().toggleTransformation())
-                        .doOnNext(pair -> Timber.d("toggled transformation"))
+        Observable<Set<Transformation<Schedule>>> transformations$ = Observable.merge(
+                Observable.zip(transformers$, filterRequest$, TransfFunc.toggleCreateFilter()),
+                setupClearFilter$());
 
-                        .compose(this.toPresentable())
-                        .compose(state.update())
-//
-//
-//                .observeOn(AndroidSchedulers.mainThread())
-                        .compose(this.display())
-                        .subscribe(),
+        // proxies
+        freshState$.subscribeOn(AndroidSchedulers.mainThread()).subscribe(state$);
+        transformations$.subscribeOn(Schedulers.computation()).subscribe(transformers$);
 
-                adapter.dialogRequest$()
-                        .subscribeOn(Schedulers.computation())
-                        .throttleFirst(500, TimeUnit.MILLISECONDS)
-                        .doOnNext(entry -> Timber.d("Showing information about entry `%s`", entry.id()))
-                        .map(entry -> ScheduleDialogBuilder
-                                .newScheduleDialog(entry.date().day(), entry.info())
-                        )
 
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(dialog -> {
-                            dialog.show(getFragmentManager(), null);
-                        })
-        );
+        Observable<State> stateAfter$ = TransfFunc.combineStateTransf(state$, transformers$).subscribeOn(Schedulers.computation());
+        stateAfter$
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(display()).subscribe();
 
+        dialogRequest$.asObservable()
+                .map(entry -> ScheduleDialogBuilder.newScheduleDialog(entry.date().day(), entry.info()))
+                .doOnNext(dialog -> dialog.show(this.getFragmentManager(), "schedule entry info"))
+                .subscribe();
     }
 
 
-    Observable.Transformer<
-            Pair<Set<TransformationMiddleware.Transformation<Schedule>>, Schedule>,
-            Presentable<Pair<Set<TransformationMiddleware.Transformation<Schedule>>, Schedule>>> toPresentable() {
-        return source -> source.map(pair -> Presentable.of(false, Option.some(pair)));
+    private Observable<Set<Transformation<Schedule>>> setupClearFilter$() {
+        return refresh$
+                .map(__ -> Set.<Transformation<Schedule>>empty(Ord.hashEqualsOrd()));
     }
 
-    Observable.Transformer<Presentable<Pair<Set<TransformationMiddleware.Transformation<Schedule>>, Schedule>>, Boolean> display() {
+
+
+
+    Observable.Transformer<State, Boolean> display() {
         return source -> source
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnNext(presentable -> setLoading(presentable.loading()))
-                .map(presentable -> presentable.result().some())
-                .compose(new TransformationMiddleware().applyTransformations())
-                .map(schedule -> wrapData(List.iterableList(schedule.entries())))
-                .doOnNext(adapter::setContent)
-                .doOnError(error -> {
-                    this.showError(error);
-                    this.setLoading(false);
-                })
+                .doOnNext(state -> setLoading(state.union().join(
+                            error -> false,
+                            data -> data.loading(),
+                            empty -> empty.loading())))
+                .doOnNext(state -> state.union().continued(
+                        error -> this.showError(error),
+                        data -> adapter.setContent(
+                                this.wrapData(List.iterableList(data.schedule().entries()))),
+                        empty -> adapter.clear()
+                ))
+
+
                 .map(__ -> true)
+                .doOnError(e -> Timber.d("an error occured somewhere"))
                 .onErrorReturn(e -> false);
     }
 
@@ -209,24 +211,16 @@ public class ScheduleListFragment extends Fragment {
     }
 
 
-    @SuppressLint("ThrowableNotAtBeginning")
-    public void showError(Throwable t) {
-        String message = t.getMessage();
+    public void showError(StateError<?> error) {
+        String message = error.message().orSome("internal error");
         Toast.makeText(
                 this.getContext(),
                 message,
                 Toast.LENGTH_SHORT
         ).show();
 
-        Timber.e("an error occured: %s", t);
+        Timber.e("an error occured: %s", message);
 
-    }
-
-
-    public Observable<Unit> reloadIntent$() {
-        return RxSwipeRefreshLayout.refreshes(swipeRefresh)
-                .doOnNext(_void_ -> Timber.d("refresh"))
-                .map(_void_ -> Unit.unit());
     }
 
     private java.util.List<ViewWrapper> wrapData(List<Entry> list) {

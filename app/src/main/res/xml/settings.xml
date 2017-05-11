@@ -1,19 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <EditTextPreference
-        android:key="pass"
-        android:selectAllOnFocus="true"
-        android:title="Password"
-        app:title="Password" />
-    <EditTextPreference
-        android:key="user"
-        android:selectAllOnFocus="true"
-        android:singleLine="true"
-        android:title="Username"
-        app:title="Username" />
 
-    <de.ysndr.android.hgschedule.features.schedule.view.SchoolSelectionPreference
+    <PreferenceCategory
+        app:title="login credencials">
+        <EditTextPreference
+            android:key="user"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="Username"
+            app:title="Username" />
+        <EditTextPreference
+            android:key="pass"
+            android:selectAllOnFocus="true"
+            android:title="Password"
+            app:title="Password" />
+
+    </PreferenceCategory>
+
+    <de.ysndr.android.hgschedule.view.SchoolSelectionPreference
         android:key="school"
         android:title="Select School" />
 

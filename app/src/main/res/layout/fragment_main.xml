@@ -5,7 +5,7 @@
     android:id="@+id/content_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="de.ysndr.android.hgschedule.features.schedule.view.ScheduleListFragment"
+    tools:context="de.ysndr.android.hgschedule.view.ScheduleListFragment"
     tools:showIn="@layout/activity_main">
 
     <ProgressBar

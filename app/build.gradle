@@ -105,7 +105,7 @@ dependencies {
     provided "org.immutables:gson:2.4.4:annotations" // annotation-only artifact
     provided "org.immutables:serial:2.4.4"
 
-
+    compile 'com.jakewharton.rxrelay:rxrelay:1.2.0'
     compile "com.jakewharton:butterknife:${butterknifeVersion}"
     annotationProcessor "com.jakewharton:butterknife-compiler:${butterknifeVersion}"
 
@@ -150,8 +150,7 @@ dependencies {
     compile 'com.github.VictorAlbertos:ReactiveCache:0.0.7-1.x'
     compile 'com.github.VictorAlbertos.Jolyglot:gson:0.0.3'
 
-    compile 'com.github.pakoito:RxSealedUnions:1.1.0'
-    compile 'com.github.pakoito:RxTuples:1.0.0'
+    compile 'com.github.pakoito:FunctionalRx:1.1.0'
 }
 
 def buildTime() {
