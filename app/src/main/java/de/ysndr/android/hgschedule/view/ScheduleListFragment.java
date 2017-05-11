@@ -30,7 +30,6 @@ import de.ysndr.android.hgschedule.functions.TransfFunc;
 import de.ysndr.android.hgschedule.functions.models.Transformation;
 import de.ysndr.android.hgschedule.inject.RemoteDataService;
 import de.ysndr.android.hgschedule.state.Empty;
-import de.ysndr.android.hgschedule.state.Error;
 import de.ysndr.android.hgschedule.state.State;
 import de.ysndr.android.hgschedule.state.StateError;
 import de.ysndr.android.hgschedule.state.models.Entry;
@@ -131,7 +130,8 @@ public class ScheduleListFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Observable<Void> _refresh$ = RxSwipeRefreshLayout.refreshes(swipeRefresh);
+        Observable<Void> _refresh$ = RxSwipeRefreshLayout.refreshes(swipeRefresh)
+            .onBackpressureDrop();
         Observable<Entry> _dialogRequest$ = adapter.dialogRequest$()
                 .subscribeOn(Schedulers.computation())
                 .throttleFirst(500, TimeUnit.MILLISECONDS);

@@ -41,7 +41,7 @@ public class TransfFunc {
         return RxComprehensions.doFlatMap(
             () -> Observable.combineLatest( // when any changes
                 transf$,
-                state$,
+                state$.distinctUntilChanged(),
                 RxTuples.toPair())
 
                 .doOnNext(__ -> Timber.d("transformers or state changed")),
