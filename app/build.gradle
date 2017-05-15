@@ -151,6 +151,10 @@ dependencies {
     compile 'com.github.VictorAlbertos.Jolyglot:gson:0.0.3'
 
     compile 'com.github.pakoito:FunctionalRx:1.1.0'
+
+    compile 'com.airbnb.android:epoxy:2.1.0'
+    annotationProcessor 'com.airbnb.android:epoxy-processor:2.1.0'
+
 }
 
 def buildTime() {
