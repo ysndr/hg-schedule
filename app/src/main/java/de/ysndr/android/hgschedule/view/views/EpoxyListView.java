@@ -16,17 +16,18 @@ import fj.data.List;
  */
 
 
-public class Carousel extends RecyclerView {
+public class EpoxyListView extends RecyclerView {
     private static final int SPAN_COUNT = 2;
     private final LinearLayoutManager layoutManager;
     private SimpleEpoxyController controller;
 
-    public Carousel(Context context, @Nullable AttributeSet attrs) {
+    public EpoxyListView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
         // Carousels are generally fixed height. Using fixed size is a small optimization we can make
         // in that case. This isn't safe to do if the models set in this carousel have varying heights.
         setHasFixedSize(false);
+        setNestedScrollingEnabled(false);
 
         // For the example app we use a grid, but in many real world scenarios a simple
         // linearlayoutmanager is common. You could modify this carousel code to programmatically

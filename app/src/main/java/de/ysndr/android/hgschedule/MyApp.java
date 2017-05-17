@@ -17,6 +17,7 @@ import com.joanzapata.iconify.fonts.IoniconsModule;*/
 
 /**
  * Created by yannik on 10/8/16.
+ * // boje^^
  */
 public class MyApp extends Application {
     private ScheduleComponent mScheduleComponent;

@@ -18,12 +18,16 @@ public class EntryCarouselModelGroup extends EpoxyModelGroup {
     }
 
     private static List<EpoxyModel<?>> buildModels(Entry entry) {
-
         return List.<EpoxyModel<?>>list()
-            .append(List.list(new HeaderModel_()
-                .entry(entry)))
-            .append(List.list(new SubstituteCarousel_().models(
-                List.iterableList(entry.substitutes())
-                    .map(substitute -> new SubstituteModel_().substitute(substitute)))));
+            .snoc(new HeaderModel_()
+                .id("header_" + entry.id())
+                .entry(entry))
+            .snoc(new EpoxyListModel_()
+                .id("substitutes_" + entry.id())
+                .models(List.iterableList(entry.substitutes())
+                    .map(substitute -> new SubstituteModel_()
+                        .id("substitute_" + substitute.hashCode())
+                        .substitute(substitute)
+                    )));
     }
 }

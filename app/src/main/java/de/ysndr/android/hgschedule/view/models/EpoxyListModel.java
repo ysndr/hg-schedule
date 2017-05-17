@@ -7,14 +7,14 @@ import com.airbnb.epoxy.EpoxyModel;
 import com.airbnb.epoxy.EpoxyModelClass;
 import com.airbnb.epoxy.EpoxyModelWithView;
 
-import de.ysndr.android.hgschedule.view.views.Carousel;
+import de.ysndr.android.hgschedule.view.views.EpoxyListView;
 import fj.data.List;
 
 /**
  * Created by yannik on 5/12/17.
  */
 @EpoxyModelClass
-public abstract class SubstituteList extends EpoxyModelWithView<Carousel> {
+public abstract class EpoxyListModel extends EpoxyModelWithView<EpoxyListView> {
 
     @EpoxyAttribute
     List<? extends EpoxyModel<?>> models;
@@ -23,7 +23,7 @@ public abstract class SubstituteList extends EpoxyModelWithView<Carousel> {
 //    @EpoxyAttribute(hash = false) RecycledViewPool recycledViewPool;
 
     @Override
-    public void bind(Carousel carousel) {
+    public void bind(EpoxyListView carousel) {
         // If there are multiple carousels showing the same item types, you can benefit by having a
         // shared view pool between those carousels
         // so new views aren't created for each new carousel.
@@ -39,14 +39,14 @@ public abstract class SubstituteList extends EpoxyModelWithView<Carousel> {
     }
 
     @Override
-    public void unbind(Carousel carousel) {
+    public void unbind(EpoxyListView carousel) {
         carousel.clearModels();
     }
 
 
     @Override
-    protected Carousel buildView(ViewGroup parent) {
-        return new Carousel(parent.getContext(), null);
+    protected EpoxyListView buildView(ViewGroup parent) {
+        return new EpoxyListView(parent.getContext(), null);
     }
 
     @Override

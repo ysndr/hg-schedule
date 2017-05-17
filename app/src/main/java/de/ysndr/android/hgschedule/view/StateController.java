@@ -18,7 +18,8 @@ public class StateController extends TypedEpoxyController<State> {
             },
             data -> {
                 List.iterableList(data.schedule().entries())
-                    .foreachDoEffect(entry -> add(new EntryCarouselModelGroup(entry)));
+                    .foreachDoEffect(entry -> add(new EntryCarouselModelGroup(entry)
+                        .id("group_" + entry.id())));
             },
             empty -> {
             });

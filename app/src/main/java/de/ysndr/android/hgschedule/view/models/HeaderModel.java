@@ -24,7 +24,7 @@ public abstract class HeaderModel extends EpoxyModel<HeaderView> {
 
     @Override
     public void bind(HeaderView view) {
-        view.setTitle(new SimpleDateFormat("MMMM dd", Locale.getDefault()).format(entry.date()));
+        view.setTitle(new SimpleDateFormat("MMMM dd", Locale.getDefault()).format(entry.date().day()));
 //        view.setCaption(caption);
     }
 

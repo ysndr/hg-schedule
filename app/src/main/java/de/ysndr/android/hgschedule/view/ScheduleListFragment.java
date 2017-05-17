@@ -16,8 +16,6 @@ import com.f2prateek.rx.preferences.RxSharedPreferences;
 import com.jakewharton.rxbinding.support.v4.widget.RxSwipeRefreshLayout;
 import com.jakewharton.rxrelay.BehaviorRelay;
 
-import java.util.concurrent.TimeUnit;
-
 import javax.inject.Inject;
 
 import butterknife.BindView;
@@ -36,9 +34,6 @@ import de.ysndr.android.hgschedule.state.models.Entry;
 import de.ysndr.android.hgschedule.state.models.Schedule;
 import de.ysndr.android.hgschedule.view.adapters.ImmutableLabelViewWrapper;
 import de.ysndr.android.hgschedule.view.adapters.ImmutableSubstituteViewWrapper;
-import de.ysndr.android.hgschedule.view.adapters.LabelViewWrapper;
-import de.ysndr.android.hgschedule.view.adapters.ListAdapter;
-import de.ysndr.android.hgschedule.view.adapters.SubstituteViewWrapper;
 import de.ysndr.android.hgschedule.view.adapters.ViewWrapper;
 import fj.Ord;
 import fj.data.List;
@@ -88,7 +83,8 @@ public class ScheduleListFragment extends Fragment {
     ReactiveCache cache;
 
 
-    ListAdapter adapter;
+    StateController controller;
+
 
     private Observable<Void> refreshes$;
     private Unbinder unbinder;
@@ -117,12 +113,13 @@ public class ScheduleListFragment extends Fragment {
 
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
-
+/*
         adapter = new ListAdapter();
         adapter.registerTypeMapping(new SubstituteViewWrapper.TypeMapper());
         adapter.registerTypeMapping(new LabelViewWrapper.TypeMapper());
-
-        recyclerView.setAdapter(adapter);
+*/
+        controller = new StateController();
+        recyclerView.setAdapter(controller.getAdapter());
         return layout;
     }
 
@@ -132,15 +129,15 @@ public class ScheduleListFragment extends Fragment {
 
         Observable<Void> _refresh$ = RxSwipeRefreshLayout.refreshes(swipeRefresh)
             .onBackpressureDrop();
-        Observable<Entry> _dialogRequest$ = adapter.dialogRequest$()
+       /* Observable<Entry> _dialogRequest$ = adapter.dialogRequest$()
                 .subscribeOn(Schedulers.computation())
-                .throttleFirst(500, TimeUnit.MILLISECONDS);
-        Observable<Entry> _filterRequest$ = adapter.filterIntent$();
+                .throttleFirst(500, TimeUnit.MILLISECONDS);*/
+//        Observable<Entry> _filterRequest$ = adapter.filterIntent$();
 
         // proxies
         _refresh$.subscribe(refresh$);
-        _dialogRequest$.subscribe(dialogRequest$);
-        _filterRequest$.subscribe(filterRequest$);
+//        _dialogRequest$.subscribe(dialogRequest$);
+//        _filterRequest$.subscribe(filterRequest$);
 
 
         Observable<State> freshState$ = refresh$
@@ -175,9 +172,6 @@ public class ScheduleListFragment extends Fragment {
                 .map(__ -> Set.<Transformation<Schedule>>empty(Ord.hashEqualsOrd()));
     }
 
-
-
-
     Observable.Transformer<State, Boolean> display() {
         return source -> source
                 .observeOn(AndroidSchedulers.mainThread())
@@ -186,21 +180,21 @@ public class ScheduleListFragment extends Fragment {
                             data -> data.loading(),
                             empty -> empty.loading())))
                 .doOnNext(state -> state.union().continued(
-                        error -> this.showError(error),
-                        data -> adapter.setContent(
-                                this.wrapData(List.iterableList(data.schedule().entries()))),
-                        empty -> adapter.clear()
+                    error -> controller.setData((State.error(error))),
+                    data -> controller.setData(State.data(data)),
+                    empty -> controller.setData(State.empty(empty))
                 ))
-
-
+            .doOnNext(state -> state.union().continued(
+                this::showError,
+                data -> {
+                },
+                empty -> {
+                }
+            ))
                 .map(__ -> true)
                 .doOnError(e -> Timber.d("an error occured somewhere"))
                 .onErrorReturn(e -> false);
     }
-
-
-
-
 
     public void setLoading(boolean loading) {
         swipeRefresh.setRefreshing(loading);
@@ -209,7 +203,6 @@ public class ScheduleListFragment extends Fragment {
             progress.setVisibility(View.GONE);
         }
     }
-
 
     public void showError(StateError<?> error) {
         String message = error.message().orSome("internal error");
