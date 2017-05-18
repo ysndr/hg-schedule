@@ -7,7 +7,7 @@ import org.immutables.value.Value;
 /**
  * Created by yannik on 8/15/16.
  */
-@Value.Immutable
+@Value.Immutable(prehash = true)
 public interface Substitute {
 
     String classes();

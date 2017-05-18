@@ -99,6 +99,8 @@ dependencies {
     compile 'com.afollestad.material-dialogs:core:0.9.2.3'
     compile 'com.afollestad.material-dialogs:commons:0.9.2.3'
 
+    compile 'com.lucasurbas:guidelinescompattoolbar:1.0.0'
+
     annotationProcessor "org.immutables:value:2.4.4" // for annotation processor
     provided "org.immutables:value:2.4.4:annotations" // annotation-only artifact
     provided "org.immutables:builder:2.4.4" // there are only annotations anyway

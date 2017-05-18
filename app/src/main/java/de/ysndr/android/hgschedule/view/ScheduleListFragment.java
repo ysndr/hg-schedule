@@ -82,6 +82,7 @@ public class ScheduleListFragment extends Fragment {
     @Inject
     ReactiveCache cache;
 
+    RecyclerView.RecycledViewPool recycledViewPool;
 
     StateController controller;
 
@@ -101,6 +102,12 @@ public class ScheduleListFragment extends Fragment {
         refresh$ = BehaviorRelay.create();
         dialogRequest$ = BehaviorRelay.create();
         filterRequest$ = BehaviorRelay.create();
+
+        recycledViewPool = new RecyclerView.RecycledViewPool();
+
+        recycledViewPool.setMaxRecycledViews(R.layout.model_group_substitutes, Integer.MAX_VALUE);
+        recycledViewPool.setMaxRecycledViews(R.layout.model_substitute, Integer.MAX_VALUE);
+
     }
 
     @Override
@@ -113,12 +120,14 @@ public class ScheduleListFragment extends Fragment {
 
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        recyclerView.setRecycledViewPool(recycledViewPool);
+//        recyclerView.setNestedScrollingEnabled(false);
 /*
         adapter = new ListAdapter();
         adapter.registerTypeMapping(new SubstituteViewWrapper.TypeMapper());
         adapter.registerTypeMapping(new LabelViewWrapper.TypeMapper());
 */
-        controller = new StateController();
+        controller = new StateController(recycledViewPool);
         recyclerView.setAdapter(controller.getAdapter());
         return layout;
     }
@@ -151,14 +160,12 @@ public class ScheduleListFragment extends Fragment {
                 setupClearFilter$());
 
         // proxies
-        freshState$.subscribeOn(AndroidSchedulers.mainThread()).subscribe(state$);
+        freshState$.subscribeOn(Schedulers.io()).subscribe(state$);
         transformations$.subscribeOn(Schedulers.computation()).subscribe(transformers$);
 
 
         Observable<State> stateAfter$ = TransfFunc.combineStateTransf(state$, transformers$).subscribeOn(Schedulers.computation());
-        stateAfter$
-                .observeOn(AndroidSchedulers.mainThread())
-                .compose(display()).subscribe();
+        stateAfter$.compose(display()).subscribe();
 
         dialogRequest$.asObservable()
                 .map(entry -> ScheduleDialogBuilder.newScheduleDialog(entry.date().day(), entry.info()))

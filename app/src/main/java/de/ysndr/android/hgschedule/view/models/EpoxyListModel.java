@@ -1,5 +1,6 @@
 package de.ysndr.android.hgschedule.view.models;
 
+import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
 import com.airbnb.epoxy.EpoxyAttribute;
@@ -20,7 +21,8 @@ public abstract class EpoxyListModel extends EpoxyModelWithView<EpoxyListView> {
     List<? extends EpoxyModel<?>> models;
 //    @EpoxyAttribute
 //    int numItemsExpectedOnDisplay;
-//    @EpoxyAttribute(hash = false) RecycledViewPool recycledViewPool;
+@EpoxyAttribute(hash = false)
+RecyclerView.RecycledViewPool recycledViewPool;
 
     @Override
     public void bind(EpoxyListView carousel) {
@@ -36,6 +38,7 @@ public abstract class EpoxyListModel extends EpoxyModelWithView<EpoxyListView> {
 //        }
 
         carousel.setModels(models);
+        carousel.setFocusableInTouchMode(false);
     }
 
     @Override

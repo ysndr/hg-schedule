@@ -1,21 +1,32 @@
 <resources>
-
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="Theme.hgschedule.default" parent="AppTheme.NoActionBar">
         <!-- Customize your theme here. -->
+
+        <!--We will be using the toolbar so no need to show ActionBar-->
+    </style>
+
+    <style name="Theme.hgschedule.light" parent="Theme.GuidelinesCompat.Light.DarkToolbar">
+
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:windowNoTitle">true</item>
-        <!--We will be using the toolbar so no need to show ActionBar-->
-        <item name="android:windowActionBar">false</item>
+
+        <!-- Actionbar theme -->
+        <item name="actionBarTheme">@style/Theme.hgschedule.Toolbar.dark</item>
+
 
     </style>
 
-    <style name="AppTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-        <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
+    <style name="Theme.hgschedule.Toolbar.dark" parent="Theme.GuidelinesCompat.DarkToolbar">
+
+
+    </style>
+
+
+    <style name="AppTheme.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="actionBarTheme">@style/ThemeOverlay.AppCompat.ActionBar</item>
+
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />

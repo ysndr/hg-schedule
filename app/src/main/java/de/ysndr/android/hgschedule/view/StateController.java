@@ -1,5 +1,7 @@
 package de.ysndr.android.hgschedule.view;
 
+import android.support.v7.widget.RecyclerView;
+
 import com.airbnb.epoxy.TypedEpoxyController;
 
 import de.ysndr.android.hgschedule.state.State;
@@ -11,6 +13,14 @@ import fj.data.List;
  */
 
 public class StateController extends TypedEpoxyController<State> {
+
+    RecyclerView.RecycledViewPool recycledViewPool;
+
+    StateController(RecyclerView.RecycledViewPool recycledViewPool) {
+        super();
+        this.recycledViewPool = recycledViewPool;
+    }
+
     @Override
     protected void buildModels(State state) {
         state.union().continued(
@@ -18,8 +28,8 @@ public class StateController extends TypedEpoxyController<State> {
             },
             data -> {
                 List.iterableList(data.schedule().entries())
-                    .foreachDoEffect(entry -> add(new EntryCarouselModelGroup(entry)
-                        .id("group_" + entry.id())));
+                    .foreachDoEffect(entry -> add(new EntryCarouselModelGroup(
+                        entry, recycledViewPool)));
             },
             empty -> {
             });
