@@ -2,19 +2,19 @@ package de.ysndr.android.hgschedule.view.views;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.LayoutInflater;
-import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import de.ysndr.android.hgschedule.R;
 
 public class HeaderView extends LinearLayout {
 
     @BindView(R.id.button_info_list_label)
-    Button info;
-    @BindView(R.id.label_list_label)
+    ImageView info;
+    @BindView(R.id.text_label)
     TextView title;
 
 
@@ -33,12 +33,12 @@ public class HeaderView extends LinearLayout {
 
     private void init() {
         setOrientation(VERTICAL);
-        LayoutInflater.from(this.getContext()).inflate(R.layout.view_header, this);
-//        ButterKnife.bind(this);
+        inflate(getContext(), R.layout.view_header, this);
+        ButterKnife.bind(this);
     }
 
     public void setTitle(String title) {
-//        this.title.setText(title);
+        this.title.setText(title);
     }
 
 //    public void setCaption(@StringRes int caption) {

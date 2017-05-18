@@ -76,7 +76,7 @@ public abstract class LabelViewWrapper extends ViewWrapper {
     /* ---------------------------------------------------- */
     public static class ViewHolder extends ViewWrapper.ViewHolder {
 
-        @BindView(R.id.label_list_label)
+        @BindView(R.id.text_label)
         TextView label;
 
         @BindView(R.id.button_info_list_label)

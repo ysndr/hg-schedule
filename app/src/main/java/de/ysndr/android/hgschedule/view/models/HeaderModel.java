@@ -22,11 +22,24 @@ public abstract class HeaderModel extends EpoxyModel<HeaderView> {
     @EpoxyAttribute
     Entry entry;
 
+//    @BindView(R.id.button_info_list_label)
+//    Button info;
+//    @BindView(R.id.text_label)
+//    TextView title;
+//
+//    Unbinder unbinder;
+
+
     @Override
     public void bind(HeaderView view) {
+        // unbinder = ButterKnife.bind(this, view);
         view.setTitle(new SimpleDateFormat("MMMM dd", Locale.getDefault()).format(entry.date().day()));
 //        view.setCaption(caption);
     }
 
-
+    @Override
+    public void unbind(HeaderView view) {
+        super.unbind(view);
+//        unbinder.unbind();
+    }
 }
