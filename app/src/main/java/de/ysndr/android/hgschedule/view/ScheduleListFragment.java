@@ -104,9 +104,8 @@ public class ScheduleListFragment extends Fragment {
         filterRequest$ = BehaviorRelay.create();
 
         recycledViewPool = new RecyclerView.RecycledViewPool();
-
-        recycledViewPool.setMaxRecycledViews(R.layout.model_group_substitutes, Integer.MAX_VALUE);
         recycledViewPool.setMaxRecycledViews(R.layout.model_substitute, Integer.MAX_VALUE);
+        recycledViewPool.setMaxRecycledViews(R.layout.model_header, Integer.MAX_VALUE);
 
     }
 
@@ -118,16 +117,20 @@ public class ScheduleListFragment extends Fragment {
         View layout = inflater.inflate(R.layout.fragment_main, container, false);
         unbinder = ButterKnife.bind(this, layout);
 
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this.getContext());
+        recyclerView.setLayoutManager(layoutManager);
         recyclerView.setRecycledViewPool(recycledViewPool);
-//        recyclerView.setNestedScrollingEnabled(false);
+
+        recyclerView.setItemViewCacheSize(20);
+        recyclerView.setDrawingCacheEnabled(true);
+        recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
 /*
         adapter = new ListAdapter();
         adapter.registerTypeMapping(new SubstituteViewWrapper.TypeMapper());
         adapter.registerTypeMapping(new LabelViewWrapper.TypeMapper());
 */
-        controller = new StateController(recycledViewPool);
+
+        controller = new StateController(recycledViewPool, dialogRequest$, filterRequest$);
         recyclerView.setAdapter(controller.getAdapter());
         return layout;
     }

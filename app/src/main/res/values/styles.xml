@@ -1,26 +1,34 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="Theme.hgschedule.default" parent="AppTheme.NoActionBar">
+    <style name="Theme.hgschedule.default" parent="Theme.GuidelinesCompat.Light.DarkToolbar">
         <!-- Customize your theme here. -->
 
+        <!--<item name="colorPrimary">@color/colorPrimary</item>-->
+        <!--<item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
+        <!--<item name="colorAccent">@color/colorAccent</item>-->
+
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
         <!--We will be using the toolbar so no need to show ActionBar-->
     </style>
 
-    <style name="Theme.hgschedule.light" parent="Theme.GuidelinesCompat.Light.DarkToolbar">
+
+    <style name="Theme.hgschedule.Light.DarkToolbar" parent="AppTheme.NoActionBar">
 
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
 
         <!-- Actionbar theme -->
-        <item name="actionBarTheme">@style/Theme.hgschedule.Toolbar.dark</item>
+        <!--<item name="actionBarTheme">@style/Theme.GuidelinesCompat.DarkToolbar</item>-->
+        <!--<item name="windowActionBar">false</item>-->
+        <!--<item name="windowNoTitle">true</item>-->
 
 
     </style>
 
     <style name="Theme.hgschedule.Toolbar.dark" parent="Theme.GuidelinesCompat.DarkToolbar">
-
-
+        <!--<item name="android:backgroundTint">@color/colorAccent</item>-->
     </style>
 
 

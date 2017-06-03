@@ -7,7 +7,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import de.ysndr.android.hgschedule.R;
 
 public class HeaderView extends LinearLayout {
@@ -34,12 +33,13 @@ public class HeaderView extends LinearLayout {
     private void init() {
         setOrientation(VERTICAL);
         inflate(getContext(), R.layout.view_header, this);
-        ButterKnife.bind(this);
+//        ButterKnife.bind(this);
     }
 
-    public void setTitle(String title) {
-        this.title.setText(title);
-    }
+//    public void setTitle(String title) {
+//        this.title.setText(title);
+//    }
+
 
 //    public void setCaption(@StringRes int caption) {
 //        this.caption.setText(caption);

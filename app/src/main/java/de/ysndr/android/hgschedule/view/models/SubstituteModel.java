@@ -12,6 +12,7 @@ import butterknife.Unbinder;
 import de.ysndr.android.hgschedule.R;
 import de.ysndr.android.hgschedule.state.models.Substitute;
 import de.ysndr.android.hgschedule.view.views.SubstituteView;
+import timber.log.Timber;
 
 /**
  * Created by yannik on 5/12/17.
@@ -45,6 +46,8 @@ public abstract class SubstituteModel extends EpoxyModel<SubstituteView> {
         super.bind(view);
         unbinder = ButterKnife.bind(this, view);
 
+        Timber.d("in `bind()`");
+
         absent.setText(substitute.absent());
         subst.setText(substitute.substitute());
         classes.setText(substitute.classes());
@@ -58,6 +61,14 @@ public abstract class SubstituteModel extends EpoxyModel<SubstituteView> {
     @Override
     public void unbind(SubstituteView view) {
         super.unbind(view);
+
+        Timber.d("in `unbind(...)`");
         unbinder.unbind();
+    }
+
+    @Override
+    public void onViewDetachedFromWindow(SubstituteView view) {
+        super.onViewDetachedFromWindow(view);
+        Timber.d("in `detatch`");
     }
 }

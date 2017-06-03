@@ -5,6 +5,7 @@ import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
 
 import de.ysndr.android.hgschedule.R;
+import timber.log.Timber;
 
 /**
  * TODO: document your custom view class.
@@ -19,6 +20,8 @@ public class SubstituteView extends ConstraintLayout {
     }
 
     private void init() {
+
+        Timber.d("inflate view");
         inflate(getContext(), R.layout.view_substitute, this);
 //        ButterKnife.bind(this);
     }
