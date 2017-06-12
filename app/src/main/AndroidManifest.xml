@@ -25,7 +25,7 @@
             android:name=".view.SettingsActivity"
             android:label="@string/title_activity_settings"
             android:parentActivityName=".MainActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/Theme.hgschedule.default">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="de.ysndr.android.hgschedule.MainActivity" />

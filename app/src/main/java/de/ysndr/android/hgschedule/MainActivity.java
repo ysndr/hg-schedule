@@ -2,6 +2,7 @@ package de.ysndr.android.hgschedule;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -22,8 +23,12 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
+    @BindView(R.id.collapsing_toolbar)
+    CollapsingToolbarLayout collapsingToolbarLayout;
+
     @BindView(R.id.fab)
     FloatingActionButton fab;
+
 
     CompositeSubscription subscriptions;
 
@@ -37,7 +42,9 @@ public class MainActivity extends AppCompatActivity {
 
         subscriptions = new CompositeSubscription();
 
+        collapsingToolbarLayout.setTitleEnabled(false);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Substitutes");
 
         subscriptions.addAll(
                 RxView.clicks(fab).subscribe(_void_ -> {

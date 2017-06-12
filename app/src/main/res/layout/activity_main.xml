@@ -10,34 +10,34 @@
 
 
     <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        >
+        android:theme="@style/Theme.hgschedule.Toolbar.dark">
 
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/collapsing_toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:contentScrim="@color/cardview_light_background"
-            app:layout_scrollFlags="scroll|snap|exitUntilCollapsed">
+            android:fitsSystemWindows="true"
+            app:layout_scrollFlags="scroll">
 
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                app:layout_collapseMode="pin">
-
-            </android.support.v7.widget.Toolbar>
+                android:fitsSystemWindows="true"
+                app:layout_collapseMode="pin"/>
 
 
         </android.support.design.widget.CollapsingToolbarLayout>
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        <!--<FrameLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="?attr/actionBarSize">-->
 
-        </FrameLayout>
+        <!--</FrameLayout>-->
 
 
     </android.support.design.widget.AppBarLayout>
