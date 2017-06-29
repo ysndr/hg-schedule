@@ -1,57 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Base application theme. -->
-    <style name="Theme.hgschedule.default" parent="Theme.GuidelinesCompat.Light.DarkToolbar">
-        <!-- Customize your theme here. -->
 
+    <style name="Theme.hgschedule.root" parent="Theme.AppCompat.Light">
+
+    </style>
+
+    <style name="Theme.hgschedule.base" parent="Theme.hgschedule.root">
+
+        <!-- base colors -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
 
+        <!--We will be using the toolbar so no need to show ActionBar-->
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <!--We will be using the toolbar so no need to show ActionBar-->
+
+
+        <!-- Preferences -->
+        <!--<item name="android:dialogPreferenceStyle">@style/Preference.DialogPreference</item>-->
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
+        <item name="android:dialogPreferenceStyle">@style/Preference.DialogPreference</item>
+        <item name="dialogPreferenceStyle">@style/Preference.DialogPreference</item>
+
+        <!--<item name="preferenceScreenStyle">@style/Preference.PreferenceScreen</item>-->
+        <!--<item name="preferenceFragmentStyle">@style/PreferenceFragment</item>-->
+        <!--<item name="preferenceCategoryStyle">@style/Preference.Category</item>-->
+        <!--<item name="preferenceStyle">@style/PreferenceStyle</item>-->
+
+
+        <!--<item name="android:preferenceStyle">@style/Theme.hgschedule.PreferencesOverlay.default</item>-->
+        <!--<item name="preferenceStyle">@style/Theme.hgschedule.PreferencesOverlay.default</item>-->
+        <!--<item name="preferenceCategoryStyle">@style/Preference.Category.Material</item>-->
+
+    </style>
+
+    <style name="Theme.hgschedule.Light" parent="Theme.hgschedule.base">
+        <!-- light modifications -->
+    </style>
+
+    <style name="Theme.hgschedule.default" parent="Theme.hgschedule.Light">
     </style>
 
 
-    <style name="Theme.hgschedule.Light.DarkToolbar" parent="AppTheme.NoActionBar">
-
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-
-        <!-- Actionbar theme -->
-        <!--<item name="actionBarTheme">@style/Theme.GuidelinesCompat.DarkToolbar</item>-->
-        <!--<item name="windowActionBar">false</item>-->
-        <!--<item name="windowNoTitle">true</item>-->
-
-
-    </style>
-
+    <!-- Toolbar themes-->
     <style name="Theme.hgschedule.Toolbar.dark" parent="Theme.GuidelinesCompat.DarkToolbar">
 
-        <!--<item name="windowNoTitle">false</item>-->
-        <!--<item name="windowActionBar">true</item>-->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:statusBarColor">@color/colorPrimaryDark</item>
-        <item name="android:textColorPrimary">#ffffff</item>
+        <!--<item name="colorPrimary">@color/colorPrimary</item>-->
+        <!--<item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
+        <!--<item name="colorAccent">@color/colorAccent</item>-->
+        <!--<item name="android:statusBarColor">@color/colorPrimaryDark</item>-->
+        <!--<item name="android:textColorPrimary">#ffffff</item>-->
 
 
-        <item name="selectableItemBackground">?android:attr/selectableItemBackground</item>
+        <!--<item name="selectableItemBackground">?android:attr/selectableItemBackground</item>-->
 
 
         <!--<item name="android:backgroundTint">@color/colorAccent</item>-->
     </style>
-
-
-    <style name="AppTheme.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="actionBarTheme">@style/ThemeOverlay.AppCompat.ActionBar</item>
-
-    </style>
-
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 </resources>

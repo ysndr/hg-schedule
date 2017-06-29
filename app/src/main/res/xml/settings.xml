@@ -1,31 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+                  android:key="name_a_unique_key">
 
     <PreferenceCategory
-
-        app:title="login credencials">
+        android:title="Login">
         <EditTextPreference
             android:key="user"
             android:selectAllOnFocus="true"
             android:singleLine="true"
-            android:title="Username"
-            app:title="Username" />
+            android:summary="Set your Username"
+            android:title="Username"/>
         <EditTextPreference
             android:key="pass"
             android:selectAllOnFocus="true"
-            android:title="Password"
-            app:title="Password" />
+            android:summary="Set your Password"
+            android:title="Password"/>
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="School">
+
+        <de.ysndr.android.hgschedule.view.widget.preferences.SchoolPreference
+            android:key="school"
+            android:title="Select school"/>
+
+        <!--<Preference-->
+        <!--android:key="school2"-->
+        <!--android:title="Select school">-->
+        <!--<intent-->
+        <!--android:action="android.intent.action.VIEW"-->
+        <!--android:targetPackage="de.ysndr.android.hgschedule"-->
+        <!--android:targetClass="de.ysndr.android.hgschedule.view.widget.preferences.SchoolPreferenceActivity">-->
+        <!--<extra android:name="key" android:value="school" />-->
+        <!--</intent>-->
+        <!--</Preference>-->
+
 
     </PreferenceCategory>
-
-    <de.ysndr.android.hgschedule.view.SchoolSelectionPreference
-        android:key="school"
-        android:title="Select School" />
-
-    <!--<ListPreference-->
-    <!--android:key="school_id"-->
-    <!--android:entries=""-->
-    <!--android:entryValues=""-->
-    <!--android:title="Select School"/>-->
 </PreferenceScreen>
