@@ -1,4 +1,4 @@
-package de.ysndr.android.hgschedule.view;
+package de.ysndr.android.hgschedule.view.widget.preferences;
 
 import android.content.Context;
 import android.support.annotation.LayoutRes;
@@ -7,7 +7,6 @@ import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -52,7 +51,6 @@ import timber.log.Timber;
 
 public class SchoolSelectionPreference extends MaterialDialogPreference {
 
-    private final ClickListAdapter adapter;
     @LayoutRes
     private final int mDialogLayoutResId = R.layout.school_selection_dialog;
     RxSharedPreferences preferences;
@@ -67,6 +65,7 @@ public class SchoolSelectionPreference extends MaterialDialogPreference {
     RecyclerView recyclerView;
     @BindView(R.id.school_selection_cancel_button)
     Button close;
+    private ClickListAdapter adapter;
     private Observable<Option<School>> close$;
     private Observable<Option<School>> value$;
 
@@ -79,7 +78,8 @@ public class SchoolSelectionPreference extends MaterialDialogPreference {
     }
 
     public SchoolSelectionPreference(Context context, AttributeSet attrs, int defStyleAttr) {
-        this(context, attrs, defStyleAttr, defStyleAttr);
+        super(context, attrs, defStyleAttr);
+        this.setDialogLayoutResource(mDialogLayoutResId);
     }
 
     public SchoolSelectionPreference(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
@@ -96,22 +96,20 @@ public class SchoolSelectionPreference extends MaterialDialogPreference {
                 .subscribe((summary) -> {
                     setSummary(summary.orSome("Choose"));
                 });
-
     }
 
+//    @Override
+//    protected View onCreateDialogView() {
+//        view = LayoutInflater.from(this.getContext()).inflate(mDialogLayoutResId, null);
+//        return view;
+//    }
 
-    @Override
-    protected View onCreateDialogView() {
-        view = LayoutInflater.from(this.getContext()).inflate(mDialogLayoutResId, null);
-        return view;
-    }
-
-    @Override
     protected void onBindDialogView(View view) {
         super.onBindDialogView(view);
 
         ButterKnife.bind(this, this.view);
         MyApp.getScheduleComponent(this.getContext()).inject(this);
+
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
