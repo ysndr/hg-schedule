@@ -1,12 +1,9 @@
 package de.ysndr.android.hgschedule.view.models;
 
-import android.widget.TextView;
-
 import com.airbnb.epoxy.EpoxyAttribute;
 import com.airbnb.epoxy.EpoxyModel;
 import com.airbnb.epoxy.EpoxyModelClass;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import de.ysndr.android.hgschedule.R;
@@ -23,22 +20,22 @@ public abstract class SubstituteModel extends EpoxyModel<SubstituteView> {
 
     @EpoxyAttribute
     Substitute substitute;
+    /*
+        @BindView(R.id.text_title_card_schedule_item)
+        TextView title;
+        @BindView(R.id.text_description_card_schedule_item)
+        TextView description;
+        @BindView(R.id.text_teacher_absent_card_schedule_item)
+        TextView absent;
+        @BindView(R.id.text_teacher_new_card_schedule_item)
+        TextView subst;
+        @BindView(R.id.text_lessons_card_schedule_item)
+        TextView lessons;
+        @BindView(R.id.text_classes_card_schedule_item)
+        TextView classes;
 
-    @BindView(R.id.text_title_card_schedule_item)
-    TextView title;
-    @BindView(R.id.text_description_card_schedule_item)
-    TextView description;
-    @BindView(R.id.text_teacher_absent_card_schedule_item)
-    TextView absent;
-    @BindView(R.id.text_teacher_new_card_schedule_item)
-    TextView subst;
-    @BindView(R.id.text_lessons_card_schedule_item)
-    TextView lessons;
-    @BindView(R.id.text_classes_card_schedule_item)
-    TextView classes;
-
-    @BindView(R.id.text_room_card_schedule_item)
-    TextView room;
+        @BindView(R.id.text_room_card_schedule_item)
+        TextView room;*/
     Unbinder unbinder;
 
     @Override
@@ -48,13 +45,13 @@ public abstract class SubstituteModel extends EpoxyModel<SubstituteView> {
 
         Timber.d("in `bind()`");
 
-        absent.setText(substitute.absent());
-        subst.setText(substitute.substitute());
-        classes.setText(substitute.classes());
-        lessons.setText(substitute.hour());
-        description.setText(substitute.description());
-        room.setText(substitute.room());
-        title.setText(substitute.absent());
+        view.setAbsent(substitute.absent());
+        view.setSubst(substitute.substitute());
+        view.setClasses(substitute.classes());
+        view.setLessons(substitute.hour());
+        view.setDescription(substitute.description());
+        view.setRoom(substitute.room());
+        view.setTitle(substitute.absent());
         // TODO maybe change to a visible/invisible filtering
     }
 
