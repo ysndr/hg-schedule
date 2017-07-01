@@ -49,7 +49,7 @@
         <TextView
             android:id="@+id/text_teacher_absent_card_schedule_item"
             style="@style/Base.TextAppearance.AppCompat.Body1"
-            android:layout_width="wrap_content"
+            android:layout_width="32dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:text="Bru"
@@ -73,7 +73,7 @@
         <TextView
             android:id="@+id/text_teacher_new_card_schedule_item"
             style="@style/Base.TextAppearance.AppCompat.Body1"
-            android:layout_width="wrap_content"
+            android:layout_width="32dp"
             android:layout_height="wrap_content"
             android:text="---"
             android:textColor="?android:attr/textColorHint"
@@ -95,7 +95,7 @@
         <TextView
             android:id="@+id/text_lessons_card_schedule_item"
             style="@style/Base.TextAppearance.AppCompat.Body1"
-            android:layout_width="0dp"
+            android:layout_width="32dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:text="4"
@@ -129,11 +129,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="24dp"
             android:text="class(es):"
             app:layout_constraintBaseline_toBaselineOf="@+id/text_lessons_card_schedule_item"
             app:layout_constraintLeft_toRightOf="@+id/text_lessons_card_schedule_item"
-            app:layout_constraintRight_toRightOf="parent"/>
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"/>
 
 
         <TextView
