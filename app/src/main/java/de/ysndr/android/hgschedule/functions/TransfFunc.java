@@ -99,11 +99,13 @@ public class TransfFunc {
     }
 
     public static Func2<
-        Set<Transformation<Schedule>>,
         Entry,
+        Set<Transformation<Schedule>>,
         Set<Transformation<Schedule>>> toggleCreateFilter(){
-        return (set, entry) -> RxFunctions.chain(
-            TransfFunc.createFilterEntry(),
-            RxPartialFunc.applyEnd(toggleTransf(), set)).call(entry);
+        return (entry, set) -> RxFunctions
+            .chain(
+                TransfFunc.createFilterEntry(),
+                RxPartialFunc.applyEnd(toggleTransf(), set))
+            .call(entry);
     }
 }

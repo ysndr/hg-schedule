@@ -98,7 +98,7 @@ public class ScheduleListFragment extends Fragment {
         subscriptions = new CompositeSubscription();
 
         state$ = BehaviorRelay.create(State.empty(Empty.of()));
-        transformers$ = BehaviorRelay.create();
+        transformers$ = BehaviorRelay.create(Set.<Transformation<Schedule>>empty(Ord.hashEqualsOrd()));
         refresh$ = BehaviorRelay.create();
         dialogRequest$ = BehaviorRelay.create();
         filterRequest$ = BehaviorRelay.create();
@@ -159,7 +159,7 @@ public class ScheduleListFragment extends Fragment {
                 .doOnNext(data -> Timber.d("new state: %s", data));
 
         Observable<Set<Transformation<Schedule>>> transformations$ = Observable.merge(
-                Observable.zip(transformers$, filterRequest$, TransfFunc.toggleCreateFilter()),
+                filterRequest$.withLatestFrom(transformers$, TransfFunc.toggleCreateFilter()),
                 setupClearFilter$());
 
         // proxies
