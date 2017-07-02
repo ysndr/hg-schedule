@@ -11,12 +11,12 @@ buildscript {
     }
     dependencies {
         // replace with the current version of the Android plugin
-        classpath 'com.android.tools.build:gradle:3.0.0-alpha4'
+        classpath 'com.android.tools.build:gradle:3.0.0-alpha5'
     }
 }
 
 plugins {
-    id "me.tatarka.retrolambda" version "3.2.5"
+    id "me.tatarka.retrolambda" version "3.2.5" // TODO: move to Rx2 ASAP (see reactive cache)
 }
 
 apply plugin: 'com.android.application'
@@ -146,7 +146,7 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:${retrofitVersion}"
     implementation "com.squareup.retrofit2:adapter-rxjava:${retrofitRxAdapterVersion}"
     implementation "com.squareup.retrofit2:converter-gson:${retrofitGsonConverterVersion}"
-    implementation 'org.functionaljava:functionaljava:4.7'
+    implementation 'org.functionaljava:functionaljava_1.8:4.7'
 
     //    implementation'org.functionaljava:functionaljava-quickcheck:4.7'
     implementation 'com.jakewharton.timber:timber:4.5.1'
