@@ -6,6 +6,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import de.ysndr.android.hgschedule.inject.scopes.ApplicationScope;
 
 /**
  * Created by yannik on 10/8/16.
@@ -20,7 +21,7 @@ public class AppModule {
     }
 
     @Provides
-    @Singleton
+    @ApplicationScope
     Application providesApplication() {
         return mApplication;
     }

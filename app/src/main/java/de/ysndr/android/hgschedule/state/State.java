@@ -30,6 +30,9 @@ public abstract class State {
     public static State empty(StateEmpty empty) {
         return ImmState.of(FACTORY.third(empty));
     }
+    public static State empty() {
+        return ImmState.of(FACTORY.third(Empty.of()));
+    }
 
     public abstract Union3<StateError, StateScheduleData, StateEmpty> union();
 

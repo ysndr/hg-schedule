@@ -1,13 +1,10 @@
 package de.ysndr.android.hgschedule.inject.modules;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import de.ysndr.android.hgschedule.state.models.GsonAdaptersModels;
+import de.ysndr.android.hgschedule.inject.scopes.ScheduleScope;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -24,13 +21,8 @@ public class RetrofitModule {
     }
 
     @Provides
-    @Singleton
-    Retrofit provideRetrofit() {
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        Gson gson = gsonBuilder
-                .registerTypeAdapterFactory(new GsonAdaptersModels())
-                .create();
-
+    @ScheduleScope
+    Retrofit provideRetrofit(Gson gson) {
         Retrofit retrofit = new Retrofit.Builder()
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(gson))

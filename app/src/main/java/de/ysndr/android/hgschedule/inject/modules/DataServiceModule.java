@@ -7,11 +7,10 @@ import com.f2prateek.rx.preferences.RxSharedPreferences;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import javax.inject.Singleton;
-
 import dagger.Module;
 import dagger.Provides;
 import de.ysndr.android.hgschedule.inject.RemoteDataService;
+import de.ysndr.android.hgschedule.inject.scopes.ScheduleScope;
 import de.ysndr.android.hgschedule.state.models.GsonAdaptersModels;
 import io.reactivecache.ReactiveCache;
 import io.victoralbertos.jolyglot.GsonSpeaker;
@@ -23,19 +22,19 @@ import retrofit2.Retrofit;
 @Module
 public class DataServiceModule {
     @Provides
-    @Singleton
+    @ScheduleScope
     RemoteDataService provideRemoteDataService(Retrofit retrofit) {
         return retrofit.create(RemoteDataService.class);
     }
 
     @Provides
-    @Singleton
+    @ScheduleScope
     RxSharedPreferences providePreferences(Application app) {
         return RxSharedPreferences.create(PreferenceManager.getDefaultSharedPreferences(app));
     }
 
     @Provides
-    @Singleton
+    @ScheduleScope
     ReactiveCache provideReactiveCache(Application app) {
         GsonBuilder gsonBuilder = new GsonBuilder();
         Gson gson = gsonBuilder
@@ -47,12 +46,5 @@ public class DataServiceModule {
 
         return reactiveCache;
     }
-
-
-//    @Provides
-//    @Singleton
-//    CombinedDataService provideCombinedDataService(RemoteDataService remote) {
-//        return new CombinedDataService(remote);
-//    }
 
 }

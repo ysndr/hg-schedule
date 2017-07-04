@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         ButterKnife.bind(this);
-        MyApp.getScheduleComponent(this).inject(this);
+//        MyApp.getActivityComponent(this).inject(this);
 
         subscriptions = new CompositeSubscription();
 
