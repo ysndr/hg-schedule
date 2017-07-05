@@ -1,10 +1,9 @@
 package de.ysndr.android.hgschedule.inject;
 
 import dagger.Component;
-import dagger.Subcomponent;
-import de.ysndr.android.hgschedule.MainActivity;
 import de.ysndr.android.hgschedule.inject.modules.DataServiceModule;
 import de.ysndr.android.hgschedule.inject.modules.RetrofitModule;
+import de.ysndr.android.hgschedule.inject.modules.StateModule;
 import de.ysndr.android.hgschedule.inject.scopes.ScheduleScope;
 import de.ysndr.android.hgschedule.view.ScheduleListFragment;
 import de.ysndr.android.hgschedule.view.widget.preferences.SchoolPreference;
@@ -19,7 +18,9 @@ import de.ysndr.android.hgschedule.view.widget.preferences.SchoolSelectionPrefer
     dependencies = {ActivityComponent.class},
     modules = {
         RetrofitModule.class,
-        DataServiceModule.class})
+        DataServiceModule.class,
+        StateModule.class
+    })
 public interface ScheduleComponent {
     void inject(SchoolPreferenceActivity preferenceActivity);
     void inject(ScheduleListFragment fragment);

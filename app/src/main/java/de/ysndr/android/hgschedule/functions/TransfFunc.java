@@ -1,7 +1,5 @@
 package de.ysndr.android.hgschedule.functions;
 
-import org.javatuples.Pair;
-
 import de.ysndr.android.hgschedule.functions.models.ImmutableTransformation;
 import de.ysndr.android.hgschedule.functions.models.Transformation;
 import de.ysndr.android.hgschedule.state.ScheduleData;
@@ -13,7 +11,6 @@ import de.ysndr.android.hgschedule.state.models.Schedule;
 import fj.Ord;
 import fj.data.Set;
 import fj.java.util.ListUtil;
-import rx.Observable;
 import timber.log.Timber;
 
 /**
@@ -67,10 +64,8 @@ public class TransfFunc {
         return t;
     }
 
-
-    static Observable.Transformer<Schedule, Pair<Set<Transformation<Schedule>>, Schedule>> prependEmptyTransformations() {
-        return source -> source.map(schedule ->
-            Pair.with(Set.empty(Ord.hashEqualsOrd()), schedule));
+    public static <O> Set<Transformation<O>> emptyTransformationSet() {
+        return Set.empty(Ord.hashEqualsOrd());
     }
 
 }
