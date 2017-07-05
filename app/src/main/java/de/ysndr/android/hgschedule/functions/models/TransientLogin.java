@@ -10,8 +10,8 @@ import de.ysndr.android.hgschedule.state.models.School;
  * Created by yannik on 5/7/17.
  */
 @Value.Immutable
-@Value.Style(allParameters = true)
-public abstract class Login {
+@TransientStyle
+public abstract class TransientLogin {
     public abstract School school();
     abstract String user();
     abstract String pass();
