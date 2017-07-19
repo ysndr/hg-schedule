@@ -1,7 +1,7 @@
 package de.ysndr.android.hgschedule.util.reactive;
 
 import de.ysndr.android.hgschedule.state.models.Entry;
-import rx.Observable;
+import io.reactivex.Observable;
 
 /**
  * Created by yannik on 1/1/17.

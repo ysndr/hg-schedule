@@ -1,6 +1,6 @@
 package de.ysndr.android.hgschedule.utils;
 
-import rx.functions.Action1;
+import fj.function.Effect1;
 
 /**
  * Created by yannik on 10/16/16.
@@ -23,8 +23,8 @@ public class Either<A, B> {
         return new Either<>(null, value);
     }
 
-    public void fold(Action1<A> funcL, Action1<B> funcR) {
-        if (right == null) funcL.call(left);
-        else funcR.call(right);
+    public void fold(Effect1<A> funcL, Effect1<B> funcR) {
+        if (right == null) funcL.f(left);
+        else funcR.f(right);
     }
 }

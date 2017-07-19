@@ -1,8 +1,8 @@
 package de.ysndr.android.hgschedule.util.preferences;
 
-import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
 
-import com.f2prateek.rx.preferences.Preference;
+import com.f2prateek.rx.preferences2.Preference;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -12,24 +12,27 @@ import de.ysndr.android.hgschedule.state.models.GsonAdaptersModels;
  * Created by yannik on 2/5/17.
  */
 
-public class GsonPreferenceAdapter<T> implements Preference.Adapter<T> {
+public class GsonPreferenceConverter<T> implements Preference.Converter<T> {
     final Gson gson;
     private Class<T> clazz;
 
-    public GsonPreferenceAdapter(Class<T> clazz) {
+    public GsonPreferenceConverter(Class<T> clazz) {
         this.clazz = clazz;
         gson = new GsonBuilder()
                 .registerTypeAdapterFactory(new GsonAdaptersModels())
                 .create();
     }
 
+
+    @NonNull
     @Override
-    public T get(String key, SharedPreferences preferences) {
-        return gson.fromJson(preferences.getString(key, null), clazz);
+    public T deserialize(@NonNull String serialized) {
+        return gson.fromJson(serialized, clazz);
     }
 
+    @NonNull
     @Override
-    public void set(String key, T value, SharedPreferences.Editor editor) {
-        editor.putString(key, gson.toJson(value));
+    public String serialize(@NonNull T value) {
+        return gson.toJson(value);
     }
 }

@@ -11,7 +11,7 @@ buildscript {
     }
     dependencies {
         // replace with the current version of the Android plugin
-        classpath 'com.android.tools.build:gradle:3.0.0-alpha5'
+        classpath 'com.android.tools.build:gradle:3.0.0-alpha6'
     }
 }
 
@@ -76,9 +76,9 @@ ext {
     retrofitRxAdapterVersion = "2.2.0"
     retrofitGsonConverterVersion = "2.2.0"
 
-    rxjavaVersion = "1.2.6"
-    rxAndroidVersion = "1.2.1"
-    rxBindingsVersion = "1.0.1"
+    rxjavaVersion = "2.1.1"
+    rxAndroidVersion = "2.0.1"
+    rxBindingsVersion = "2.0.0"
 
     timberVersion = "4.3.1"
 
@@ -116,7 +116,7 @@ dependencies {
 
     // annotation-only artifact
     compileOnly 'org.immutables:serial:2.4.4'
-    implementation 'com.jakewharton.rxrelay:rxrelay:1.2.0'
+    implementation 'com.jakewharton.rxrelay2:rxrelay:2.0.0'
     implementation "com.jakewharton:butterknife:${butterknifeVersion}"
     annotationProcessor "com.jakewharton:butterknife-compiler:${butterknifeVersion}"
     implementation 'com.hannesdorfmann.fragmentargs:annotation:3.0.2'
@@ -131,20 +131,20 @@ dependencies {
     annotationProcessor "com.google.dagger:dagger-compiler:2.10"
     implementation 'com.google.dagger:dagger:2.10'
     compileOnly 'javax.annotation:jsr250-api:1.0'
-    implementation 'com.f2prateek.rx.preferences:rx-preferences:1.0.2'
+    implementation 'com.f2prateek.rx.preferences2:rx-preferences:2.0.0-RC2'
 
     // will cahnge to Rxjava 2.0 later
 
     //implementation'com.f2prateek.rx.preferences2:rx-preferences:2.0.0-RC1'
-    implementation 'io.reactivex:rxjava:1.2.9'
-    implementation "io.reactivex:rxandroid:${rxAndroidVersion}"
-    implementation "com.jakewharton.rxbinding:rxbinding:${rxBindingsVersion}"
-    implementation "com.jakewharton.rxbinding:rxbinding-support-v4:${rxBindingsVersion}"
-    implementation "com.jakewharton.rxbinding:rxbinding-appcompat-v7:${rxBindingsVersion}"
-    implementation "com.jakewharton.rxbinding:rxbinding-design:${rxBindingsVersion}"
-    implementation "com.jakewharton.rxbinding:rxbinding-recyclerview-v7:${rxBindingsVersion}"
+    implementation "io.reactivex.rxjava2:rxjava:${rxjavaVersion}"
+    implementation "io.reactivex.rxjava2:rxandroid:${rxAndroidVersion}"
+    implementation "com.jakewharton.rxbinding2:rxbinding:${rxBindingsVersion}"
+    implementation "com.jakewharton.rxbinding2:rxbinding-support-v4:${rxBindingsVersion}"
+    implementation "com.jakewharton.rxbinding2:rxbinding-appcompat-v7:${rxBindingsVersion}"
+    implementation "com.jakewharton.rxbinding2:rxbinding-design:${rxBindingsVersion}"
+    implementation "com.jakewharton.rxbinding2:rxbinding-recyclerview-v7:${rxBindingsVersion}"
     implementation "com.squareup.retrofit2:retrofit:${retrofitVersion}"
-    implementation "com.squareup.retrofit2:adapter-rxjava:${retrofitRxAdapterVersion}"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:${retrofitRxAdapterVersion}"
     implementation "com.squareup.retrofit2:converter-gson:${retrofitGsonConverterVersion}"
     implementation 'org.functionaljava:functionaljava:4.7'
     implementation'org.functionaljava:functionaljava-java-core:4.7'
@@ -155,11 +155,12 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
 
     //implementation'de.ysndr.rxvaluestore:android:0.0.1-PRE-01'
-    implementation 'com.github.VictorAlbertos:ReactiveCache:0.0.7-1.x'
+    implementation 'com.github.VictorAlbertos:ReactiveCache:1.1.1-2.x'
     implementation 'com.github.VictorAlbertos.Jolyglot:gson:0.0.3'
-    implementation 'com.github.pakoito:FunctionalRx:1.1.0'
+    implementation 'com.github.pakoito:FunctionalRx2:1.1.0'
     implementation 'com.airbnb.android:epoxy:2.1.0'
     annotationProcessor 'com.airbnb.android:epoxy-processor:2.1.0'
+    implementation 'com.hannesdorfmann.mosby3:mvi-conductor:3.0.0'
 }
 
 def buildTime() {

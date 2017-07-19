@@ -5,9 +5,9 @@ import java.util.List;
 import javax.inject.Inject;
 
 import de.ysndr.android.hgschedule.state.models.School;
+import io.reactivex.Observable;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
-import rx.Observable;
-import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
 /**

@@ -2,7 +2,7 @@ package de.ysndr.android.hgschedule.util;
 
 import org.immutables.value.Value;
 
-import rx.functions.Func1;
+import fj.F;
 
 /**
  * Created by yannik on 1/1/17.
@@ -19,7 +19,7 @@ import rx.functions.Func1;
 public interface FilterDef<I, O> {
 
     @Value.Auxiliary
-    Func1<I, O> filter();
+    F<I, O> filter();
 
     int ident();
 

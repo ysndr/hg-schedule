@@ -3,7 +3,7 @@ package de.ysndr.android.hgschedule.inject.modules;
 import android.app.Application;
 import android.support.v7.preference.PreferenceManager;
 
-import com.f2prateek.rx.preferences.RxSharedPreferences;
+import com.f2prateek.rx.preferences2.RxSharedPreferences;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -12,7 +12,7 @@ import dagger.Provides;
 import de.ysndr.android.hgschedule.inject.RemoteDataService;
 import de.ysndr.android.hgschedule.inject.scopes.ScheduleScope;
 import de.ysndr.android.hgschedule.state.models.GsonAdaptersModels;
-import io.reactivecache.ReactiveCache;
+import io.reactivecache2.ReactiveCache;
 import io.victoralbertos.jolyglot.GsonSpeaker;
 import retrofit2.Retrofit;
 

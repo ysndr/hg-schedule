@@ -12,12 +12,12 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.prefs.MaterialDialogPreference;
-import com.f2prateek.rx.preferences.Preference;
-import com.f2prateek.rx.preferences.RxSharedPreferences;
+import com.f2prateek.rx.preferences2.Preference;
+import com.f2prateek.rx.preferences2.RxSharedPreferences;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.jakewharton.rxbinding.support.v4.widget.RxSwipeRefreshLayout;
-import com.jakewharton.rxbinding.view.RxView;
+import com.jakewharton.rxbinding2.support.v4.widget.RxSwipeRefreshLayout;
+import com.jakewharton.rxbinding2.view.RxView;
 
 import java.util.List;
 
@@ -30,8 +30,7 @@ import de.ysndr.android.hgschedule.R;
 import de.ysndr.android.hgschedule.presenters.SchoolPresenter;
 import de.ysndr.android.hgschedule.state.models.GsonAdaptersModels;
 import de.ysndr.android.hgschedule.state.models.School;
-import de.ysndr.android.hgschedule.util.Presentable;
-import de.ysndr.android.hgschedule.util.preferences.GsonPreferenceAdapter;
+import de.ysndr.android.hgschedule.util.preferences.GsonPreferenceConverter;
 import de.ysndr.android.hgschedule.util.reactive.ReloadIntentSource;
 import de.ysndr.android.hgschedule.view.adapters.ClickListAdapter;
 import de.ysndr.android.hgschedule.view.adapters.ImmutableSchoolLabelViewWrapper;
@@ -39,9 +38,9 @@ import de.ysndr.android.hgschedule.view.adapters.SchoolLabelViewWrapper;
 import de.ysndr.android.hgschedule.view.adapters.ViewWrapper;
 import fj.Unit;
 import fj.data.Option;
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
 
@@ -89,7 +88,7 @@ public class SchoolSelectionPreference extends MaterialDialogPreference {
         adapter.registerTypeMapping(new SchoolLabelViewWrapper.TypeMapper());
 
         preferences = RxSharedPreferences.create(PreferenceManager.getDefaultSharedPreferences(getContext()));
-        schoolPref = preferences.getObject(getKey(), School.empty(), new GsonPreferenceAdapter<>(School.class));
+        schoolPref = preferences.getObject(getKey(), School.empty(), new GsonPreferenceConverter<>(School.class));
         school$ = schoolPref.asObservable();
 
         school$.map(school -> school.summary())
@@ -127,7 +126,8 @@ public class SchoolSelectionPreference extends MaterialDialogPreference {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnError(error -> Toast.makeText(getContext(), "An error occured", Toast.LENGTH_SHORT).show())
-                .onErrorResumeNext(error -> Observable.just(Presentable.of(false, Option.none())))
+//                .onErrorResumeNext(error ->
+//                    Observable.just(Presentable.of(false, Option.none())))
                 .subscribe(
                         data -> {
                             refreshLayout.setRefreshing(data.loading());

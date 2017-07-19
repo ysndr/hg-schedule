@@ -7,16 +7,14 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
-import com.jakewharton.rxbinding.view.RxView;
+import com.jakewharton.rxbinding2.view.RxView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.ysndr.android.hgschedule.view.SettingsActivity;
-import rx.subscriptions.CompositeSubscription;
+import io.reactivex.disposables.CompositeDisposable;
 
 public class MainActivity extends AppCompatActivity {
-
-
 //    @Inject
 //    ReactiveCache cache;
 
@@ -30,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
     FloatingActionButton fab;
 
 
-    CompositeSubscription subscriptions;
+    CompositeDisposable disposables;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,13 +38,13 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 //        MyApp.getActivityComponent(this).inject(this);
 
-        subscriptions = new CompositeSubscription();
+        disposables = new CompositeDisposable();
 
         collapsingToolbarLayout.setTitleEnabled(false);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Substitutes");
 
-        subscriptions.addAll(
+        disposables.addAll(
                 RxView.clicks(fab).subscribe(_void_ -> {
                     Intent startSettings = new Intent(this, SettingsActivity.class);
                     startActivity(startSettings);
@@ -59,6 +57,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        subscriptions.clear();
+        disposables.clear();
     }
 }

@@ -4,9 +4,9 @@ package de.ysndr.android.hgschedule.view.adapters;
 import de.ysndr.android.hgschedule.state.models.School;
 import de.ysndr.android.hgschedule.util.reactive.ClickSource;
 import fj.data.List;
-import rx.Observable;
-import rx.subjects.PublishSubject;
-import rx.subjects.Subject;
+import io.reactivex.Observable;
+import io.reactivex.subjects.PublishSubject;
+import io.reactivex.subjects.Subject;
 
 /**
  * Created by yannik on 12/19/16.
@@ -39,6 +39,6 @@ public class ClickListAdapter extends DelegatingListAdapter implements ClickSour
 
     @Override
     public Observable<School> getClick() {
-        return click$.asObservable();
+        return click$;
     }
 }

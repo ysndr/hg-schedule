@@ -4,7 +4,7 @@ import android.support.v7.widget.RecyclerView;
 
 import com.airbnb.epoxy.EpoxyModel;
 import com.airbnb.epoxy.EpoxyModelGroup;
-import com.jakewharton.rxrelay.BehaviorRelay;
+import com.jakewharton.rxrelay2.BehaviorRelay;
 
 import java.util.Random;
 
@@ -36,8 +36,8 @@ public class EntryCarouselModelGroup extends EpoxyModelGroup {
         return List.<EpoxyModel<?>>list()
             .snoc(new HeaderModel_()
                 .id("header_" + entry.id())
-                .filterIntent(filterReq$.asAction())
-                .dialogIntent(dialogReq$.asAction())
+                .filterIntent(filterReq$)
+                .dialogIntent(dialogReq$)
                 .entry(entry))
 //            .snoc(new SubstituteListModelGroup(entry));
 

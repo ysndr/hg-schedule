@@ -8,13 +8,13 @@ import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.widget.Toolbar;
 
-import com.f2prateek.rx.preferences.RxSharedPreferences;
+import com.f2prateek.rx.preferences2.RxSharedPreferences;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.ysndr.android.hgschedule.R;
 import de.ysndr.android.hgschedule.state.models.School;
-import de.ysndr.android.hgschedule.util.preferences.GsonPreferenceAdapter;
+import de.ysndr.android.hgschedule.util.preferences.GsonPreferenceConverter;
 import de.ysndr.android.hgschedule.view.widget.preferences.SchoolPreference;
 import timber.log.Timber;
 
@@ -78,7 +78,7 @@ public class SettingsActivity extends AppCompatActivity {
 
             Preference p = findPreference("school2");
             RxSharedPreferences.create(getPreferenceManager().getSharedPreferences())
-                .getObject(p.getKey(), School.empty(), new GsonPreferenceAdapter<>(School.class))
+                .getObject(p.getKey(), School.empty(), new GsonPreferenceConverter<>(School.class))
                 .asObservable()
                 .doOnNext(school -> p.setSummary(school.summary().orSome("Choose")))
                 .subscribe();

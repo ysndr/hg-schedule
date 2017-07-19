@@ -6,7 +6,7 @@ import dagger.Module;
 import dagger.Provides;
 import de.ysndr.android.hgschedule.inject.scopes.ScheduleScope;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
@@ -24,7 +24,7 @@ public class RetrofitModule {
     @ScheduleScope
     Retrofit provideRetrofit(Gson gson) {
         Retrofit retrofit = new Retrofit.Builder()
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .baseUrl(mBaseUrl)
                 .build();

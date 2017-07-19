@@ -1,6 +1,6 @@
 package de.ysndr.android.hgschedule.inject.modules;
 
-import com.jakewharton.rxrelay.BehaviorRelay;
+import com.jakewharton.rxrelay2.BehaviorRelay;
 
 import dagger.Module;
 import dagger.Provides;
@@ -21,13 +21,13 @@ public class StateModule {
     @Provides
     @ScheduleScope
     BehaviorRelay<State> provideState$() {
-        return BehaviorRelay.create(State.empty());
+        return BehaviorRelay.createDefault(State.empty());
     }
 
     @Provides
     @ScheduleScope
     BehaviorRelay<Set<Transformation<Schedule>>> provideFilters$() {
-        return BehaviorRelay.create(TransfFunc.<Schedule>emptyTransformationSet());
+        return BehaviorRelay.createDefault(TransfFunc.<Schedule>emptyTransformationSet());
     }
 
 

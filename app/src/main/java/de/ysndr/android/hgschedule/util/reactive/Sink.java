@@ -1,14 +1,14 @@
 package de.ysndr.android.hgschedule.util.reactive;
 
 
-import rx.subscriptions.CompositeSubscription;
+import io.reactivex.disposables.CompositeDisposable;
 
 /**
  * Created by yannik on 1/1/17.
  */
 
 public interface Sink<T extends Source> {
-    CompositeSubscription subscriptions = new CompositeSubscription();
+    CompositeDisposable disposables = new CompositeDisposable();
 
     void bindIntent(T source);
     void unbind();

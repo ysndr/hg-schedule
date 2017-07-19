@@ -21,10 +21,16 @@ public class TransfFunc {
 
     private static <O> O applyTransformations(Set<Transformation<O>> set, O obj) {
         return set.toList()
-            .foldLeft((schedule, transformation) -> transformation.transform().call(schedule), obj);
+            .foldLeft((schedule, transformation) -> {
+                try {
+                    return transformation.transform().apply(schedule);
+                } catch (Exception e) {
+                    return null; // TODO: ???s
+                }
+            }, obj);
     }
 
-    static State transformState(
+    public static State transformState(
         State state,
         Set<Transformation<Schedule>> transformations) {
 
@@ -37,8 +43,8 @@ public class TransfFunc {
             State::empty);
     }
 
-    static <O> Set<Transformation<O>> toggleTransf(Transformation<O> transformation,
-                                                   Set<Transformation<O>> set) {
+    public static <O> Set<Transformation<O>> toggleTransf(Transformation<O> transformation,
+                                                          Set<Transformation<O>> set) {
 
         Timber.d("toggling `%s` %s",
             transformation,
@@ -49,7 +55,7 @@ public class TransfFunc {
             : set.insert(transformation);
     }
 
-    static Transformation<Schedule> createEntryFilter(Entry entry) {
+    public static Transformation<Schedule> createEntryFilter(Entry entry) {
 
         Transformation<Schedule> t = ImmutableTransformation.of(
             "entry_filter_" + entry.id(),

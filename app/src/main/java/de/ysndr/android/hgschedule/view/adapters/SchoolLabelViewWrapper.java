@@ -4,16 +4,16 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
-import com.jakewharton.rxbinding.view.RxView;
+import com.jakewharton.rxbinding2.view.RxView;
 
 import org.immutables.value.Value;
 
 import butterknife.BindView;
 import de.ysndr.android.hgschedule.R;
 import de.ysndr.android.hgschedule.state.models.School;
-import rx.Observable;
-import rx.subjects.BehaviorSubject;
-import rx.subscriptions.CompositeSubscription;
+import io.reactivex.Observable;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.subjects.BehaviorSubject;
 import timber.log.Timber;
 
 /**
@@ -23,7 +23,7 @@ import timber.log.Timber;
 public abstract class SchoolLabelViewWrapper extends ViewWrapper {
 
     private final BehaviorSubject click$ = BehaviorSubject.create();
-    private final CompositeSubscription subscriptions = new CompositeSubscription();
+    private final CompositeDisposable disposables = new CompositeDisposable();
 
     public abstract School school();
 
@@ -33,7 +33,7 @@ public abstract class SchoolLabelViewWrapper extends ViewWrapper {
         holder.name.setText(school().name());
         holder.variant.setText(school().variant());
 
-        subscriptions.add(RxView.clicks(holder.itemView)
+        disposables.add(RxView.clicks(holder.itemView)
                 .doOnNext(_void_ -> Timber.d("Label clicked"))
                 .map(_void_ -> school())
                 .subscribe(click$::onNext, click$::onError));
@@ -42,11 +42,11 @@ public abstract class SchoolLabelViewWrapper extends ViewWrapper {
     @Override
     public void unbind() {
         super.unbind();
-        subscriptions.clear();
+        disposables.clear();
     }
 
     public Observable<School> click$() {
-        return click$.asObservable();
+        return click$;
     }
 
     @Override

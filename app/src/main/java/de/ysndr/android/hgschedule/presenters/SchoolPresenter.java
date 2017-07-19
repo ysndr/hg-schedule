@@ -12,9 +12,9 @@ import de.ysndr.android.hgschedule.util.reactive.ReloadIntentSink;
 import de.ysndr.android.hgschedule.util.reactive.ReloadIntentSource;
 import de.ysndr.android.hgschedule.util.reactive.SchoolDataSource;
 import fj.data.Option;
-import rx.Observable;
-import rx.subjects.BehaviorSubject;
-import rx.subjects.Subject;
+import io.reactivex.Observable;
+import io.reactivex.subjects.BehaviorSubject;
+import io.reactivex.subjects.Subject;
 import timber.log.Timber;
 
 /**
@@ -26,7 +26,7 @@ public class SchoolPresenter implements SchoolDataSource {
     @Inject
     CombinedDataService mDataService;
 
-    Subject<Presentable<List<School>>, Presentable<List<School>>> values$;
+    Subject<Presentable<List<School>>> values$;
 
 
     public final ReloadIntentSink reloadIntentSink = new ReloadIntentSink() {
@@ -46,7 +46,7 @@ public class SchoolPresenter implements SchoolDataSource {
 
         @Override
         public void bindIntent(ReloadIntentSource source) {
-            subscriptions.add(source.reloadIntent$()
+            disposables.add(source.reloadIntent$()
                     .map(unit -> Presentable.<List<School>>of(true, Option.none()))
                     .flatMap(listPresentable -> update().startWith(listPresentable))
                     .doOnNext(listPresentable -> Timber.d("Data received: " + listPresentable.result().isSome()))
@@ -57,7 +57,7 @@ public class SchoolPresenter implements SchoolDataSource {
 
         @Override
         public void unbind() {
-            subscriptions.clear();
+            disposables.clear();
         }
     };
 
@@ -69,7 +69,7 @@ public class SchoolPresenter implements SchoolDataSource {
 
     @Override
     public Observable<Presentable<List<School>>> data$() {
-        return values$.asObservable();
+        return values$;
     }
 
 

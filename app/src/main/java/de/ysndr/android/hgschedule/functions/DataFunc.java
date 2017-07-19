@@ -7,11 +7,11 @@ import de.ysndr.android.hgschedule.functions.models.Login;
 import de.ysndr.android.hgschedule.inject.RemoteDataService;
 import de.ysndr.android.hgschedule.state.models.Schedule;
 import de.ysndr.android.hgschedule.state.models.School;
-import io.reactivecache.ReactiveCache;
-import io.rx_cache.RxCacheException;
+import io.reactivecache2.ReactiveCache;
+import io.reactivex.Observable;
+import io.reactivex.functions.Function;
+import io.rx_cache2.RxCacheException;
 import retrofit2.Response;
-import rx.Observable;
-import rx.functions.Func1;
 import timber.log.Timber;
 
 /**
@@ -21,20 +21,21 @@ import timber.log.Timber;
 
 public class DataFunc {
 
-    public static Func1<Login, Observable<Schedule>> schedule(
+    public static Function<Login, Observable<Schedule>> schedule(
             RemoteDataService remote,
             ReactiveCache cache) {
 
         return (login) -> Observable.concatDelayError(
-            cache$(login, cache),
-            remote$(login, remote, cache)).take(1)
+            fj.data.List.list(
+                cache$(login, cache),
+                remote$(login, remote, cache))).take(1)
             // LOGS //
             .doOnError(e -> Timber.d("error getting schedule: %s", e))
             .doOnNext(data -> Timber.d("got data: %s", data));
     }
 
 
-    public static Func1<?, Observable<Response<List<School>>>> schools(RemoteDataService remote) {
+    public static Function<?, Observable<Response<List<School>>>> schools(RemoteDataService remote) {
         return __ -> remote.getSchools();
     }
 
@@ -46,6 +47,7 @@ public class DataFunc {
         Timber.d("requesting cache");
 
         return cache.<Schedule>provider().withKey(login.school().id()).read()
+            .toObservable()
                 .doOnNext(__ -> Timber.d("from cache"))
                 .onErrorResumeNext(error ->
                         (error instanceof RxCacheException)
@@ -56,13 +58,14 @@ public class DataFunc {
     private static Observable<Schedule> remote$(Login login, RemoteDataService remote, ReactiveCache cache) {
         Timber.d("requesting remote");
 
-        return remote.getScheduleEntries(login.school().id(), login.auth())
+        return remote.getScheduleEntries(login.school().id(), login.auth()).singleOrError()
                 .compose(cache.<Schedule>provider()
                         .lifeCache(5, TimeUnit.MINUTES)
                         .withKey(login.school().id())
-                        .replace())
-                .doOnNext(__ -> Timber.d("from net"))
-                .doOnNext(__ -> cache$(login, cache).count().subscribe(i -> Timber.d("stored: " + ((i == 0) ? "false" : "true"))));
+                    .replace())
+
+            .doOnSuccess(__ -> Timber.d("from net"))
+            .doOnSuccess(__ -> cache$(login, cache).count().subscribe(i -> Timber.d("stored: " + ((i == 0) ? "false" : "true")))).toObservable();
     }
 
 }

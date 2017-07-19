@@ -4,7 +4,7 @@ import android.support.v7.widget.RecyclerView;
 
 import com.airbnb.epoxy.EpoxyController;
 import com.airbnb.epoxy.TypedEpoxyController;
-import com.jakewharton.rxrelay.BehaviorRelay;
+import com.jakewharton.rxrelay2.BehaviorRelay;
 
 import de.ysndr.android.hgschedule.state.State;
 import de.ysndr.android.hgschedule.state.models.Entry;
@@ -22,9 +22,9 @@ public class StateController extends TypedEpoxyController<State> {
     BehaviorRelay<Entry> dialogReq$;
     BehaviorRelay<Entry> filterReq$;
 
-    StateController(RecyclerView.RecycledViewPool recycledViewPool,
-                    BehaviorRelay<Entry> dialogReq$,
-                    BehaviorRelay<Entry> filterReq$) {
+    public StateController(RecyclerView.RecycledViewPool recycledViewPool,
+                           BehaviorRelay<Entry> dialogReq$,
+                           BehaviorRelay<Entry> filterReq$) {
         super();
         this.recycledViewPool = recycledViewPool;
         this.dialogReq$ = dialogReq$;
@@ -51,8 +51,8 @@ public class StateController extends TypedEpoxyController<State> {
 
         new HeaderModel_()
             .id("header_" + entry.id())
-            .filterIntent(filterReq$.asAction())
-            .dialogIntent(dialogReq$.asAction())
+            .filterIntent(filterReq$)
+            .dialogIntent(dialogReq$)
             .entry(entry)
             .addTo(controller);
 

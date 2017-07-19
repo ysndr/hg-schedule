@@ -1,7 +1,7 @@
 package de.ysndr.android.hgschedule.state;
 
-import com.pacoworks.rxsealedunions.Union3;
-import com.pacoworks.rxsealedunions.generic.GenericUnions;
+import com.pacoworks.rxsealedunions2.Union3;
+import com.pacoworks.rxsealedunions2.generic.UnionFactories;
 
 import org.immutables.value.Value;
 
@@ -17,7 +17,7 @@ import org.immutables.value.Value;
 )
 public abstract class State {
 
-    private static final Union3.Factory<StateError, StateScheduleData, StateEmpty> FACTORY = GenericUnions.tripletFactory();
+    private static final Union3.Factory<StateError, StateScheduleData, StateEmpty> FACTORY = UnionFactories.tripletFactory();
 
     public static State error(StateError error) {
         return ImmState.of(FACTORY.first(error));

@@ -4,7 +4,7 @@ import java.util.List;
 
 import de.ysndr.android.hgschedule.state.models.School;
 import de.ysndr.android.hgschedule.util.Presentable;
-import rx.Observable;
+import io.reactivex.Observable;
 
 /**
  * Created by yannik on 1/22/17.

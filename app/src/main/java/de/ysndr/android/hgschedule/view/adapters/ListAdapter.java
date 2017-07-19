@@ -5,9 +5,9 @@ import de.ysndr.android.hgschedule.state.models.Entry;
 import de.ysndr.android.hgschedule.util.reactive.DialogRequestIntentSource;
 import de.ysndr.android.hgschedule.util.reactive.FilterIntentSource;
 import fj.data.List;
-import rx.Observable;
-import rx.subjects.BehaviorSubject;
-import rx.subjects.Subject;
+import io.reactivex.Observable;
+import io.reactivex.subjects.BehaviorSubject;
+import io.reactivex.subjects.Subject;
 
 /**
  * Created by yannik on 12/19/16.
@@ -15,8 +15,8 @@ import rx.subjects.Subject;
 
 public class ListAdapter extends DelegatingListAdapter implements FilterIntentSource, DialogRequestIntentSource {
 
-    Subject<Entry, Entry> filter$;
-    Subject<Entry, Entry> dialog$;
+    Subject<Entry> filter$;
+    Subject<Entry> dialog$;
 
     public ListAdapter() {
         super();
@@ -44,12 +44,12 @@ public class ListAdapter extends DelegatingListAdapter implements FilterIntentSo
 
     @Override
     public Observable<Entry> filterIntent$() {
-        return filter$.asObservable().onBackpressureDrop();
+        return filter$;
     }
 
     @Override
     public Observable<Entry> dialogRequest$() {
-        return dialog$.asObservable().onBackpressureDrop();
+        return dialog$;
     }
 
 }

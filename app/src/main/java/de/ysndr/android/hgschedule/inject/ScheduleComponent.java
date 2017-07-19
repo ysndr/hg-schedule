@@ -6,6 +6,7 @@ import de.ysndr.android.hgschedule.inject.modules.RetrofitModule;
 import de.ysndr.android.hgschedule.inject.modules.StateModule;
 import de.ysndr.android.hgschedule.inject.scopes.ScheduleScope;
 import de.ysndr.android.hgschedule.view.ScheduleListFragment;
+import de.ysndr.android.hgschedule.view.schedulelist.ScheduleListController;
 import de.ysndr.android.hgschedule.view.widget.preferences.SchoolPreference;
 import de.ysndr.android.hgschedule.view.widget.preferences.SchoolPreferenceActivity;
 import de.ysndr.android.hgschedule.view.widget.preferences.SchoolSelectionPreference;
@@ -24,6 +25,9 @@ import de.ysndr.android.hgschedule.view.widget.preferences.SchoolSelectionPrefer
 public interface ScheduleComponent {
     void inject(SchoolPreferenceActivity preferenceActivity);
     void inject(ScheduleListFragment fragment);
+
+    void inject(ScheduleListController preferenceActivity);
+
 
     void inject(SchoolSelectionPreference dialog);
     void inject(SchoolPreference preference);
