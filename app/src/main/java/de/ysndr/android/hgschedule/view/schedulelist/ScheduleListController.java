@@ -20,7 +20,8 @@ import io.reactivecache2.ReactiveCache;
  * Created by yannik on 7/19/17.
  */
 
-public class ScheduleListController extends MviController<ScheduleListView, ScheduleListPresenter> {
+public class ScheduleListController
+    extends MviController<ScheduleListMviViewInterface, ScheduleListPresenter> {
 
     @Inject
     RxSharedPreferences prefs;

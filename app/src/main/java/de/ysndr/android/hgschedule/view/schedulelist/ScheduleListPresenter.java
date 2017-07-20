@@ -5,7 +5,6 @@ import com.hannesdorfmann.mosby3.mvi.MviBasePresenter;
 
 import de.ysndr.android.hgschedule.functions.Reactions;
 import de.ysndr.android.hgschedule.inject.RemoteDataService;
-import de.ysndr.android.hgschedule.state.ScheduleData;
 import de.ysndr.android.hgschedule.state.State;
 import fj.data.List;
 import io.reactivecache2.ReactiveCache;
@@ -15,14 +14,15 @@ import io.reactivex.Observable;
  * Created by yannik on 7/5/17.
  */
 
-public class ScheduleListPresenter extends MviBasePresenter<ScheduleListMviViewInterface, State> {
+public class ScheduleListPresenter
+    extends MviBasePresenter<ScheduleListMviViewInterface, State> {
 
 
-    RxSharedPreferences prefs;
-    RemoteDataService remote;
-    ReactiveCache cache;
+    private RxSharedPreferences prefs;
+    private RemoteDataService remote;
+    private ReactiveCache cache;
 
-    public ScheduleListPresenter(
+    ScheduleListPresenter(
         RxSharedPreferences prefs,
         RemoteDataService remote,
         ReactiveCache cache) {
@@ -37,15 +37,11 @@ public class ScheduleListPresenter extends MviBasePresenter<ScheduleListMviViewI
     protected void bindIntents() {
         List<Observable<State>> observables = List.list(
             intent(view -> view.reloadIntent$()
-                .flatMap(Reactions.reload(prefs, remote, cache))
-                .map(state -> state.union().join(
-                    error -> State.error(error),
-                    data -> State.data(ScheduleData.of(data.schedule())),
-                    empty -> State.empty())))
+                .flatMap((object) -> Reactions.reload(prefs, remote, cache)))
         );
 
         Observable<State> stateObservable = Observable.merge(observables);
-        subscribeViewState(stateObservable, ScheduleListView::render);
+        subscribeViewState(stateObservable, ScheduleListMviViewInterface::render);
     }
 
 

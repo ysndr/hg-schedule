@@ -92,6 +92,7 @@ public class ScheduleListView extends LinearLayout implements ScheduleListMviVie
     /*
     * Draw
     * */
+    @Override
     public void render(State state) {
         controller.setData(state);
     }
