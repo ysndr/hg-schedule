@@ -14,17 +14,16 @@ import timber.log.Timber;
  */
 
 public class AuthFunc {
-    public static fj.F0<Observable<Login>> login$(RxSharedPreferences prefs) {
-        return () -> {
-            Observable<String> user = prefs.getString("user").asObservable();
-            Observable<String> pass = prefs.getString("pass").asObservable();
-            Observable<School> school = prefs.getObject(
-                    "school",
-                    School.empty(),
-                new GsonPreferenceConverter<>(School.class)).asObservable();
 
-            return Observable.zip(school, user, pass, Login::of)
-                    .doOnNext(auth -> Timber.d("auth with: %s", auth));
-        };
+    public static Observable<Login> login$(RxSharedPreferences prefs) {
+        Observable<String> user = prefs.getString("user").asObservable();
+        Observable<String> pass = prefs.getString("pass").asObservable();
+        Observable<School> school = prefs.getObject(
+            "school",
+            School.empty(),
+            new GsonPreferenceConverter<>(School.class)).asObservable();
+
+        return Observable.zip(school, user, pass, Login::of)
+            .doOnNext(auth -> Timber.d("auth with: %s", auth));
     }
 }

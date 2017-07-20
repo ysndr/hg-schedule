@@ -1,6 +1,7 @@
 package de.ysndr.android.hgschedule.functions;
 
 import com.f2prateek.rx.preferences2.RxSharedPreferences;
+import com.pacoworks.rxcomprehensions.RxComprehensions;
 import com.pacoworks.rxfunctions2.RxFunctions;
 import com.pacoworks.rxpartialapplication2.RxPartialFunction;
 
@@ -9,14 +10,17 @@ import org.javatuples.Triplet;
 
 import de.ysndr.android.hgschedule.functions.models.Transformation;
 import de.ysndr.android.hgschedule.inject.RemoteDataService;
+import de.ysndr.android.hgschedule.state.Empty;
+import de.ysndr.android.hgschedule.state.Error;
+import de.ysndr.android.hgschedule.state.ScheduleData;
 import de.ysndr.android.hgschedule.state.State;
 import de.ysndr.android.hgschedule.state.models.Entry;
 import de.ysndr.android.hgschedule.state.models.Schedule;
-import fj.Unit;
 import fj.data.Set;
 import io.reactivecache2.ReactiveCache;
 import io.reactivex.Observable;
 import io.reactivex.functions.Function;
+import timber.log.Timber;
 
 /**
  * Created by yannik on 7/4/17.
@@ -25,25 +29,23 @@ import io.reactivex.functions.Function;
 public class Reactions {
 
     // used in a flatMap operation
-    public static Function<Unit, Observable<State>> reload(
+    public static Observable<State> reload(
         RxSharedPreferences preferences,
         RemoteDataService remote,
         ReactiveCache cache) {
 
-        return unit -> Observable.just(State.empty());
+        return RxComprehensions.doFlatMap(
+            () -> AuthFunc.login$(preferences),
+            RxPartialFunction.apply(DataFunc::schedule, remote, cache),
+            (login, schedule) -> Observable.just(State.data(ScheduleData.of(schedule))))
 
-//        return (unit) -> RxComprehensions
-//            .doFlatMap(
-//                AuthFunc.login$(preferences),
-//                DataFunc.schedule(remote, cache),
-//                (login, schedule) -> Observable.just(State.data(ScheduleData.of(schedule))))
-//            // initial value
-//            .startWith(State.empty(Empty.of().withLoading(true)))
-//            // Logs
-//            .doOnNext(__ -> Timber.d("loaded schedule"))
-//            .doOnError(e -> Timber.d("an error occuren during refresh"))
-//            // Error catching
-//            .onErrorReturn(e -> State.error(Error.of(e)));
+            // initial value
+            .startWith(State.empty(Empty.of().withLoading(true)))
+
+            // Logs
+            .doOnNext(n -> Timber.d("loaded schedule"))
+            .doOnError(e -> Timber.d("an error occuren during refresh %s", e))
+            .onErrorReturn(e -> State.error(Error.of(e)));
     }
 
     // used in a map() operation

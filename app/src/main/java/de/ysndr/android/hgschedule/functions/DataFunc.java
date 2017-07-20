@@ -21,11 +21,12 @@ import timber.log.Timber;
 
 public class DataFunc {
 
-    public static Function<Login, Observable<Schedule>> schedule(
-            RemoteDataService remote,
-            ReactiveCache cache) {
+    public static Observable<Schedule> schedule(
+        RemoteDataService remote,
+        ReactiveCache cache,
+        Login login) {
 
-        return (login) -> Observable.concatDelayError(
+        return Observable.concatDelayError(
             fj.data.List.list(
                 cache$(login, cache),
                 remote$(login, remote, cache))).take(1)
