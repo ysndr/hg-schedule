@@ -2,24 +2,16 @@ package de.ysndr.android.hgschedule.functions;
 
 import com.f2prateek.rx.preferences2.RxSharedPreferences;
 import com.pacoworks.rxcomprehensions.RxComprehensions;
-import com.pacoworks.rxfunctions2.RxFunctions;
 import com.pacoworks.rxpartialapplication2.RxPartialFunction;
 
-import org.javatuples.Pair;
-import org.javatuples.Triplet;
-
-import de.ysndr.android.hgschedule.functions.models.Transformation;
 import de.ysndr.android.hgschedule.inject.RemoteDataService;
 import de.ysndr.android.hgschedule.state.Empty;
 import de.ysndr.android.hgschedule.state.Error;
 import de.ysndr.android.hgschedule.state.ScheduleData;
 import de.ysndr.android.hgschedule.state.State;
 import de.ysndr.android.hgschedule.state.models.Entry;
-import de.ysndr.android.hgschedule.state.models.Schedule;
-import fj.data.Set;
 import io.reactivecache2.ReactiveCache;
 import io.reactivex.Observable;
-import io.reactivex.functions.Function;
 import timber.log.Timber;
 
 /**
@@ -37,7 +29,7 @@ public class Reactions {
         return RxComprehensions.doFlatMap(
             () -> AuthFunc.login$(preferences),
             RxPartialFunction.apply(DataFunc::schedule, remote, cache),
-            (login, schedule) -> Observable.just(State.data(ScheduleData.of(schedule))))
+            (login, schedule) -> Observable.just(State.data(ScheduleData.of(schedule, TransfFunc.emptyTransformationSet()))))
 
             // initial value
             .startWith(State.empty(Empty.of().withLoading(true)))
@@ -48,29 +40,21 @@ public class Reactions {
             .onErrorReturn(e -> State.error(Error.of(e)));
     }
 
-    // used in a map() operation
-    public static Function<
-        Triplet<Entry, Set<Transformation<Schedule>>, State>,
-        Pair<Set<Transformation<Schedule>>, State>> filter() {
+    /*
+    * 1. creates a new Entry, filtering transformation
+    * 2. toggles this transformation on the state object
+    * */
+    public static Observable<State> filter(Entry entry, Observable<State> state$) {
 
-        return (triplet) -> {
-            // inputs unwrapped
-            final Entry entry = triplet.getValue0();
-            final Set<Transformation<Schedule>> transformations = triplet.getValue1();
-            final State state = triplet.getValue2(); // should always be the original untouched state
+        return Observable.just(TransfFunc.createEntryFilter(entry))
+            .withLatestFrom(state$, (transf, state) -> {
+                return state.union().join(
+                    State::error,
+                    data -> State.data(data.withTransformations(
+                        TransfFunc.toggleTransf(transf, data.transformations()))),
+                    State::empty);
+            });
 
-            Function<Entry, Pair<Set<Transformation<Schedule>>, State>> filterer = RxFunctions.chain(
-                // first: create transformation
-                TransfFunc::createEntryFilter,
-                // second toggle transformation
-                RxPartialFunction.applyEnd(TransfFunc::toggleTransf, transformations),
-                // third apply transformation set on input state
-                (transformations_) -> Pair.with(
-                    transformations_,
-                    TransfFunc.transformState(state, transformations_)));
-
-            return filterer.apply(entry);
-        };
     }
 
 }

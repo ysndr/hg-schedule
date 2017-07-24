@@ -17,23 +17,24 @@ import org.immutables.value.Value;
 )
 public abstract class State {
 
-    private static final Union3.Factory<StateError, StateScheduleData, StateEmpty> FACTORY = UnionFactories.tripletFactory();
 
-    public static State error(StateError error) {
+    private static final Union3.Factory<Error, ScheduleData, Empty> FACTORY = UnionFactories.tripletFactory();
+
+    public static State error(Error error) {
         return ImmState.of(FACTORY.first(error));
     }
 
-    public static State data(StateScheduleData data) {
+    public static State data(ScheduleData data) {
         return ImmState.of(FACTORY.second(data));
     }
 
-    public static State empty(StateEmpty empty) {
+    public static State empty(Empty empty) {
         return ImmState.of(FACTORY.third(empty));
     }
     public static State empty() {
         return ImmState.of(FACTORY.third(Empty.of()));
     }
 
-    public abstract Union3<StateError, StateScheduleData, StateEmpty> union();
+    public abstract Union3<Error, ScheduleData, Empty> union();
 
 }

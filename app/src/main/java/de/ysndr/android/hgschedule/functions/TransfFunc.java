@@ -2,7 +2,6 @@ package de.ysndr.android.hgschedule.functions;
 
 import de.ysndr.android.hgschedule.functions.models.ImmutableTransformation;
 import de.ysndr.android.hgschedule.functions.models.Transformation;
-import de.ysndr.android.hgschedule.state.ScheduleData;
 import de.ysndr.android.hgschedule.state.State;
 import de.ysndr.android.hgschedule.state.models.Entry;
 import de.ysndr.android.hgschedule.state.models.ImmutableEntry;
@@ -11,6 +10,7 @@ import de.ysndr.android.hgschedule.state.models.Schedule;
 import fj.Ord;
 import fj.data.Set;
 import fj.java.util.ListUtil;
+import io.reactivex.Observable;
 import timber.log.Timber;
 
 /**
@@ -20,26 +20,17 @@ import timber.log.Timber;
 public class TransfFunc {
 
     private static <O> O applyTransformations(Set<Transformation<O>> set, O obj) {
-        return set.toList()
-            .foldLeft((schedule, transformation) -> {
-                try {
-                    return transformation.transform().apply(schedule);
-                } catch (Exception e) {
-                    return null; // TODO: ???s
-                }
-            }, obj);
+        return Observable.fromIterable(set)
+            .map(Transformation::transform)
+            .scan(obj, (o, func) -> func.apply(o))
+            .lastElement().blockingGet(obj);
     }
 
-    public static State transformState(
-        State state,
-        Set<Transformation<Schedule>> transformations) {
-
+    public static State transformState(State state) {
         return state.union().join(
             State::error,
             data -> State.data(
-                ScheduleData
-                    .copyOf(data)
-                    .withSchedule(applyTransformations(transformations, data.schedule()))),
+                data.withSchedule(applyTransformations(data.transformations(), data.schedule()))),
             State::empty);
     }
 
@@ -56,7 +47,6 @@ public class TransfFunc {
     }
 
     public static Transformation<Schedule> createEntryFilter(Entry entry) {
-
         Transformation<Schedule> t = ImmutableTransformation.of(
             "entry_filter_" + entry.id(),
             // filter function

@@ -53,6 +53,7 @@ public class ScheduleListController
     @NonNull
     @Override
     public ScheduleListPresenter createPresenter() {
+
         return new ScheduleListPresenter(prefs, remote, cache);
     }
 
