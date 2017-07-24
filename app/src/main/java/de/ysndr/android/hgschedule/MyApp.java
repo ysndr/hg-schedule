@@ -73,6 +73,7 @@ public class MyApp extends Application {
         return app.mCommonsComponent;
     }
 
+
     @Override
     public void onCreate() {
         super.onCreate();
