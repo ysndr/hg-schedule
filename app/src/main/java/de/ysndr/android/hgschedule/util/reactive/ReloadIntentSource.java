@@ -1,6 +1,5 @@
 package de.ysndr.android.hgschedule.util.reactive;
 
-import fj.Unit;
 import io.reactivex.Observable;
 
 /**
@@ -10,7 +9,7 @@ import io.reactivex.Observable;
 public interface ReloadIntentSource extends Source {
 
 
-    Observable<Unit> reloadIntent$();
+    Observable<Object> reloadIntent$();
 
 
 }

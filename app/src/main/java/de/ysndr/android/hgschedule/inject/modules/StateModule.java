@@ -4,12 +4,12 @@ import com.jakewharton.rxrelay2.BehaviorRelay;
 
 import dagger.Module;
 import dagger.Provides;
-import de.ysndr.android.hgschedule.functions.TransfFunc;
 import de.ysndr.android.hgschedule.functions.models.Transformation;
 import de.ysndr.android.hgschedule.inject.scopes.ScheduleScope;
 import de.ysndr.android.hgschedule.state.State;
 import de.ysndr.android.hgschedule.state.models.Schedule;
-import fj.data.Set;
+import io.vavr.collection.HashSet;
+import io.vavr.collection.Set;
 
 /**
  * Created by yannik on 7/3/17.
@@ -27,7 +27,7 @@ public class StateModule {
     @Provides
     @ScheduleScope
     BehaviorRelay<Set<Transformation<Schedule>>> provideFilters$() {
-        return BehaviorRelay.createDefault(TransfFunc.<Schedule>emptyTransformationSet());
+        return BehaviorRelay.createDefault(HashSet.empty());
     }
 
 

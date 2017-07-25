@@ -80,7 +80,7 @@ public class SettingsActivity extends AppCompatActivity {
             RxSharedPreferences.create(getPreferenceManager().getSharedPreferences())
                 .getObject(p.getKey(), School.empty(), new GsonPreferenceConverter<>(School.class))
                 .asObservable()
-                .doOnNext(school -> p.setSummary(school.summary().orSome("Choose")))
+                .doOnNext(school -> p.setSummary(school.summary().getOrElse("Choose")))
                 .subscribe();
 
 //            pref_dialog.setOnPreferenceClickListener(

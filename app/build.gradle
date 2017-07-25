@@ -91,14 +91,19 @@ ext {
 dependencies {
     testCompile 'junit:junit:4.12'
     fileTree(dir: 'libs', include: ['*.jar'])
-//    implementation "com.android.support:support-v13:${supportLibVersion}"
+    implementation "com.android.support:support-v13:${supportLibVersion}"
 //    implementation "com.android.support:support-v4:${supportLibVersion}"
 //    implementation "com.android.support:appcompat-v7:${supportLibVersion}"
     implementation "com.android.support:design:${supportLibVersion}"
     implementation "com.android.support:cardview-v7:${supportLibVersion}"
     implementation "com.android.support:recyclerview-v7:${supportLibVersion}"
 
-    //    implementation "com.takisoft.fix:preference-v7:25.3.1.1"
+    implementation "io.vavr:vavr:0.9.0"
+    annotationProcessor "io.vavr:vavr-match:0.9.0"
+    androidTestAnnotationProcessor "io.vavr:vavr-match:0.9.0"
+    testAnnotationProcessor "io.vavr:vavr-match:0.9.0"
+
+
     implementation 'com.afollestad.material-dialogs:core:0.9.4.5'
     implementation "com.android.support:preference-v7:${supportLibVersion}"
     implementation "com.android.support:preference-v14:${supportLibVersion}"
@@ -147,8 +152,8 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:${retrofitVersion}"
     implementation "com.squareup.retrofit2:adapter-rxjava2:${retrofitRxAdapterVersion}"
     implementation "com.squareup.retrofit2:converter-gson:${retrofitGsonConverterVersion}"
-    implementation 'org.functionaljava:functionaljava:4.7'
-    implementation'org.functionaljava:functionaljava-java-core:4.7'
+//    implementation 'org.functionaljava:functionaljava:4.7'
+//    implementation'org.functionaljava:functionaljava-java-core:4.7'
 
     implementation 'com.jakewharton.timber:timber:4.5.1'
 

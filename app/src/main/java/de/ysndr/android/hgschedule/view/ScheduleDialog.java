@@ -24,7 +24,6 @@ import de.ysndr.android.hgschedule.R;
 import de.ysndr.android.hgschedule.state.models.DayInfo;
 import de.ysndr.android.hgschedule.util.DateArgsBundler;
 import de.ysndr.android.hgschedule.util.ParcelerBundlers;
-import fj.Unit;
 import timber.log.Timber;
 
 /**
@@ -92,7 +91,7 @@ public class ScheduleDialog extends DialogFragment {
         info.setText(dayInfo.info().toString());
         updated.setText(DateFormat.getInstance().format(date));
 
-        RxView.clicks(close).map(_void_ -> Unit.unit())
+        RxView.clicks(close).map(_void_ -> new Object())
                 .subscribe(unit -> dialog.dismiss());
 
         return dialog;

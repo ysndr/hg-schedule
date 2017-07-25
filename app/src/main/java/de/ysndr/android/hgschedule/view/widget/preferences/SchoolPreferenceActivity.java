@@ -30,7 +30,6 @@ import de.ysndr.android.hgschedule.view.adapters.ClickListAdapter;
 import de.ysndr.android.hgschedule.view.adapters.ImmutableSchoolLabelViewWrapper;
 import de.ysndr.android.hgschedule.view.adapters.SchoolLabelViewWrapper;
 import de.ysndr.android.hgschedule.view.adapters.ViewWrapper;
-import fj.Unit;
 import timber.log.Timber;
 
 public class SchoolPreferenceActivity extends AppCompatActivity {
@@ -74,8 +73,7 @@ public class SchoolPreferenceActivity extends AppCompatActivity {
         mPresenter.reloadIntentSink
             .bindIntent(() -> RxSwipeRefreshLayout.refreshes(refreshLayout)
                 .doOnNext(__ -> adapter.clear())
-                .map(_void_ -> Unit.unit())
-                .startWith(Unit.unit()));
+                .startWith(new Object()));
 
 //        mPresenter.data$()
 //            .subscribeOn(Schedulers.io())
@@ -93,7 +91,7 @@ public class SchoolPreferenceActivity extends AppCompatActivity {
     }
 
     private List<ViewWrapper> wrap(List<School> list) {
-        fj.data.List<School> immList = fj.data.List.iterableList(list);
+        io.vavr.collection.List<School> immList = io.vavr.collection.List.ofAll(list);
         return immList
             .<ViewWrapper>map(school -> ImmutableSchoolLabelViewWrapper
                 .builder()

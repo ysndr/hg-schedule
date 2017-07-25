@@ -35,7 +35,6 @@ import de.ysndr.android.hgschedule.view.adapters.ClickListAdapter;
 import de.ysndr.android.hgschedule.view.adapters.ImmutableSchoolLabelViewWrapper;
 import de.ysndr.android.hgschedule.view.adapters.SchoolLabelViewWrapper;
 import de.ysndr.android.hgschedule.view.adapters.ViewWrapper;
-import fj.Unit;
 import timber.log.Timber;
 
 /**
@@ -61,7 +60,7 @@ public class SchoolPreference extends DialogPreference {
         school$ = BehaviorRelay.createDefault(schoolPref.get());
         school$
             .doOnNext(schoolPref::set)
-            .doOnNext(school -> setSummary(school.summary().orSome("Choose")))
+            .doOnNext(school -> setSummary(school.summary().getOrElse("Choose")))
             .doOnError(Timber::e)
             .subscribe();
 
@@ -146,8 +145,7 @@ public class SchoolPreference extends DialogPreference {
             preference.mPresenter.reloadIntentSink
                 .bindIntent(() -> RxSwipeRefreshLayout.refreshes(refreshLayout)
                     .doOnNext(__ -> adapter.clear())
-                    .map(_void_ -> Unit.unit())
-                    .startWith(Unit.unit()));
+                    .startWith(new Object()));
 
 //            preference.mPresenter.data$()
 //                .subscribeOn(Schedulers.io())
@@ -175,7 +173,7 @@ public class SchoolPreference extends DialogPreference {
         }
 
         private List<ViewWrapper> wrap(List<School> list) {
-            fj.data.List<School> immList = fj.data.List.iterableList(list);
+            io.vavr.collection.List<School> immList = io.vavr.collection.List.ofAll(list);
             return immList
                 .<ViewWrapper>map(school -> ImmutableSchoolLabelViewWrapper
                     .builder()

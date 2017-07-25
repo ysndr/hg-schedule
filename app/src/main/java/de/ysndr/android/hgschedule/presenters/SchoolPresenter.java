@@ -11,10 +11,10 @@ import de.ysndr.android.hgschedule.util.Presentable;
 import de.ysndr.android.hgschedule.util.reactive.ReloadIntentSink;
 import de.ysndr.android.hgschedule.util.reactive.ReloadIntentSource;
 import de.ysndr.android.hgschedule.util.reactive.SchoolDataSource;
-import fj.data.Option;
 import io.reactivex.Observable;
 import io.reactivex.subjects.BehaviorSubject;
 import io.reactivex.subjects.Subject;
+import io.vavr.control.Option;
 import timber.log.Timber;
 
 /**
@@ -49,8 +49,8 @@ public class SchoolPresenter implements SchoolDataSource {
             disposables.add(source.reloadIntent$()
                     .map(unit -> Presentable.<List<School>>of(true, Option.none()))
                     .flatMap(listPresentable -> update().startWith(listPresentable))
-                    .doOnNext(listPresentable -> Timber.d("Data received: " + listPresentable.result().isSome()))
-                    .doOnNext(listPresentable -> Timber.d("Data received: " + listPresentable.result().orSome(new ArrayList<>())))
+                .doOnNext(listPresentable -> Timber.d("Data received: " + listPresentable.result().isDefined()))
+                .doOnNext(listPresentable -> Timber.d("Data received: " + listPresentable.result().getOrElse(new ArrayList<>())))
                     .doOnError(e -> Timber.e("an error occured: %s", e))
                     .subscribe(values$::onNext, values$::onError));
         }

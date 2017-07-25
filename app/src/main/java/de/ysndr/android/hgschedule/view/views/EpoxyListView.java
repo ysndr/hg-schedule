@@ -9,7 +9,7 @@ import android.util.AttributeSet;
 import com.airbnb.epoxy.EpoxyModel;
 import com.airbnb.epoxy.SimpleEpoxyController;
 
-import fj.data.List;
+import io.vavr.collection.List;
 
 /**
  * Created by yannik on 5/14/17.

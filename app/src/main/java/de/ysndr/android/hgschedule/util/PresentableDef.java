@@ -2,7 +2,8 @@ package de.ysndr.android.hgschedule.util;
 
 import org.immutables.value.Value;
 
-import fj.data.Option;
+import io.vavr.control.Option;
+
 
 /**
  * Created by yannik on 1/1/17.

@@ -6,7 +6,7 @@ import org.immutables.value.Value;
 
 import java.util.List;
 
-import fj.data.Option;
+import io.vavr.control.Option;
 
 /**
  * Created by yannik on 1/10/17.
