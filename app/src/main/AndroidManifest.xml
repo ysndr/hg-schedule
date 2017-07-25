@@ -32,8 +32,6 @@
             <!-- android:name="android.support.PARENT_ACTIVITY" -->
             <!-- android:value="de.ysndr.android.hgschedule.MainActivity"/> -->
         </activity>
-        <activity android:name=".view.widget.preferences.SchoolPreferenceActivity">
-        </activity>
     </application>
 
 </manifest>

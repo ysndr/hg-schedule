@@ -7,8 +7,6 @@ import de.ysndr.android.hgschedule.inject.modules.StateModule;
 import de.ysndr.android.hgschedule.inject.scopes.ScheduleScope;
 import de.ysndr.android.hgschedule.view.schedulelist.ScheduleListController;
 import de.ysndr.android.hgschedule.view.widget.preferences.SchoolPreference;
-import de.ysndr.android.hgschedule.view.widget.preferences.SchoolPreferenceActivity;
-import de.ysndr.android.hgschedule.view.widget.preferences.SchoolSelectionPreference;
 
 /**
  * Created by yannik on 8/22/16.
@@ -22,10 +20,6 @@ import de.ysndr.android.hgschedule.view.widget.preferences.SchoolSelectionPrefer
         StateModule.class
     })
 public interface ScheduleComponent {
-    void inject(SchoolPreferenceActivity preferenceActivity);
     void inject(ScheduleListController preferenceActivity);
-
-
-    void inject(SchoolSelectionPreference dialog);
     void inject(SchoolPreference preference);
 }
