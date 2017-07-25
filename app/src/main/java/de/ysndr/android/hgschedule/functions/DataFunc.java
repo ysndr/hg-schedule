@@ -27,7 +27,7 @@ public class DataFunc {
         Login login) {
 
         return Observable.concatDelayError(
-            io.vavr.collection.List.of(
+            fj.data.List.list(
                 cache$(login, cache),
                 remote$(login, remote, cache))).take(1)
             // LOGS //

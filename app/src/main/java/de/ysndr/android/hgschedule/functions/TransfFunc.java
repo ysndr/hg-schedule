@@ -7,10 +7,10 @@ import de.ysndr.android.hgschedule.state.models.Entry;
 import de.ysndr.android.hgschedule.state.models.ImmutableEntry;
 import de.ysndr.android.hgschedule.state.models.ImmutableSchedule;
 import de.ysndr.android.hgschedule.state.models.Schedule;
+import fj.Ord;
+import fj.data.Set;
+import fj.java.util.ListUtil;
 import io.reactivex.Observable;
-import io.vavr.collection.HashSet;
-import io.vavr.collection.List;
-import io.vavr.collection.Set;
 import timber.log.Timber;
 
 /**
@@ -39,20 +39,20 @@ public class TransfFunc {
 
         Timber.d("toggling `%s` %s",
             transformation,
-            set.contains(transformation) ? "off" : "on");
+            set.member(transformation) ? "off" : "on");
 
-        return set.contains(transformation)
-            ? set.remove(transformation)
-            : set.add(transformation);
+        return set.member(transformation)
+            ? set.delete(transformation)
+            : set.insert(transformation);
     }
 
     public static Transformation<Schedule> createEntryFilter(Entry entry) {
         Transformation<Schedule> t = ImmutableTransformation.of(
             "entry_filter_" + entry.id(),
             // filter function
-            schedule -> ImmutableSchedule.copyOf(schedule)
-                .withEntries(List.ofAll(schedule.entries())
-                    .map(lentry -> lentry.equals(entry)
+            schedule -> ImmutableSchedule.copyOf(schedule).withEntries(ListUtil.map(
+                schedule.entries(),
+                lentry -> lentry.equals(entry)
                     ? ImmutableEntry.copyOf(lentry).withSubstitutes()
                     : lentry)));
 
@@ -61,7 +61,7 @@ public class TransfFunc {
     }
 
     public static <O> Set<Transformation<O>> emptyTransformationSet() {
-        return HashSet.empty();
+        return Set.empty(Ord.hashEqualsOrd());
     }
 
 }

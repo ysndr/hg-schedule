@@ -10,7 +10,7 @@ import java.util.Random;
 
 import de.ysndr.android.hgschedule.R;
 import de.ysndr.android.hgschedule.state.models.Entry;
-import io.vavr.collection.List;
+import fj.data.List;
 
 /**
  * Created by yannik on 5/12/17.
@@ -33,18 +33,18 @@ public class EntryCarouselModelGroup extends EpoxyModelGroup {
                                                    RecyclerView.RecycledViewPool recycledViewPool,
                                                    BehaviorRelay<Entry> dialogReq$,
                                                    BehaviorRelay<Entry> filterReq$) {
-        return List.<EpoxyModel<?>>empty()
-            .append(new HeaderModel_()
+        return List.<EpoxyModel<?>>list()
+            .snoc(new HeaderModel_()
                 .id("header_" + entry.id())
                 .filterIntent(filterReq$)
                 .dialogIntent(dialogReq$)
                 .entry(entry))
 //            .snoc(new SubstituteListModelGroup(entry));
 
-            .append(new EpoxyListModel_()
+            .snoc(new EpoxyListModel_()
                 .id("substitutes_" + entry.id())
                 .recycledViewPool(recycledViewPool)
-                .models(List.ofAll(entry.substitutes())
+                .models(List.iterableList(entry.substitutes())
                     .map(substitute -> new SubstituteModel_()
                         .id("substitute_" + substitute.hashCode() + "@" + entry.id() + ":" + new Random().nextLong())
                         .substitute(substitute)

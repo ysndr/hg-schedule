@@ -9,7 +9,7 @@ import com.airbnb.epoxy.EpoxyModelClass;
 import com.airbnb.epoxy.EpoxyModelWithView;
 
 import de.ysndr.android.hgschedule.view.views.EpoxyListView;
-import io.vavr.collection.List;
+import fj.data.List;
 
 /**
  * Created by yannik on 5/12/17.

@@ -5,7 +5,7 @@ import com.airbnb.epoxy.EpoxyModelGroup;
 
 import de.ysndr.android.hgschedule.R;
 import de.ysndr.android.hgschedule.state.models.Entry;
-import io.vavr.collection.List;
+import fj.data.List;
 
 /**
  * Created by yannik on 5/12/17.
@@ -18,8 +18,8 @@ public class SubstituteListModelGroup extends EpoxyModelGroup {
     }
 
     private static List<EpoxyModel<?>> buildModels(Entry entry) {
-        return List.<EpoxyModel<?>>empty()
-            .appendAll(List.ofAll(entry.substitutes())
+        return List.<EpoxyModel<?>>list()
+            .append(List.iterableList(entry.substitutes())
                 .map(substitute -> new SubstituteModel_()
                     .id("substitute_" + substitute.hashCode())
                     .substitute(substitute)

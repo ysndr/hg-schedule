@@ -4,7 +4,7 @@ import org.immutables.value.Value;
 
 import de.ysndr.android.hgschedule.functions.models.Transformation;
 import de.ysndr.android.hgschedule.state.models.Schedule;
-import io.vavr.collection.Set;
+import fj.data.Set;
 
 /**
  * Created by yannik on 5/8/17.

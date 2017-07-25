@@ -36,10 +36,11 @@ import de.ysndr.android.hgschedule.view.adapters.ClickListAdapter;
 import de.ysndr.android.hgschedule.view.adapters.ImmutableSchoolLabelViewWrapper;
 import de.ysndr.android.hgschedule.view.adapters.SchoolLabelViewWrapper;
 import de.ysndr.android.hgschedule.view.adapters.ViewWrapper;
+import fj.Unit;
+import fj.data.Option;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-import io.vavr.control.Option;
 import timber.log.Timber;
 
 
@@ -92,7 +93,7 @@ public class SchoolSelectionPreference extends MaterialDialogPreference {
 
         school$.map(school -> school.summary())
                 .subscribe((summary) -> {
-                    setSummary(summary.getOrElse("Choose"));
+                    setSummary(summary.orSome("Choose"));
                 });
     }
 
@@ -114,8 +115,8 @@ public class SchoolSelectionPreference extends MaterialDialogPreference {
 
         ReloadIntentSource reloadIntentSource = new ReloadIntentSource() {
             @Override
-            public Observable<Object> reloadIntent$() {
-                return RxSwipeRefreshLayout.refreshes(refreshLayout).map(_void_ -> new Object()).startWith(new Object());
+            public Observable<Unit> reloadIntent$() {
+                return RxSwipeRefreshLayout.refreshes(refreshLayout).map(_void_ -> Unit.unit()).startWith(Unit.unit());
             }
         };
 
@@ -130,16 +131,17 @@ public class SchoolSelectionPreference extends MaterialDialogPreference {
                 .subscribe(
                         data -> {
                             refreshLayout.setRefreshing(data.loading());
-                            data.result().toTry()
-                                .onSuccess(content -> {
-                                    Timber.d("Updating Adapter");
-                                    adapter.setContent(wrap(content));
-                                    adapter.notifyDataSetChanged();
-                                })
-                                .onFailure(
+                            data.result().toEither(Unit.unit()).either(
                                     loading -> {
                                         Timber.d("Clear Adapter");
                                         adapter.clear();
+                                        return Unit.unit();
+                                    },
+                                    content -> {
+                                        Timber.d("Updating Adapter");
+                                        adapter.setContent(wrap(content));
+                                        adapter.notifyDataSetChanged();
+                                        return Unit.unit();
                                     });
                         }
                 );
@@ -147,14 +149,14 @@ public class SchoolSelectionPreference extends MaterialDialogPreference {
         close$ = RxView.clicks(close).map(_void_ -> Option.none());
         value$ = adapter.getClick().map(Option::some).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io());
 
-        close$.mergeWith(value$.filter(option -> option.isDefined()))
+        close$.mergeWith(value$.filter(option -> option.isSome()))
                 .take(1)
                 .subscribe(option -> {
-                        if (option.isDefined()) {
+                            if (option.isSome()) {
                                 Gson gson = new GsonBuilder()
                                         .registerTypeAdapterFactory(new GsonAdaptersModels())
                                         .create();
-                            schoolPref.set(option.get());
+                                schoolPref.set(option.some());
                                 mPresenter.reloadIntentSink.unbind();
                             }
                             getDialog().dismiss();
@@ -164,7 +166,7 @@ public class SchoolSelectionPreference extends MaterialDialogPreference {
     }
 
     private List<ViewWrapper> wrap(List<School> list) {
-        io.vavr.collection.List<School> immList = io.vavr.collection.List.ofAll(list);
+        fj.data.List<School> immList = fj.data.List.iterableList(list);
         return immList
                 .<ViewWrapper>map(school -> ImmutableSchoolLabelViewWrapper
                         .builder()

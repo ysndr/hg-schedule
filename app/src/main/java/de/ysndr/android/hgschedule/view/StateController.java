@@ -10,7 +10,7 @@ import de.ysndr.android.hgschedule.state.State;
 import de.ysndr.android.hgschedule.state.models.Entry;
 import de.ysndr.android.hgschedule.view.models.HeaderModel_;
 import de.ysndr.android.hgschedule.view.models.SubstituteModel_;
-import io.vavr.collection.List;
+import fj.data.List;
 
 /**
  * Created by yannik on 5/12/17.
@@ -37,8 +37,8 @@ public class StateController extends TypedEpoxyController<State> {
             error -> {
             },
             data -> {
-                List.ofAll(data.schedule().entries())
-                    .forEach(entry -> addEntry(this, entry, dialogReq$, filterReq$));
+                List.iterableList(data.schedule().entries())
+                    .foreachDoEffect(entry -> addEntry(this, entry, dialogReq$, filterReq$));
             },
             empty -> {
             });
@@ -56,12 +56,12 @@ public class StateController extends TypedEpoxyController<State> {
             .entry(entry)
             .addTo(controller);
 
-        List.ofAll(entry.substitutes())
+        List.iterableList(entry.substitutes())
             .zip(List.range(0, entry.substitutes().size()))
             .map(pair -> new SubstituteModel_()
                 .id("substitute_" + pair._1().hashCode() + ":" + pair._2() + "@" + entry.id())
                 .substitute(pair._1()))
-            .forEach(model -> model.addTo(controller));
+            .foreachDoEffect(model -> model.addTo(controller));
     }
 
 }
