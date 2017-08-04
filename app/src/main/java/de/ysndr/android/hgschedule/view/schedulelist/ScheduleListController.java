@@ -38,16 +38,16 @@ public class ScheduleListController
     public ScheduleListController(Bundle args) {
         super(args);
         setRetainViewMode(RetainViewMode.RELEASE_DETACH);
-        MyApp.getScheduleComponent(getApplicationContext()).inject(this);
-
     }
 
     @NonNull
     @Override
     protected View onCreateView(@NonNull LayoutInflater inflater, @NonNull ViewGroup container) {
-        View view = inflater.inflate(R.layout.controller_schedule_list, container);
-        this.view = (ScheduleListView) getView();
-        return view;
+        View view = inflater.inflate(R.layout.controller_schedule_list, container, false);
+        this.view = new ScheduleListView(getActivity());
+
+        MyApp.getScheduleComponent(this.getActivity()).inject(this);
+        return this.view;
     }
 
     @NonNull
@@ -60,8 +60,9 @@ public class ScheduleListController
     @NonNull
     @Override
     public ScheduleListView getMvpView() {
-        return view;
+        return this.view;
     }
+
 
     @Override
     public void setRestoringViewState(boolean restoringViewState) {

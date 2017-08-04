@@ -12,6 +12,7 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.f2prateek.rx.preferences2.Preference;
 import com.f2prateek.rx.preferences2.RxSharedPreferences;
@@ -30,12 +31,17 @@ import de.ysndr.android.hgschedule.MyApp;
 import de.ysndr.android.hgschedule.R;
 import de.ysndr.android.hgschedule.presenters.SchoolPresenter;
 import de.ysndr.android.hgschedule.state.models.School;
+import de.ysndr.android.hgschedule.util.Presentable;
 import de.ysndr.android.hgschedule.util.preferences.GsonPreferenceConverter;
 import de.ysndr.android.hgschedule.view.adapters.ClickListAdapter;
 import de.ysndr.android.hgschedule.view.adapters.ImmutableSchoolLabelViewWrapper;
 import de.ysndr.android.hgschedule.view.adapters.SchoolLabelViewWrapper;
 import de.ysndr.android.hgschedule.view.adapters.ViewWrapper;
 import fj.Unit;
+import fj.data.Option;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
 /**
@@ -149,19 +155,19 @@ public class SchoolPreference extends DialogPreference {
                     .map(_void_ -> Unit.unit())
                     .startWith(Unit.unit()));
 
-//            preference.mPresenter.data$()
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .doOnError(error -> Toast.makeText(
-//                    getContext(),
-//                    "An error occured",
-//                    Toast.LENGTH_SHORT).show())
-//                .onErrorResumeNext(error -> Observable.just(Presentable.of(false, Option.none())))
-//                .doOnNext(listPresentable -> refreshLayout.setRefreshing(listPresentable.loading()))
-//                .filter(presentable -> presentable.result().isSome())
-//                .map(presentable -> presentable.result().some())
-//                .map(this::wrap)
-//                .subscribe(adapter::setContent);
+            preference.mPresenter.data$()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnError(error -> Toast.makeText(
+                    getContext(),
+                    "An error occured",
+                    Toast.LENGTH_SHORT).show())
+                .onErrorResumeNext(Observable.just(Presentable.of(false, Option.none())))
+                .doOnNext(listPresentable -> refreshLayout.setRefreshing(listPresentable.loading()))
+                .filter(presentable -> presentable.result().isSome())
+                .map(presentable -> presentable.result().some())
+                .map(this::wrap)
+                .subscribe(adapter::setContent);
 
             adapter.getClick().doOnNext(__ -> this.dismiss()).subscribe(school$);
 

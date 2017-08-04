@@ -22,6 +22,7 @@ public class TransfFunc {
     private static <O> O applyTransformations(Set<Transformation<O>> set, O obj) {
         return Observable.fromIterable(set)
             .map(Transformation::transform)
+            .doOnNext(__ -> Timber.d("about to scan object"))
             .scan(obj, (o, func) -> func.apply(o))
             .lastElement().blockingGet(obj);
     }
@@ -50,11 +51,15 @@ public class TransfFunc {
         Transformation<Schedule> t = ImmutableTransformation.of(
             "entry_filter_" + entry.id(),
             // filter function
-            schedule -> ImmutableSchedule.copyOf(schedule).withEntries(ListUtil.map(
-                schedule.entries(),
-                lentry -> lentry.equals(entry)
-                    ? ImmutableEntry.copyOf(lentry).withSubstitutes()
-                    : lentry)));
+            schedule -> {
+                Timber.d("applying transformation");
+
+                return ImmutableSchedule.copyOf(schedule).withEntries(ListUtil.map(
+                    schedule.entries(),
+                    lentry -> lentry.equals(entry)
+                        ? ImmutableEntry.copyOf(lentry).withSubstitutes()
+                        : lentry));
+            });
 
         Timber.d("new transformation with seed %s", t._seed());
         return t;
