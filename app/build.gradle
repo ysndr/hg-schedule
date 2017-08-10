@@ -11,7 +11,7 @@ buildscript {
     }
     dependencies {
         // replace with the current version of the Android plugin
-        classpath 'com.android.tools.build:gradle:3.0.0-alpha7'
+        classpath 'com.android.tools.build:gradle:3.0.0-alpha8'
         classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.7.3'
     }
 }
@@ -35,13 +35,13 @@ repositories {
 }
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.3"
+    compileSdkVersion 26
+    buildToolsVersion "26.0.1"
 
     defaultConfig {
         applicationId "de.ysndr.android.hgschedule"
         minSdkVersion 21
-        targetSdkVersion 25
+        targetSdkVersion 26
         versionName VERSION_NAME
         setProperty("archivesBaseName", "$GROUP_NAME-$APPLICATION_NAME-$VERSION_NAME@${versionCodeGit()}")
 
@@ -66,8 +66,8 @@ android {
 
 ext {
     okhttpVersion = "3.0.1"
-    sdkVersion = 25
-    supportLibVersion = "25.4.0"
+    sdkVersion = 26
+    supportLibVersion = "26.0.0"
     epoxyVersion = "1.3.0"
 
     lombokVersion = "1.12.6"
@@ -148,7 +148,7 @@ dependencies {
     implementation "com.squareup.retrofit2:adapter-rxjava2:${retrofitRxAdapterVersion}"
     implementation "com.squareup.retrofit2:converter-gson:${retrofitGsonConverterVersion}"
     implementation 'org.functionaljava:functionaljava:4.7'
-    implementation'org.functionaljava:functionaljava-java-core:4.7'
+    implementation 'org.functionaljava:functionaljava-java-core:4.7'
 
     implementation 'com.jakewharton.timber:timber:4.5.1'
 
