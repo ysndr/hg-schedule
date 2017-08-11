@@ -73,6 +73,7 @@ public class ScheduleListView extends LinearLayout implements ScheduleListMviVie
 
         adapter = controller.getAdapter();
         recyclerView.setAdapter(adapter);
+        recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
@@ -92,7 +93,9 @@ public class ScheduleListView extends LinearLayout implements ScheduleListMviVie
 
     @Override
     public Observable<Object> reloadIntent$() {
-        return swipeRefreshIntent$.doOnNext(__ -> Timber.d("reload Intent.."));
+        return RxSwipeRefreshLayout.refreshes(swipeRefresh)
+            .doOnNext(__ -> Timber.d("reload Intent.."));
+        //return swipeRefreshIntent$.doOnNext();
     }
 
 
