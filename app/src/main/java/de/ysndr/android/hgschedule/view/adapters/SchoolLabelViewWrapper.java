@@ -8,6 +8,8 @@ import com.jakewharton.rxbinding2.view.RxView;
 
 import org.immutables.value.Value;
 
+import java.io.Serializable;
+
 import butterknife.BindView;
 import de.ysndr.android.hgschedule.R;
 import de.ysndr.android.hgschedule.state.models.School;
@@ -20,7 +22,7 @@ import timber.log.Timber;
  * Created by yannik on 1/17/17.
  */
 @Value.Immutable
-public abstract class SchoolLabelViewWrapper extends ViewWrapper {
+public abstract class SchoolLabelViewWrapper extends ViewWrapper implements Serializable {
 
     private final BehaviorSubject click$ = BehaviorSubject.create();
     private final CompositeDisposable disposables = new CompositeDisposable();

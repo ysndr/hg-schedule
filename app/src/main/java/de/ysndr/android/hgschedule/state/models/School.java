@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import org.immutables.value.Value;
 
+import java.io.Serializable;
 import java.util.List;
 
 import fj.data.Option;
@@ -13,7 +14,7 @@ import fj.data.Option;
  */
 
 @Value.Immutable
-public abstract class School {
+public abstract class School implements Serializable {
 
     public static School empty() {
         return ImmutableSchool.builder()
