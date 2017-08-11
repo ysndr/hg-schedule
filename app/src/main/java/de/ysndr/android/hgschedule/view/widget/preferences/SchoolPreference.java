@@ -39,6 +39,7 @@ import de.ysndr.android.hgschedule.view.adapters.SchoolLabelViewWrapper;
 import de.ysndr.android.hgschedule.view.adapters.ViewWrapper;
 import fj.Unit;
 import fj.data.Option;
+import fj.java.util.ListUtil;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -181,13 +182,12 @@ public class SchoolPreference extends DialogPreference {
         }
 
         private List<ViewWrapper> wrap(List<School> list) {
-            fj.data.List<School> immList = fj.data.List.iterableList(list);
-            return immList
-                .<ViewWrapper>map(school -> ImmutableSchoolLabelViewWrapper
+            return ListUtil.map(
+                list,
+                (school -> ImmutableSchoolLabelViewWrapper
                     .builder()
                     .school(school)
-                    .build())
-                .toJavaList();
+                    .build()));
         }
 
     }
