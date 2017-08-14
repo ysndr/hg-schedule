@@ -1,7 +1,6 @@
 package de.ysndr.android.hgschedule.view.models;
 
 import android.view.View;
-import android.widget.TextView;
 
 import com.airbnb.epoxy.EpoxyAttribute;
 import com.airbnb.epoxy.EpoxyModelClass;
@@ -11,6 +10,7 @@ import butterknife.BindView;
 import de.ysndr.android.hgschedule.R;
 import de.ysndr.android.hgschedule.state.models.Substitute;
 import de.ysndr.android.hgschedule.view.BaseEpoxyHolder;
+import de.ysndr.android.hgschedule.view.views.SubstituteView;
 import timber.log.Timber;
 
 /**
@@ -22,61 +22,37 @@ public abstract class SubstituteModel extends EpoxyModelWithHolder<SubstituteMod
 
     @EpoxyAttribute
     Substitute substitute;
-    /*
-        @BindView(R.id.text_title_card_schedule_item)
-        TextView title;
-        @BindView(R.id.text_description_card_schedule_item)
-        TextView description;
-        @BindView(R.id.text_teacher_absent_card_schedule_item)
-        TextView absent;
-        @BindView(R.id.text_teacher_new_card_schedule_item)
-        TextView subst;
-        @BindView(R.id.text_lessons_card_schedule_item)
-        TextView lessons;
-        @BindView(R.id.text_classes_card_schedule_item)
-        TextView classes;
-
-        @BindView(R.id.text_room_card_schedule_item)
-        TextView room;*/
 
     @Override
     public void bind(SubstituteHolder holder) {
         super.bind(holder);
         Timber.d("in `bind()`");
 
-        holder.absent.setText(substitute.absent());
-        holder.subst.setText(substitute.substitute());
-        holder.classes.setText(substitute.classes());
-        holder.lessons.setText(substitute.hour());
-        holder.description.setText(substitute.description());
-        holder.room.setText(substitute.room());
-        holder.title.setText(substitute.absent());
-        // TODO maybe change to a visible/invisible filtering
+        holder.display(substitute);
     }
 
-
     static class SubstituteHolder extends BaseEpoxyHolder {
-        @BindView(R.id.text_title_card_schedule_item)
-        TextView title;
-        @BindView(R.id.text_description_card_schedule_item)
-        TextView description;
-        @BindView(R.id.text_teacher_absent_card_schedule_item)
-        TextView absent;
-        @BindView(R.id.text_teacher_new_card_schedule_item)
-        TextView subst;
-        @BindView(R.id.text_lessons_card_schedule_item)
-        TextView lessons;
-        @BindView(R.id.text_classes_card_schedule_item)
-        TextView classes;
 
-        @BindView(R.id.text_room_card_schedule_item)
-        TextView room;
+        @BindView(R.id.substitute_view)
+        SubstituteView view;
 
         @Override
         protected void bindView(View itemView) {
             super.bindView(itemView);
             Timber.d("binding view to SubstituteHolder");
         }
+
+        void display(Substitute substitute) {
+            view.setTitle(substitute.absent());
+            view.setSubst(substitute.substitute());
+            view.setClasses(substitute.classes());
+            view.setLessons(substitute.hour());
+            view.setDescription(substitute.description());
+            view.setRoom(substitute.room());
+            view.setAbsent(substitute.absent());
+            // TODO maybe change to a visible/invisible filtering
+        }
+
     }
 
 
