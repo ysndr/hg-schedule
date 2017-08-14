@@ -6,22 +6,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.f2prateek.rx.preferences2.RxSharedPreferences;
 import com.hannesdorfmann.mosby3.MviController;
-
-import javax.inject.Inject;
 
 import de.ysndr.android.hgschedule.MyApp;
 import de.ysndr.android.hgschedule.R;
-import de.ysndr.android.hgschedule.inject.RemoteDataService;
-import io.reactivecache2.ReactiveCache;
+import de.ysndr.android.hgschedule.state.State;
+import de.ysndr.android.hgschedule.state.models.Entry;
+import io.reactivex.Observable;
 
 /**
  * Created by yannik on 7/19/17.
  */
 
 public class ScheduleListController
-    extends MviController<ScheduleListMviViewInterface, ScheduleListPresenter> {
+    extends MviController<ScheduleListMviViewInterface, ScheduleListPresenter>
+    implements ScheduleListMviViewInterface {
 
     private ScheduleListView view;
 
@@ -48,14 +47,34 @@ public class ScheduleListController
         return MyApp.getScheduleComponent(this.getActivity()).getPresenter();
     }
 
-    @NonNull
-    @Override
-    public ScheduleListView getMvpView() {
-        return this.view;
-    }
+//    @NonNull
+//    @Override
+//    public ScheduleListMviView getMvpView() {
+//        return this.view;
+//    }
 
     @Override
     public void setRestoringViewState(boolean restoringViewState) {
         // what to do here?
+    }
+
+    @Override
+    public Observable<Entry> dialogIntent$() {
+        return view.dialogRequestIntent$;
+    }
+
+    @Override
+    public Observable<Entry> filterIntent$() {
+        return view.filterRequestIntent$;
+    }
+
+    @Override
+    public Observable<Object> reloadIntent$() {
+        return view.swipeRefreshIntent$;
+    }
+
+    @Override
+    public void render(State state) {
+        view.render(state);
     }
 }
