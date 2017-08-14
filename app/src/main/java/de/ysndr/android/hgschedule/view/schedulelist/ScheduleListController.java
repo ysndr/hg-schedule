@@ -75,6 +75,7 @@ public class ScheduleListController
 
     @Override
     public void render(State state) {
+
         view.render(state);
     }
 }

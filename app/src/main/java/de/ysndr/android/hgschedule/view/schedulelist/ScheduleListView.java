@@ -85,6 +85,9 @@ public class ScheduleListView extends LinearLayout {
                 this.toast(error.message().orSome("Internal error"));
             },
             scheduleData -> swipeRefresh.setRefreshing(scheduleData.loading()),
+            // not handled here
+            entryDialogData -> {
+            },
             // `setRefreshig == true` ≙ loading state
             empty -> swipeRefresh.setRefreshing(empty.loading())
         );

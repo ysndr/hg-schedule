@@ -1,6 +1,6 @@
 package de.ysndr.android.hgschedule.state;
 
-import com.pacoworks.rxsealedunions2.Union3;
+import com.pacoworks.rxsealedunions2.Union4;
 import com.pacoworks.rxsealedunions2.generic.UnionFactories;
 
 import org.immutables.value.Value;
@@ -18,7 +18,7 @@ import org.immutables.value.Value;
 public abstract class State {
 
 
-    private static final Union3.Factory<Error, ScheduleData, Empty> FACTORY = UnionFactories.tripletFactory();
+    private static final Union4.Factory<Error, ScheduleData, EntryDialogData, Empty> FACTORY = UnionFactories.quartetFactory();
 
     public static State error(Error error) {
         return ImmState.of(FACTORY.first(error));
@@ -28,13 +28,17 @@ public abstract class State {
         return ImmState.of(FACTORY.second(data));
     }
 
-    public static State empty(Empty empty) {
-        return ImmState.of(FACTORY.third(empty));
-    }
-    public static State empty() {
-        return ImmState.of(FACTORY.third(Empty.of()));
+    public static State entryDialogData(EntryDialogData data) {
+        return ImmState.of(FACTORY.third(data));
     }
 
-    public abstract Union3<Error, ScheduleData, Empty> union();
+    public static State empty(Empty empty) {
+        return ImmState.of(FACTORY.fourth(empty));
+    }
+    public static State empty() {
+        return ImmState.of(FACTORY.fourth(Empty.of()));
+    }
+
+    public abstract Union4<Error, ScheduleData, EntryDialogData, Empty> union();
 
 }
