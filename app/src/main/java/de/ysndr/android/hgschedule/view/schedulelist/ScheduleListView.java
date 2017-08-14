@@ -1,11 +1,14 @@
 package de.ysndr.android.hgschedule.view.schedulelist;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.jakewharton.rxbinding2.support.v4.widget.RxSwipeRefreshLayout;
 import com.jakewharton.rxrelay2.BehaviorRelay;
@@ -18,6 +21,7 @@ import de.ysndr.android.hgschedule.R;
 import de.ysndr.android.hgschedule.state.State;
 import de.ysndr.android.hgschedule.state.models.Entry;
 import de.ysndr.android.hgschedule.view.StateController;
+import fj.data.Option;
 import io.reactivex.Observable;
 import timber.log.Timber;
 
@@ -78,6 +82,7 @@ public class ScheduleListView extends LinearLayout implements ScheduleListMviVie
     }
 
 
+
     /*
     * Intents
     * */
@@ -98,19 +103,33 @@ public class ScheduleListView extends LinearLayout implements ScheduleListMviVie
         //return swipeRefreshIntent$.doOnNext();
     }
 
-
     /*
     * Draw
     * */
     @Override
     public void render(State state) {
         state.union().continued(
-            error -> swipeRefresh.setRefreshing(false),
+            error -> {
+                swipeRefresh.setRefreshing(false);
+                this.toast(error.message().orSome("Internal error"));
+            },
             scheduleData -> swipeRefresh.setRefreshing(scheduleData.loading()),
+            // `setRefreshig == true` ≙ loading state
             empty -> swipeRefresh.setRefreshing(empty.loading())
         );
         controller.setData(state);
     }
 
+
+    void toast(String message) {
+        Toast toast = Toast.makeText(this.getContext(), message, Toast.LENGTH_SHORT);
+        toast.show();
+    }
+
+    @Override
+    public void dialog(DialogFragment d) {
+
+
+    }
 
 }

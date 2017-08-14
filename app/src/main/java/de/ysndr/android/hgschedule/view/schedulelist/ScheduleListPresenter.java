@@ -1,13 +1,20 @@
 package de.ysndr.android.hgschedule.view.schedulelist;
 
+
+import android.support.v4.app.DialogFragment;
+
 import com.f2prateek.rx.preferences2.RxSharedPreferences;
 import com.hannesdorfmann.mosby3.mvi.MviBasePresenter;
+
+import javax.inject.Inject;
 
 import de.ysndr.android.hgschedule.functions.Reactions;
 import de.ysndr.android.hgschedule.functions.TransfFunc;
 import de.ysndr.android.hgschedule.inject.RemoteDataService;
 import de.ysndr.android.hgschedule.state.State;
 import de.ysndr.android.hgschedule.state.models.Entry;
+import de.ysndr.android.hgschedule.view.ScheduleDialog;
+import de.ysndr.android.hgschedule.view.ScheduleDialogBuilder;
 import io.reactivecache2.ReactiveCache;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -26,6 +33,7 @@ public class ScheduleListPresenter
     private RemoteDataService remote;
     private ReactiveCache cache;
 
+    @Inject
     ScheduleListPresenter(
         RxSharedPreferences prefs,
         RemoteDataService remote,
@@ -35,7 +43,6 @@ public class ScheduleListPresenter
         this.remote = remote;
         this.cache = cache;
     }
-
 
     @Override
     protected void bindIntents() {
@@ -47,7 +54,6 @@ public class ScheduleListPresenter
 
         Observable<Entry> filter$ = intent(view -> view.filterIntent$())
             .doOnNext(__ -> Timber.d("triggered filter"));
-
 
         Observable<State> allIntents = reload$.switchMap(
             _state -> filter$.scan(
@@ -65,6 +71,15 @@ public class ScheduleListPresenter
             .map(TransfFunc::transformState)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread());
+
+
+
+        Observable<DialogFragment> dialogObservable = intent(view -> view.dialogIntent$())
+            .map(entry ->
+                ScheduleDialogBuilder.newScheduleDialog(
+                    entry.date().day(),
+                    entry.info()));
+
 
 
         subscribeViewState(stateObservable, ScheduleListMviViewInterface::render);

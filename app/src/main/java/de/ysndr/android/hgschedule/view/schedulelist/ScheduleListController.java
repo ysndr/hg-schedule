@@ -23,12 +23,6 @@ import io.reactivecache2.ReactiveCache;
 public class ScheduleListController
     extends MviController<ScheduleListMviViewInterface, ScheduleListPresenter> {
 
-    @Inject
-    RxSharedPreferences prefs;
-    @Inject
-    RemoteDataService remote;
-    @Inject
-    ReactiveCache cache;
     private ScheduleListView view;
 
     public ScheduleListController() {
@@ -44,17 +38,14 @@ public class ScheduleListController
     @Override
     protected View onCreateView(@NonNull LayoutInflater inflater, @NonNull ViewGroup container) {
         View view = inflater.inflate(R.layout.controller_schedule_list, container, false);
-        this.view = new ScheduleListView(getActivity());
-
-        MyApp.getScheduleComponent(this.getActivity()).inject(this);
-        return this.view;
+        this.view = (ScheduleListView) view;
+        return view;
     }
 
     @NonNull
     @Override
     public ScheduleListPresenter createPresenter() {
-
-        return new ScheduleListPresenter(prefs, remote, cache);
+        return MyApp.getScheduleComponent(this.getActivity()).getPresenter();
     }
 
     @NonNull
@@ -62,7 +53,6 @@ public class ScheduleListController
     public ScheduleListView getMvpView() {
         return this.view;
     }
-
 
     @Override
     public void setRestoringViewState(boolean restoringViewState) {
