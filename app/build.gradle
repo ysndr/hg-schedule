@@ -11,7 +11,7 @@ buildscript {
     }
     dependencies {
         // replace with the current version of the Android plugin
-        classpath 'com.android.tools.build:gradle:3.0.0-alpha8'
+        classpath 'com.android.tools.build:gradle:3.0.0-beta1'
         classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.7.3'
     }
 }
@@ -67,7 +67,7 @@ android {
 ext {
     okhttpVersion = "3.0.1"
     sdkVersion = 26
-    supportLibVersion = "26.0.0"
+    supportLibVersion = "26.0.1"
     epoxyVersion = "1.3.0"
 
     lombokVersion = "1.12.6"
@@ -164,12 +164,12 @@ dependencies {
     implementation 'com.hannesdorfmann.mosby3:mvi-conductor:3.0.0'
 }
 
-def buildTime() {
+static def buildTime() {
     def df = new SimpleDateFormat("yyMMddhhmm")
     return "-" + df.format(new Date())
 }
 
-def versionCodeGit() {
+static def versionCodeGit() {
     def process = "git rev-list master --first-parent --abbrev-commit -n1".execute()
     return process.text.trim()
 }
