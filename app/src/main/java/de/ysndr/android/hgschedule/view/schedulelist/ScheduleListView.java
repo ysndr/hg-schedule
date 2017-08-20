@@ -82,7 +82,7 @@ public class ScheduleListView extends LinearLayout {
         state.union().continued(
             error -> {
                 swipeRefresh.setRefreshing(false);
-                this.toast(error.message().orSome("Internal error"));
+//                this.toast(error.message().orSome("Internal error"));
             },
             scheduleData -> swipeRefresh.setRefreshing(scheduleData.loading()),
             // not handled here

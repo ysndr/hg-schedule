@@ -11,6 +11,7 @@ import javax.inject.Inject;
 import de.ysndr.android.hgschedule.functions.Reactions;
 import de.ysndr.android.hgschedule.functions.TransfFunc;
 import de.ysndr.android.hgschedule.inject.RemoteDataService;
+import de.ysndr.android.hgschedule.state.EntryDialogData;
 import de.ysndr.android.hgschedule.state.State;
 import de.ysndr.android.hgschedule.state.models.Entry;
 import de.ysndr.android.hgschedule.view.ScheduleDialog;
@@ -64,8 +65,15 @@ public class ScheduleListPresenter
                 //    State_N, filter -> State_N+1    // Start with _state as State_0
                 (state, entry) -> Reactions.filter(entry, state)).startWith(_state));
 
+        Observable<State> dialogData$ = intent(view -> view.dialogIntent$())
+            .map(entry -> State.entryDialogData(EntryDialogData.of(entry)));
 
-        Observable<State> stateObservable = allIntents
+        Observable<State> intentsWithDialogs = allIntents.switchMap(
+            state -> dialogData$.flatMap(dialogState ->
+                Observable.just(dialogState, state)).startWith(state));
+
+
+        Observable<State> stateObservable = intentsWithDialogs
 //            .scan(State.empty(), this::viewStateReducer)
             .doOnNext(__ -> Timber.d("transforming"))
             .map(TransfFunc::transformState)
@@ -74,11 +82,7 @@ public class ScheduleListPresenter
 
 
 
-        Observable<DialogFragment> dialogObservable = intent(view -> view.dialogIntent$())
-            .map(entry ->
-                ScheduleDialogBuilder.newScheduleDialog(
-                    entry.date().day(),
-                    entry.info()));
+
 
 
 

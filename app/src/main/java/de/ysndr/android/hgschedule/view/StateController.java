@@ -40,6 +40,7 @@ public class StateController extends TypedEpoxyController<State> {
                 List.iterableList(data.schedule().entries())
                     .foreachDoEffect(entry -> addEntry(this, entry, dialogReq$, filterReq$));
             },
+            entryDialogData -> {},
             empty -> {
             });
     }

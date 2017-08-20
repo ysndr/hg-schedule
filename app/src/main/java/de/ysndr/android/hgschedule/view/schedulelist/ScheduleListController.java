@@ -2,6 +2,8 @@ package de.ysndr.android.hgschedule.view.schedulelist;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,9 @@ import de.ysndr.android.hgschedule.MyApp;
 import de.ysndr.android.hgschedule.R;
 import de.ysndr.android.hgschedule.state.State;
 import de.ysndr.android.hgschedule.state.models.Entry;
+import de.ysndr.android.hgschedule.state.models.Schedule;
+import de.ysndr.android.hgschedule.view.ScheduleDialog;
+import de.ysndr.android.hgschedule.view.ScheduleDialogBuilder;
 import io.reactivex.Observable;
 
 /**
@@ -75,7 +80,24 @@ public class ScheduleListController
 
     @Override
     public void render(State state) {
+        state.union().continued(
+            error -> {},
+            scheduleData -> {},
+            entryDialogData -> {
 
+                AppCompatActivity activity = ((AppCompatActivity) getActivity());
+                FragmentManager fm = activity.getSupportFragmentManager();
+
+                Entry entry = entryDialogData.entry();
+
+                ScheduleDialog dialog = ScheduleDialogBuilder.newScheduleDialog(
+                    entry.date().day(),
+                    entry.info());
+
+                dialog.show(fm, "tag");
+            },
+            empty -> {}
+            );
         view.render(state);
     }
 }
