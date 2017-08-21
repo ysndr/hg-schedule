@@ -21,6 +21,10 @@ import de.ysndr.android.hgschedule.state.models.Entry;
 import de.ysndr.android.hgschedule.view.StateController;
 import timber.log.Timber;
 
+/**
+ * Created by yannik on 8/21/17.
+ */
+
 public class ScheduleListView extends LinearLayout {
 
     final BehaviorRelay<Entry> dialogRequestIntent$;
@@ -36,7 +40,6 @@ public class ScheduleListView extends LinearLayout {
     SwipeRefreshLayout swipeRefresh;
     StateController controller;
     RecyclerView.Adapter adapter;
-
 
     public ScheduleListView(Context context) {
         this(context, null);

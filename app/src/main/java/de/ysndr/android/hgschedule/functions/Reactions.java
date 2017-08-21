@@ -54,7 +54,7 @@ public class Reactions {
             State::error,
             data -> State.data(data.withTransformations(
                 TransfFunc.toggleTransf(transformation, data.transformations()))),
-            State::sideEffect,
+            State::uiSideEffect,
             State::empty);
     }
 }

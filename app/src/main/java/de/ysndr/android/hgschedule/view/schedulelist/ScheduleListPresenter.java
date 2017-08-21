@@ -1,34 +1,27 @@
 package de.ysndr.android.hgschedule.view.schedulelist;
 
 
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
-
 import com.f2prateek.rx.preferences2.RxSharedPreferences;
 import com.hannesdorfmann.mosby3.mvi.MviBasePresenter;
 
 import javax.inject.Inject;
 
-import de.ysndr.android.hgschedule.functions.Reactions;
-import de.ysndr.android.hgschedule.functions.TransfFunc;
 import de.ysndr.android.hgschedule.inject.RemoteDataService;
 import de.ysndr.android.hgschedule.state.SideEffect;
 import de.ysndr.android.hgschedule.state.State;
 import de.ysndr.android.hgschedule.state.models.Entry;
-import de.ysndr.android.hgschedule.view.ScheduleDialog;
-import de.ysndr.android.hgschedule.view.ScheduleDialogBuilder;
 import io.reactivecache2.ReactiveCache;
 import io.reactivex.Observable;
+import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-import timber.log.Timber;
 
 /**
  * Created by yannik on 7/5/17.
  */
 
 public class ScheduleListPresenter
-    extends MviBasePresenter<ScheduleListMviViewInterface, State> {
+    extends MviBasePresenter<ScheduleListViewInterface, State> {
 
 
     private RxSharedPreferences prefs;
@@ -49,54 +42,27 @@ public class ScheduleListPresenter
     @Override
     protected void bindIntents() {
 
-        Observable<State> reload$ = intent(view -> view.reloadIntent$())
-            .
 
-        Observable<Entry> filter$ = intent(view -> view.filterIntent$())
-            .doOnNext(__ -> Timber.d("triggered filter"));
+        // *************** State ****************** //
+        final Observable<Object> reload$ = intent(ScheduleListViewInterface::reloadIntent$);
+        final Observable<Entry> filter$ = intent(ScheduleListViewInterface::filterIntent$);
 
-        Observable<State> allIntents = reload$.switchMap(
-            _state -> filter$.scan(
-                // 1. build on top of _state as a basis
-                _state,
-                // 2. apply filters on state and use the resulting state as temporary result of
-                //    all accumulated filtering actions
-                //    State_N, filter -> State_N+1    // Start with _state as State_0
-                (state, entry) -> Reactions.filter(entry, state)).startWith(_state));
+        final Observable<State> state$ = Functions.transform(
+            Functions.filter(
+                Functions.refresh(reload$, prefs, remote, cache),
+                filter$));
 
-        Observable<State> dialogData$ = intent(view -> view.dialogIntent$())
-            .map(entry -> State.sideEffect(SideEffect.of(controller ->  {
+        // *********** Side Effects ************** //
+        final Observable<Entry> dialogEntryData$ = intent(ScheduleListViewInterface::dialogIntent$);
 
-                        AppCompatActivity activity = ((AppCompatActivity) (controller.getActivity()));
-                        FragmentManager fm = activity.getSupportFragmentManager();
+        final Observable<SideEffect> dialogs$ = SideEffects.dialog(dialogEntryData$);
 
-                        ScheduleDialog dialog = ScheduleDialogBuilder.newScheduleDialog(
-                            entry.date().day(),
-                            entry.info());
-
-                        dialog.show(fm, "tag");
-                    })));
-
-
-        Observable<State> intentsWithDialogs = allIntents.switchMap(
-            state -> dialogData$.flatMap(dialogState ->
-                Observable.just(dialogState, state)).startWith(state));
-
-
-        Observable<State> stateObservable = intentsWithDialogs
-//            .scan(State.empty(), this::viewStateReducer)
-            .doOnNext(__ -> Timber.d("transforming"))
-            .map(TransfFunc::transformState)
+        final Observable<State> merged$ = SideEffects.mergeSideEffectsIntoState(state$, dialogs$)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread());
 
 
-
-
-
-
-
-        subscribeViewState(stateObservable, ScheduleListMviViewInterface::render);
+        subscribeViewState(merged$, ScheduleListViewInterface::render);
     }
 
 

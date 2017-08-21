@@ -28,7 +28,7 @@ public abstract class State {
         return ImmState.of(FACTORY.second(data));
     }
 
-    public static State sideEffect(SideEffect data) {
+    public static State uiSideEffect(SideEffect data) {
         return ImmState.of(FACTORY.third(data));
     }
 

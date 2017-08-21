@@ -2,11 +2,9 @@ package de.ysndr.android.hgschedule.view.schedulelist;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
+import android.view.View;
 
 import com.hannesdorfmann.mosby3.MviController;
 
@@ -14,18 +12,16 @@ import de.ysndr.android.hgschedule.MyApp;
 import de.ysndr.android.hgschedule.R;
 import de.ysndr.android.hgschedule.state.State;
 import de.ysndr.android.hgschedule.state.models.Entry;
-import de.ysndr.android.hgschedule.state.models.Schedule;
-import de.ysndr.android.hgschedule.view.ScheduleDialog;
-import de.ysndr.android.hgschedule.view.ScheduleDialogBuilder;
 import io.reactivex.Observable;
+import timber.log.Timber;
 
 /**
  * Created by yannik on 7/19/17.
  */
 
 public class ScheduleListController
-    extends MviController<ScheduleListMviViewInterface, ScheduleListPresenter>
-    implements ScheduleListMviViewInterface {
+    extends MviController<ScheduleListViewInterface, ScheduleListPresenter>
+    implements ScheduleListViewInterface {
 
     private ScheduleListView view;
 
@@ -38,16 +34,16 @@ public class ScheduleListController
         setRetainViewMode(RetainViewMode.RELEASE_DETACH);
     }
 
-    @NonNull
     @Override
+    @NonNull
     protected View onCreateView(@NonNull LayoutInflater inflater, @NonNull ViewGroup container) {
         View view = inflater.inflate(R.layout.controller_schedule_list, container, false);
         this.view = (ScheduleListView) view;
         return view;
     }
 
-    @NonNull
     @Override
+    @NonNull
     public ScheduleListPresenter createPresenter() {
         return MyApp.getScheduleComponent(this.getActivity()).getPresenter();
     }
@@ -64,16 +60,19 @@ public class ScheduleListController
     }
 
     @Override
+    @NonNull
     public Observable<Entry> dialogIntent$() {
         return view.dialogRequestIntent$;
     }
 
     @Override
+    @NonNull
     public Observable<Entry> filterIntent$() {
         return view.filterRequestIntent$;
     }
 
     @Override
+    @NonNull
     public Observable<Object> reloadIntent$() {
         return view.swipeRefreshIntent$;
     }
@@ -83,8 +82,8 @@ public class ScheduleListController
         state.union().continued(
             error -> {},
             scheduleData -> {},
-            sideEffect -> {
-                sideEffect.effect().accept(this);
+            uiSideEffect -> {
+                uiSideEffect.effect().accept(this);
             },
             empty -> {}
             );

@@ -2,6 +2,7 @@ package de.ysndr.android.hgschedule.functions;
 
 import de.ysndr.android.hgschedule.functions.models.ImmutableTransformation;
 import de.ysndr.android.hgschedule.functions.models.Transformation;
+import de.ysndr.android.hgschedule.state.ScheduleData;
 import de.ysndr.android.hgschedule.state.State;
 import de.ysndr.android.hgschedule.state.models.Entry;
 import de.ysndr.android.hgschedule.state.models.ImmutableEntry;
@@ -27,13 +28,8 @@ public class TransfFunc {
             .lastElement().blockingGet(obj);
     }
 
-    public static State transformState(State state) {
-        return state.union().join(
-            State::error,
-            data -> State.data(
-                data.withSchedule(applyTransformations(data.transformations(), data.schedule()))),
-            State::sideEffect,
-            State::empty);
+    public static ScheduleData transformState(ScheduleData data) {
+        return data.withSchedule(applyTransformations(data.transformations(), data.schedule()));
     }
 
     public static <O> Set<Transformation<O>> toggleTransf(Transformation<O> transformation,
