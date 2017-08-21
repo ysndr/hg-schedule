@@ -11,13 +11,13 @@ buildscript {
     }
     dependencies {
         // replace with the current version of the Android plugin
-        classpath 'com.android.tools.build:gradle:3.0.0-beta1'
+        classpath 'com.android.tools.build:gradle:3.0.0-beta2'
         classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.7.3'
     }
 }
 
 plugins {
-    id "me.tatarka.retrolambda" version "3.2.5" // TODO: move to Rx2 ASAP (see reactive cache)
+//    id "me.tatarka.retrolambda" version "3.2.5" // TODO: move to Rx2 ASAP (see reactive cache)
 }
 
 apply plugin: 'com.android.application'
