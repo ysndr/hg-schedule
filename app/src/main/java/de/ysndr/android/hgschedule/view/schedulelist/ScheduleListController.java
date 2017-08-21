@@ -83,18 +83,8 @@ public class ScheduleListController
         state.union().continued(
             error -> {},
             scheduleData -> {},
-            entryDialogData -> {
-
-                AppCompatActivity activity = ((AppCompatActivity) getActivity());
-                FragmentManager fm = activity.getSupportFragmentManager();
-
-                Entry entry = entryDialogData.entry();
-
-                ScheduleDialog dialog = ScheduleDialogBuilder.newScheduleDialog(
-                    entry.date().day(),
-                    entry.info());
-
-                dialog.show(fm, "tag");
+            sideEffect -> {
+                sideEffect.effect().accept(this);
             },
             empty -> {}
             );

@@ -1,7 +1,8 @@
 package de.ysndr.android.hgschedule.view.schedulelist;
 
 
-import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 
 import com.f2prateek.rx.preferences2.RxSharedPreferences;
 import com.hannesdorfmann.mosby3.mvi.MviBasePresenter;
@@ -11,7 +12,7 @@ import javax.inject.Inject;
 import de.ysndr.android.hgschedule.functions.Reactions;
 import de.ysndr.android.hgschedule.functions.TransfFunc;
 import de.ysndr.android.hgschedule.inject.RemoteDataService;
-import de.ysndr.android.hgschedule.state.EntryDialogData;
+import de.ysndr.android.hgschedule.state.SideEffect;
 import de.ysndr.android.hgschedule.state.State;
 import de.ysndr.android.hgschedule.state.models.Entry;
 import de.ysndr.android.hgschedule.view.ScheduleDialog;
@@ -49,9 +50,7 @@ public class ScheduleListPresenter
     protected void bindIntents() {
 
         Observable<State> reload$ = intent(view -> view.reloadIntent$())
-            .doOnNext(obj -> Timber.d("reload?"))
-            .flatMap((obj) -> Reactions.reload(prefs, remote, cache).subscribeOn(Schedulers.io()))
-            .doOnNext(state -> Timber.d("got state"));
+            .
 
         Observable<Entry> filter$ = intent(view -> view.filterIntent$())
             .doOnNext(__ -> Timber.d("triggered filter"));
@@ -66,7 +65,18 @@ public class ScheduleListPresenter
                 (state, entry) -> Reactions.filter(entry, state)).startWith(_state));
 
         Observable<State> dialogData$ = intent(view -> view.dialogIntent$())
-            .map(entry -> State.entryDialogData(EntryDialogData.of(entry)));
+            .map(entry -> State.sideEffect(SideEffect.of(controller ->  {
+
+                        AppCompatActivity activity = ((AppCompatActivity) (controller.getActivity()));
+                        FragmentManager fm = activity.getSupportFragmentManager();
+
+                        ScheduleDialog dialog = ScheduleDialogBuilder.newScheduleDialog(
+                            entry.date().day(),
+                            entry.info());
+
+                        dialog.show(fm, "tag");
+                    })));
+
 
         Observable<State> intentsWithDialogs = allIntents.switchMap(
             state -> dialogData$.flatMap(dialogState ->

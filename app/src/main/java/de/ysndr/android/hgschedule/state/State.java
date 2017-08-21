@@ -18,7 +18,7 @@ import org.immutables.value.Value;
 public abstract class State {
 
 
-    private static final Union4.Factory<Error, ScheduleData, EntryDialogData, Empty> FACTORY = UnionFactories.quartetFactory();
+    private static final Union4.Factory<Error, ScheduleData, SideEffect, Empty> FACTORY = UnionFactories.quartetFactory();
 
     public static State error(Error error) {
         return ImmState.of(FACTORY.first(error));
@@ -28,7 +28,7 @@ public abstract class State {
         return ImmState.of(FACTORY.second(data));
     }
 
-    public static State entryDialogData(EntryDialogData data) {
+    public static State sideEffect(SideEffect data) {
         return ImmState.of(FACTORY.third(data));
     }
 
@@ -39,6 +39,6 @@ public abstract class State {
         return ImmState.of(FACTORY.fourth(Empty.of()));
     }
 
-    public abstract Union4<Error, ScheduleData, EntryDialogData, Empty> union();
+    public abstract Union4<Error, ScheduleData, SideEffect, Empty> union();
 
 }

@@ -32,7 +32,7 @@ public class TransfFunc {
             State::error,
             data -> State.data(
                 data.withSchedule(applyTransformations(data.transformations(), data.schedule()))),
-            State::entryDialogData,
+            State::sideEffect,
             State::empty);
     }
 
